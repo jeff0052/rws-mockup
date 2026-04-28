@@ -660,6 +660,207 @@ body {
   line-height: 1.6;
 }
 
+/* Storefront tab */
+.storefront-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.photo {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--surface-2);
+}
+.photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.photo-label {
+  position: absolute; bottom: 12px; left: 12px;
+  background: rgba(26, 26, 24, 0.82); color: #fff;
+  padding: 5px 12px; font-size: 12px;
+  border-radius: 6px; font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+.photo-tag {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 4px 10px; font-size: 11px;
+  font-family: var(--mono); color: var(--text-2);
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+}
+
+.subsection-title {
+  font-size: 16px; font-weight: 600;
+  margin: 32px 0 16px;
+  display: flex; align-items: center; gap: 10px;
+  letter-spacing: -0.005em;
+}
+.subsection-title::before {
+  content: ''; width: 3px; height: 14px;
+  background: var(--sunmi-orange); border-radius: 2px;
+}
+
+.sku-list {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.sku-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 90px 90px 90px;
+  column-gap: 24px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.sku-row:last-child { border-bottom: none; }
+.sku-icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  background: var(--sunmi-orange-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  overflow: hidden;
+}
+.sku-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sku-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.sku-meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.sku-stat { display: flex; flex-direction: column; align-items: flex-end; }
+.sku-stat-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.sku-stat-val { font-size: 14px; font-weight: 600; font-family: var(--mono); margin-top: 2px; color: var(--text); }
+.sku-bar {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px;
+}
+.sku-bar-fill { height: 100%; background: var(--sunmi-orange); }
+
+.pos-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.pos-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.pos-card-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+}
+.pos-icon {
+  width: 44px; height: 44px;
+  background: var(--sunmi-orange);
+  color: #fff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; font-size: 13px;
+}
+.pos-name { font-size: 15px; font-weight: 600; }
+.pos-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; font-family: var(--mono); }
+.pos-status-online {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; color: var(--green);
+  background: var(--green-light, #E6F4EE);
+  padding: 4px 10px; border-radius: 4px; font-family: var(--mono);
+}
+.pos-status-online::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--green); border-radius: 50%;
+}
+.pos-row {
+  display: flex; justify-content: space-between;
+  padding: 8px 0; font-size: 13px;
+  border-bottom: 1px dashed var(--border);
+}
+.pos-row:last-child { border-bottom: none; }
+.pos-row span:first-child { color: var(--text-2); }
+.pos-row span:last-child { color: var(--text); font-family: var(--mono); font-weight: 500; }
+
+.trust-note {
+  margin-top: 24px;
+  padding: 14px 18px;
+  background: var(--sunmi-orange-light);
+  border: 1px solid #FFD9BD;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.trust-note strong { color: var(--text); font-weight: 600; }
+
+/* Team */
+.team-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+}
+.team-photo {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  border: 3px solid var(--surface);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: relative;
+}
+.team-photo-1 { background: linear-gradient(135deg, #FFE5D0 0%, #FFB87E 100%); }
+.team-photo-2 { background: linear-gradient(135deg, #FFF1E8 0%, #FF9B5A 100%); }
+.team-photo-3 { background: linear-gradient(135deg, #FFE5D0 0%, #FFAE74 100%); }
+.team-photo::after {
+  content: ''; position: absolute;
+  bottom: 4px; right: 4px;
+  width: 14px; height: 14px;
+  background: var(--green); border: 2px solid var(--surface);
+  border-radius: 50%;
+}
+.team-name { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+.team-name-en { font-size: 12px; color: var(--text-3); font-family: var(--mono); margin-top: 2px; }
+.team-role {
+  font-size: 11px;
+  color: var(--sunmi-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.team-bio {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-top: 12px;
+  text-align: left;
+}
+.team-stats {
+  display: flex; justify-content: space-around;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.team-stat-num { font-size: 14px; font-weight: 700; font-family: var(--mono); color: var(--text); }
+.team-stat-label { font-size: 10px; color: var(--text-3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+
 /* Mockup banner */
 .mockup-banner {
   position: fixed; top: 16px; right: 16px;
@@ -819,6 +1020,8 @@ body {
   <div class="tabs-wrapper">
     <div class="tabs">
       <button class="tab active" data-tab="overview">资产详情</button>
+      <button class="tab" data-tab="storefront">门店照片</button>
+      <button class="tab" data-tab="team">团队介绍</button>
       <button class="tab" data-tab="operations">经营数据</button>
       <button class="tab" data-tab="transactions">链上交易记录</button>
       <button class="tab" data-tab="terms">条款与风险</button>
@@ -870,6 +1073,211 @@ body {
           <div class="info-row"><span class="label">合规</span><span class="value">SFA 274/275 私募</span></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Storefront Tab -->
+  <div class="tab-content" id="tab-storefront">
+    <div class="section">
+      <h2 class="section-title">门店照片 · Jurong Point 餐厅</h2>
+      <p class="section-sub">真实门店环境、商米 POS 设备部署、主营 SKU 销售情况。所有照片由商家上传,RWS 在 KYC 阶段已实地核对,与商米 POS 设备序列号一一绑定。</p>
+
+      <div class="storefront-grid">
+        <div class="photo">
+          <img src="images/omma-interior-1.jpg" alt="主用餐区">
+          <span class="photo-tag">2026-04-12</span>
+          <span class="photo-label">主用餐区 · 木柴展示墙</span>
+        </div>
+        <div class="photo">
+          <img src="images/omma-interior-2.jpg" alt="出餐区 · BBQ 吧台">
+          <span class="photo-tag">SUNMI T2 × 2</span>
+          <span class="photo-label">炭火 BBQ 区 · 商米 POS 部署</span>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">门店运营基本信息</h3>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><span class="info-card-icon">A</span>营业信息</h3>
+          <div class="info-row"><span class="label">营业时间</span><span class="value">10:00 – 22:00 · 全年无休</span></div>
+          <div class="info-row"><span class="label">门店面积</span><span class="value">85 ㎡</span></div>
+          <div class="info-row"><span class="label">座位数</span><span class="value">28 座</span></div>
+          <div class="info-row"><span class="label">员工</span><span class="value">6 人(含厨)</span></div>
+          <div class="info-row"><span class="label">租约剩余</span><span class="value">28 个月</span></div>
+          <div class="info-row"><span class="label">月租金</span><span class="value">SGD 12,800</span></div>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="info-card-icon">B</span>客流与客单</h3>
+          <div class="info-row"><span class="label">月接待人数</span><span class="value">~ 9,500 人次</span></div>
+          <div class="info-row"><span class="label">日均客流</span><span class="value">~ 320 人次</span></div>
+          <div class="info-row"><span class="label">平均客单价</span><span class="value">SGD 24.0</span></div>
+          <div class="info-row"><span class="label">高峰时段</span><span class="value">12:00–14:00 · 18:00–20:30</span></div>
+          <div class="info-row"><span class="label">外卖占比</span><span class="value">22%</span></div>
+          <div class="info-row"><span class="label">复购率(30 天)</span><span class="value">38%</span></div>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">主营 SKU · 近 30 日</h3>
+      <div class="sku-list">
+        <div class="sku-row">
+          <div class="sku-icon"><img src="images/sku-laksa.jpg" alt="招牌叻沙"></div>
+          <div>
+            <div class="sku-name">招牌叻沙(Laksa)</div>
+            <div class="sku-meta">主推 · 镇店招牌</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 11.80</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">2,140</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">28%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 88%"></div></div>
+        </div>
+        <div class="sku-row">
+          <div class="sku-icon"><img src="images/sku-hainanese-chicken-rice.jpg" alt="海南鸡饭"></div>
+          <div>
+            <div class="sku-name">海南鸡饭</div>
+            <div class="sku-meta">招牌套餐</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 9.50</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">1,820</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">19%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 60%"></div></div>
+        </div>
+        <div class="sku-row">
+          <div class="sku-icon"><img src="images/sku-char-kway-teow.jpg" alt="炒粿条"></div>
+          <div>
+            <div class="sku-name">炒粿条(Char Kway Teow)</div>
+            <div class="sku-meta">主推</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 10.20</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">1,340</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">15%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 47%"></div></div>
+        </div>
+        <div class="sku-row">
+          <div class="sku-icon">🥘</div>
+          <div>
+            <div class="sku-name">咖喱鱼头</div>
+            <div class="sku-meta">高客单 · 周末爆品</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 18.00</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">680</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">14%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 44%"></div></div>
+        </div>
+        <div class="sku-row">
+          <div class="sku-icon">🥟</div>
+          <div>
+            <div class="sku-name">虾仁烧卖(4 件)</div>
+            <div class="sku-meta">小食 · 加购</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 5.40</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">1,560</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">9%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 28%"></div></div>
+        </div>
+        <div class="sku-row">
+          <div class="sku-icon">🥤</div>
+          <div>
+            <div class="sku-name">薏米水 / 美禄</div>
+            <div class="sku-meta">饮品 · 高频</div>
+          </div>
+          <div class="sku-stat"><span class="sku-stat-label">单价</span><span class="sku-stat-val">SGD 2.80</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">月销</span><span class="sku-stat-val">3,920</span></div>
+          <div class="sku-stat"><span class="sku-stat-label">收入占比</span><span class="sku-stat-val">11%</span></div>
+          <div class="sku-bar"><div class="sku-bar-fill" style="width: 35%"></div></div>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">商米 POS 设备实景</h3>
+      <div class="pos-list">
+        <div class="pos-card">
+          <div class="pos-card-head">
+            <div class="pos-icon">T2</div>
+            <div>
+              <div class="pos-name">SUNMI T2 · 收银台 #1</div>
+              <div class="pos-sub">SUNMI-T2-7K3M</div>
+            </div>
+            <span class="pos-status-online">在线</span>
+          </div>
+          <div class="pos-row"><span>位置</span><span>主收银台</span></div>
+          <div class="pos-row"><span>固件版本</span><span>v3.2.1 · 已签名</span></div>
+          <div class="pos-row"><span>今日笔数</span><span>142 笔</span></div>
+          <div class="pos-row"><span>今日流水</span><span>SGD 4,280</span></div>
+          <div class="pos-row"><span>最近上链</span><span>3 秒前</span></div>
+        </div>
+
+        <div class="pos-card">
+          <div class="pos-card-head">
+            <div class="pos-icon">T2</div>
+            <div>
+              <div class="pos-name">SUNMI T2 · 收银台 #2</div>
+              <div class="pos-sub">SUNMI-T2-9P4N</div>
+            </div>
+            <span class="pos-status-online">在线</span>
+          </div>
+          <div class="pos-row"><span>位置</span><span>外卖打包台</span></div>
+          <div class="pos-row"><span>固件版本</span><span>v3.2.1 · 已签名</span></div>
+          <div class="pos-row"><span>今日笔数</span><span>145 笔</span></div>
+          <div class="pos-row"><span>今日流水</span><span>SGD 3,844</span></div>
+          <div class="pos-row"><span>最近上链</span><span>11 秒前</span></div>
+        </div>
+      </div>
+
+      <p class="trust-note">
+        <span style="font-size: 18px;">📷</span>
+        <span><strong>真实性核验:</strong>所有照片在 KYC 阶段由 RWS 工作人员实地核对,与商米 POS 设备序列号绑定。设备硬件密钥每笔交易实时签名,链上哈希存证不可篡改。投资人可在「经营数据」tab 查看实时交易流水。</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Team Tab -->
+  <div class="tab-content" id="tab-team">
+    <div class="section">
+      <h2 class="section-title">团队介绍 · Jurong Point 餐厅</h2>
+      <p class="section-sub">门店核心三人团队 · 创始人 / 主厨 / 店长。所有成员均通过 RWS KYC 认证,身份与商米 POS 操作权限绑定。</p>
+
+      <div class="team-list">
+        <div class="team-card">
+          <div class="team-photo team-photo-1">👨‍🍳</div>
+          <div class="team-name">Tan Wei Ming</div>
+          <div class="team-name-en">陈伟明</div>
+          <div class="team-role">创始人 / 老板</div>
+          <p class="team-bio">本地餐饮从业 12 年,曾在 Toa Payoh 和 Bedok 各开设一家门店,2024 年 10 月在 Jurong Point 开出现门店。亲力管理,负责采购与店面运营。</p>
+          <div class="team-stats">
+            <div><div class="team-stat-num">12 年</div><div class="team-stat-label">餐饮经验</div></div>
+            <div><div class="team-stat-num">3 家</div><div class="team-stat-label">门店履历</div></div>
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-photo team-photo-2">👨‍🍳</div>
+          <div class="team-name">Lim Chee Hong</div>
+          <div class="team-name-en">林志宏</div>
+          <div class="team-role">主厨</div>
+          <p class="team-bio">叻沙与海南鸡饭主理人,曾任樟宜机场美食广场主厨 6 年。负责后厨标准化、SKU 研发与出品质量。本店招牌叻沙汤底由其独家配方。</p>
+          <div class="team-stats">
+            <div><div class="team-stat-num">8 年</div><div class="team-stat-label">主厨经验</div></div>
+            <div><div class="team-stat-num">15 项</div><div class="team-stat-label">招牌 SKU</div></div>
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-photo team-photo-3">👩‍💼</div>
+          <div class="team-name">Sarah Lee</div>
+          <div class="team-name-en">李雪儿</div>
+          <div class="team-role">店长 / 运营</div>
+          <p class="team-bio">前 Jollibean Foods 区域运营,5 年连锁餐饮运营经验。负责前厅服务、排班、商米 POS 数据日清和外卖平台对接。</p>
+          <div class="team-stats">
+            <div><div class="team-stat-num">5 年</div><div class="team-stat-label">运营经验</div></div>
+            <div><div class="team-stat-num">6 人</div><div class="team-stat-label">直接管理</div></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="trust-note" style="margin-top: 32px;">
+        <span style="font-size: 18px;">🔐</span>
+        <span><strong>身份核验:</strong>团队成员通过 Singpass / NRIC 完成 RWS KYC,信息与商米 POS 终端登录权限绑定。每笔交易由具体操作员签名,投资人可追溯到操作人维度。</span>
+      </p>
     </div>
   </div>
 
