@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFFFFF">
+<title>RWS · Jurong Point 短期融资</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sunmi-orange: #FF6A13;
+  --sunmi-orange-dark: #E85D0F;
+  --sunmi-orange-light: #FFF1E8;
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F4F3EE;
+  --border: #E8E6DD;
+  --border-strong: #D5D3C8;
+  --text: #1A1A18;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --green: #1D9E75;
+  --red: #B23B3B;
+  --amber: #BA7517;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html, body { background: var(--bg); }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+  width: 36px; height: 36px;
+  background: var(--sunmi-orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; color: #fff; font-size: 14px;
+}
+
+.brand-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+
+.brand-sub {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-left: 8px; padding: 4px 8px;
+  border: 1px solid var(--border-strong); border-radius: 4px;
+}
+
+.nav { display: flex; gap: 4px; margin-left: 32px; }
+.nav-item {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text); }
+.nav-item.active { background: var(--sunmi-orange-light); color: var(--sunmi-orange); }
+
+.user-info { display: flex; align-items: center; gap: 16px; }
+.wallet {
+  font-family: var(--mono); font-size: 13px; color: var(--text-2);
+  padding: 8px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sunmi-orange);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; color: #fff; font-size: 14px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: 13px;
+  color: var(--text-3);
+  margin-bottom: 24px;
+}
+
+.breadcrumb a {
+  color: var(--text-3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb a:hover { color: var(--sunmi-orange); }
+.breadcrumb-sep { margin: 0 8px; }
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.hero-left {}
+
+.asset-image {
+  height: 220px;
+  background: linear-gradient(135deg, var(--sunmi-orange-light) 0%, #FFE5D0 100%);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.asset-status {
+  align-self: flex-start;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+}
+
+.asset-status .dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.2);
+}
+
+.asset-id-badge {
+  align-self: flex-start;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.asset-meta-row {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.asset-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+
+.asset-tagline {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.asset-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 4px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 11px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.tag.highlight {
+  background: var(--sunmi-orange-light);
+  border-color: rgba(255, 106, 19, 0.2);
+  color: var(--sunmi-orange);
+}
+
+/* Sticky CTA card */
+.cta-card {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.cta-yield {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+.cta-yield-value {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.cta-yield-sub {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 24px;
+}
+
+.cta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.cta-row:last-of-type {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.cta-cell-label {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.cta-cell-value {
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+
+.cta-progress-section {
+  margin-bottom: 20px;
+}
+
+.cta-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.cta-progress-meta strong { color: var(--text); font-weight: 600; }
+.cta-progress-meta span { color: var(--text-2); }
+
+.cta-progress-track {
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cta-progress-bar {
+  height: 100%;
+  background: var(--sunmi-orange);
+  border-radius: 3px;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--sunmi-orange);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.cta-button:hover { background: var(--sunmi-orange-dark); }
+
+.cta-secondary {
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: background 0.15s;
+}
+.cta-secondary:hover { background: var(--surface-2); }
+
+/* Tabs */
+.tabs-wrapper {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  min-width: max-content;
+}
+
+.tab {
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab.active {
+  color: var(--sunmi-orange);
+  border-bottom-color: var(--sunmi-orange);
+  font-weight: 600;
+}
+
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* Section */
+.section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.section-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Two column info */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.info-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-card-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--sunmi-orange);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: var(--text-2); }
+.info-row .value {
+  font-family: var(--mono);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Chart card */
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chart-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chart-period-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-2);
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.chart-period-tab {
+  padding: 5px 12px;
+  font-size: 11px;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.chart-period-tab.active {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+.chart-container {
+  height: 200px;
+  position: relative;
+  margin: 16px 0;
+}
+
+.chart-grid {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  pointer-events: none;
+}
+.chart-grid-line { height: 1px; background: var(--border); opacity: 0.6; }
+
+.bars {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; gap: 3px;
+  padding-bottom: 24px;
+}
+.bar {
+  flex: 1;
+  background: var(--sunmi-orange);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.85;
+}
+.bar.weekend { background: var(--sunmi-orange-dark); opacity: 1; }
+
+.x-axis {
+  display: flex; justify-content: space-between; margin-top: 8px;
+  font-family: var(--mono); font-size: 10px; color: var(--text-3);
+}
+
+.chart-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.summary-cell { display: flex; flex-direction: column; gap: 2px; }
+.summary-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.summary-value { font-size: 16px; font-weight: 600; font-family: var(--mono); }
+.summary-value.green { color: var(--green); }
+
+/* Transactions table */
+.txn-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.txn-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 120px 140px 100px;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  font-size: 13px;
+}
+
+.txn-row:last-child { border-bottom: none; }
+
+.txn-row.head {
+  background: var(--surface-2);
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  padding: 12px 20px;
+}
+
+.txn-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.txn-event {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.txn-event-title {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.txn-event-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+.txn-amount {
+  font-family: var(--mono);
+  font-weight: 600;
+  text-align: right;
+}
+.txn-amount.in { color: var(--green); }
+.txn-amount.out { color: var(--text-2); }
+
+.txn-hash {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--sunmi-orange);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(255, 106, 19, 0.3);
+}
+
+.txn-type {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.type-mint { background: rgba(29, 158, 117, 0.1); color: var(--green); border: 1px solid rgba(29, 158, 117, 0.3); }
+.type-interest { background: var(--sunmi-orange-light); color: var(--sunmi-orange); border: 1px solid rgba(255, 106, 19, 0.25); }
+.type-attest { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+.type-deploy { background: rgba(186, 117, 23, 0.08); color: var(--amber); border: 1px solid rgba(186, 117, 23, 0.25); }
+
+/* Risk panel */
+.risk-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.risk-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.risk-level {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.level-low { background: rgba(29, 158, 117, 0.1); color: var(--green); }
+.level-mid { background: rgba(186, 117, 23, 0.08); color: var(--amber); }
+.level-high { background: rgba(178, 59, 59, 0.08); color: var(--red); }
+
+.risk-card p {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* Mockup banner */
+.mockup-banner {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--sunmi-orange); color: #fff;
+  padding: 6px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 100; font-family: var(--mono);
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .cta-card { position: static; }
+}
+
+@media (max-width: 768px) {
+  .app { padding: 20px 16px; }
+  .header { flex-wrap: wrap; gap: 12px; padding-bottom: 16px; }
+  .nav { order: 3; width: 100%; margin-left: 0; overflow-x: auto; padding-bottom: 4px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; white-space: nowrap; }
+  .brand-name { font-size: 17px; }
+  .brand-sub { font-size: 10px; margin-left: 6px; padding: 3px 6px; }
+  .brand-mark { width: 32px; height: 32px; font-size: 13px; }
+  .wallet { font-size: 11px; padding: 6px 10px; }
+  .avatar { width: 32px; height: 32px; font-size: 12px; }
+  .user-info { gap: 10px; }
+
+  .breadcrumb { font-size: 12px; margin-bottom: 16px; }
+  .asset-image { height: 160px; padding: 20px; margin-bottom: 20px; }
+  .asset-title { font-size: 24px; }
+  .asset-tagline { font-size: 13px; margin-bottom: 20px; }
+  .cta-card { padding: 20px; }
+  .cta-yield-value { font-size: 32px; }
+
+  .info-grid { grid-template-columns: 1fr; gap: 16px; }
+  .info-card { padding: 18px; }
+
+  .chart-card { padding: 20px; }
+  .chart-container { height: 160px; }
+  .chart-summary { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .summary-value { font-size: 14px; }
+
+  .tab { padding: 10px 14px; font-size: 13px; }
+
+  .txn-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+  .txn-row.head { display: none; }
+  .txn-amount { text-align: left; }
+
+  .mockup-banner { top: 8px; right: 8px; padding: 4px 8px; font-size: 9px; }
+}
+</style>
+</head>
+<body>
+<div class="mockup-banner">Mockup · 概念演示</div>
+
+<div class="app">
+  <div class="header">
+    <div class="brand">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" title="返回索引">
+        <div class="brand-mark">R</div>
+        <div>
+          <span class="brand-name">RWS</span>
+          <span class="brand-sub">投资人后台</span>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="investor-dashboard.html" class="nav-item">我的资产</a>
+        <a href="asset-list.html" class="nav-item active">资产市场</a>
+        <a href="transactions.html" class="nav-item">交易记录</a>
+        <a href="merchant-dashboard.html" class="nav-item" style="margin-left: 12px; padding-left: 14px; border-left: 1px solid var(--border-strong);">商家视角 →</a>
+      </nav>
+    </div>
+    <div class="user-info">
+      <div class="wallet">7xKX...nP9k</div>
+      <div class="avatar">L</div>
+    </div>
+  </div>
+
+  <div class="breadcrumb">
+    <a href="asset-list.html">资产市场</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>Jurong Point 短期融资</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-left">
+      <div class="asset-image">
+        <span class="asset-status"><span class="dot"></span>认购中</span>
+        <span class="asset-id-badge">JRP-RWA-01</span>
+      </div>
+
+      <div class="asset-meta-row">JURONG POINT 餐厅 · 新加坡</div>
+      <h1 class="asset-title">Jurong Point 短期融资</h1>
+      <p class="asset-tagline">本地连锁餐饮 · 18 个月稳定经营 · 融资用于设备升级和库存周转 · 由商米 POS 硬件实时签名担保经营数据真实性</p>
+
+      <div class="asset-tags">
+        <span class="tag highlight">商米 POS 背书</span>
+        <span class="tag">餐饮</span>
+        <span class="tag">短期债务</span>
+        <span class="tag">月付息</span>
+        <span class="tag">本金到期还</span>
+        <span class="tag">私募豁免</span>
+      </div>
+    </div>
+
+    <div class="cta-card">
+      <div class="cta-yield">年化收益率</div>
+      <div class="cta-yield-value">8.0%</div>
+      <div class="cta-yield-sub">每月 27 日付息 · 末期还本</div>
+
+      <div class="cta-row">
+        <div>
+          <div class="cta-cell-label">期限</div>
+          <div class="cta-cell-value">6 个月</div>
+        </div>
+        <div>
+          <div class="cta-cell-label">起投</div>
+          <div class="cta-cell-value">SGD 100</div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <div>
+          <div class="cta-cell-label">面值</div>
+          <div class="cta-cell-value">SGD 100/枚</div>
+        </div>
+        <div>
+          <div class="cta-cell-label">链</div>
+          <div class="cta-cell-value">Solana</div>
+        </div>
+      </div>
+
+      <div class="cta-progress-section">
+        <div class="cta-progress-meta">
+          <strong>120,000 / 200,000 SGD</strong>
+          <span>已认购 60%</span>
+        </div>
+        <div class="cta-progress-track">
+          <div class="cta-progress-bar" style="width: 60%"></div>
+        </div>
+        <div class="cta-progress-meta" style="margin-top: 8px">
+          <span>认购截止 5 月 9 日</span>
+          <span>剩余 12 天</span>
+        </div>
+      </div>
+
+      <button class="cta-button">立即认购</button>
+      <button class="cta-secondary">加入观察清单</button>
+    </div>
+  </div>
+
+  <div class="tabs-wrapper">
+    <div class="tabs">
+      <button class="tab active" data-tab="overview">资产详情</button>
+      <button class="tab" data-tab="operations">经营数据</button>
+      <button class="tab" data-tab="transactions">链上交易记录</button>
+      <button class="tab" data-tab="terms">条款与风险</button>
+    </div>
+  </div>
+
+  <!-- Overview Tab -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="section">
+      <h2 class="section-title">资产概况</h2>
+      <p class="section-sub">本资产为 Jurong Point 餐厅(新加坡)发起的 6 个月期短期融资,用于设备升级和库存周转。所有经营数据由商米 POS 终端实时硬件签名,链上哈希存证。投资人持有的 SPL 代币代表对该笔融资的债权份额。</p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><span class="info-card-icon">A</span>基础信息</h3>
+          <div class="info-row"><span class="label">商户名称</span><span class="value">Jurong Point 餐厅</span></div>
+          <div class="info-row"><span class="label">所在地</span><span class="value">新加坡</span></div>
+          <div class="info-row"><span class="label">行业</span><span class="value">餐饮 · 快餐</span></div>
+          <div class="info-row"><span class="label">经营年限</span><span class="value">18 个月</span></div>
+          <div class="info-row"><span class="label">商米 POS</span><span class="value">SUNMI T2 × 2 台</span></div>
+          <div class="info-row"><span class="label">SPV 主体</span><span class="value">RWS-JRP01 SPV Pte. Ltd.</span></div>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="info-card-icon">B</span>融资条款</h3>
+          <div class="info-row"><span class="label">融资规模</span><span class="value">SGD 200,000</span></div>
+          <div class="info-row"><span class="label">代币总量</span><span class="value">2,000 枚</span></div>
+          <div class="info-row"><span class="label">面值</span><span class="value">SGD 100 / 枚</span></div>
+          <div class="info-row"><span class="label">期限</span><span class="value">6 个月</span></div>
+          <div class="info-row"><span class="label">付息频率</span><span class="value">每月 27 日</span></div>
+          <div class="info-row"><span class="label">兑付方式</span><span class="value">月付息 + 末期还本</span></div>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="info-card-icon">C</span>担保结构</h3>
+          <div class="info-row"><span class="label">担保人</span><span class="value">商家个人 + SPV</span></div>
+          <div class="info-row"><span class="label">抵押资产</span><span class="value">未来流水(Cash flow)</span></div>
+          <div class="info-row"><span class="label">兜底机制</span><span class="value">商家无限连带责任</span></div>
+          <div class="info-row"><span class="label">投资协议</span><span class="value">已由律师审阅</span></div>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="info-card-icon">D</span>链上信息</h3>
+          <div class="info-row"><span class="label">链</span><span class="value">Solana 主网</span></div>
+          <div class="info-row"><span class="label">代币标准</span><span class="value">SPL Token</span></div>
+          <div class="info-row"><span class="label">代币合约</span><span class="value"><a href="#" class="txn-hash">2tF4...wQ8r</a></span></div>
+          <div class="info-row"><span class="label">数据存证合约</span><span class="value"><a href="#" class="txn-hash">5KQ8...mP3a</a></span></div>
+          <div class="info-row"><span class="label">审计</span><span class="value">OtterSec(已通过)</span></div>
+          <div class="info-row"><span class="label">合规</span><span class="value">SFA 274/275 私募</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operations Tab -->
+  <div class="tab-content" id="tab-operations">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>每日流水(SGD)</h3>
+        <div class="chart-period-tabs">
+          <button class="chart-period-tab">14D</button>
+          <button class="chart-period-tab active">30D</button>
+          <button class="chart-period-tab">90D</button>
+          <button class="chart-period-tab">ALL</button>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-grid">
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 62%"></div>
+          <div class="bar" style="height: 68%"></div>
+          <div class="bar" style="height: 55%"></div>
+          <div class="bar" style="height: 71%"></div>
+          <div class="bar" style="height: 64%"></div>
+          <div class="bar weekend" style="height: 88%"></div>
+          <div class="bar weekend" style="height: 84%"></div>
+          <div class="bar" style="height: 65%"></div>
+          <div class="bar" style="height: 72%"></div>
+          <div class="bar" style="height: 58%"></div>
+          <div class="bar" style="height: 81%"></div>
+          <div class="bar" style="height: 76%"></div>
+          <div class="bar weekend" style="height: 92%"></div>
+          <div class="bar weekend" style="height: 88%"></div>
+          <div class="bar" style="height: 68%"></div>
+          <div class="bar" style="height: 73%"></div>
+          <div class="bar" style="height: 79%"></div>
+          <div class="bar" style="height: 84%"></div>
+          <div class="bar" style="height: 77%"></div>
+          <div class="bar weekend" style="height: 95%"></div>
+          <div class="bar weekend" style="height: 89%"></div>
+          <div class="bar" style="height: 70%"></div>
+          <div class="bar" style="height: 75%"></div>
+          <div class="bar" style="height: 81%"></div>
+          <div class="bar" style="height: 86%"></div>
+          <div class="bar" style="height: 79%"></div>
+          <div class="bar weekend" style="height: 93%"></div>
+          <div class="bar weekend" style="height: 91%"></div>
+          <div class="bar" style="height: 72%"></div>
+          <div class="bar" style="height: 78%"></div>
+        </div>
+      </div>
+      <div class="x-axis">
+        <span>03-29</span><span>04-08</span><span>04-18</span><span>04-27</span>
+      </div>
+
+      <div class="chart-summary">
+        <div class="summary-cell">
+          <span class="summary-label">日均流水</span>
+          <span class="summary-value">7,820</span>
+        </div>
+        <div class="summary-cell">
+          <span class="summary-label">月度合计</span>
+          <span class="summary-value">228,460</span>
+        </div>
+        <div class="summary-cell">
+          <span class="summary-label">同比增长</span>
+          <span class="summary-value green">+4.2%</span>
+        </div>
+        <div class="summary-cell">
+          <span class="summary-label">已签名笔数</span>
+          <span class="summary-value">3,847</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3><span class="info-card-icon">E</span>关键经营指标</h3>
+        <div class="info-row"><span class="label">月均流水</span><span class="value">SGD 228K</span></div>
+        <div class="info-row"><span class="label">客单价</span><span class="value">SGD 18.50</span></div>
+        <div class="info-row"><span class="label">日均交易笔数</span><span class="value">128 笔</span></div>
+        <div class="info-row"><span class="label">周末加成</span><span class="value">+27%</span></div>
+        <div class="info-row"><span class="label">毛利率</span><span class="value">~ 32%</span></div>
+      </div>
+
+      <div class="info-card">
+        <h3><span class="info-card-icon">F</span>偿债能力</h3>
+        <div class="info-row"><span class="label">月利息负担</span><span class="value">SGD 1,333</span></div>
+        <div class="info-row"><span class="label">利息 / 月流水</span><span class="value" style="color: var(--green)">0.6%</span></div>
+        <div class="info-row"><span class="label">现金流覆盖倍数</span><span class="value" style="color: var(--green)">170×</span></div>
+        <div class="info-row"><span class="label">本金 / 月流水</span><span class="value">88%</span></div>
+        <div class="info-row"><span class="label">综合评级</span><span class="value" style="color: var(--green)">AA(内评)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Tab -->
+  <div class="tab-content" id="tab-transactions">
+    <div class="section">
+      <h2 class="section-title">链上交易记录</h2>
+      <p class="section-sub">所有重要操作均在 Solana 主网链上,任何人可在 Solana Explorer 验证。下表展示最近 10 笔关键事件。</p>
+    </div>
+
+    <div class="txn-table">
+      <div class="txn-row head">
+        <span>时间</span>
+        <span>事件</span>
+        <span>类型</span>
+        <span>金额 / 详情</span>
+        <span>交易哈希</span>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">10:42<br>04-27</span>
+        <div class="txn-event">
+          <span class="txn-event-title">每日经营数据存证</span>
+          <span class="txn-event-sub">交易笔数 287 · 流水 8,124</span>
+        </div>
+        <span class="txn-type type-attest">DATA ATTEST</span>
+        <span class="txn-amount out">— SGD 8,124</span>
+        <a href="#" class="txn-hash">5KQ8...mP3a ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">10:38<br>04-26</span>
+        <div class="txn-event">
+          <span class="txn-event-title">每日经营数据存证</span>
+          <span class="txn-event-sub">交易笔数 251 · 流水 7,460</span>
+        </div>
+        <span class="txn-type type-attest">DATA ATTEST</span>
+        <span class="txn-amount out">— SGD 7,460</span>
+        <a href="#" class="txn-hash">3pH7...nQ2k ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">10:00<br>04-26</span>
+        <div class="txn-event">
+          <span class="txn-event-title">月度利息发放</span>
+          <span class="txn-event-sub">第 1 期 · 给所有持仓地址</span>
+        </div>
+        <span class="txn-type type-interest">INTEREST</span>
+        <span class="txn-amount in">+ SGD 1,333</span>
+        <a href="#" class="txn-hash">8nH2...kL5j ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">09:14<br>03-15</span>
+        <div class="txn-event">
+          <span class="txn-event-title">代币铸造 · 投资人 A</span>
+          <span class="txn-event-sub">7xKX...nP9k 收到 1,000 JRP-RWA-01</span>
+        </div>
+        <span class="txn-type type-mint">MINT</span>
+        <span class="txn-amount in">+ 1,000 枚</span>
+        <a href="#" class="txn-hash">2tF4...wQ8r ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">09:12<br>03-15</span>
+        <div class="txn-event">
+          <span class="txn-event-title">代币铸造 · 投资人 B</span>
+          <span class="txn-event-sub">3pQ2...bH4z 收到 500 JRP-RWA-01</span>
+        </div>
+        <span class="txn-type type-mint">MINT</span>
+        <span class="txn-amount in">+ 500 枚</span>
+        <a href="#" class="txn-hash">9mK1...vR3p ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">09:10<br>03-15</span>
+        <div class="txn-event">
+          <span class="txn-event-title">代币铸造 · 投资人 C</span>
+          <span class="txn-event-sub">9mR5...vL7t 收到 500 JRP-RWA-01</span>
+        </div>
+        <span class="txn-type type-mint">MINT</span>
+        <span class="txn-amount in">+ 500 枚</span>
+        <a href="#" class="txn-hash">7tN3...xK9s ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">14:25<br>03-08</span>
+        <div class="txn-event">
+          <span class="txn-event-title">代币合约部署</span>
+          <span class="txn-event-sub">JRP-RWA-01 · OtterSec 审计已通过</span>
+        </div>
+        <span class="txn-type type-deploy">DEPLOY</span>
+        <span class="txn-amount out">— gas 0.012 SOL</span>
+        <a href="#" class="txn-hash">4qB8...mC2v ↗</a>
+      </div>
+
+      <div class="txn-row">
+        <span class="txn-time">11:00<br>02-28</span>
+        <div class="txn-event">
+          <span class="txn-event-title">数据存证合约部署</span>
+          <span class="txn-event-sub">商米 POS 硬件签名验证模块上线</span>
+        </div>
+        <span class="txn-type type-deploy">DEPLOY</span>
+        <span class="txn-amount out">— gas 0.008 SOL</span>
+        <a href="#" class="txn-hash">6dE9...sP1m ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms Tab -->
+  <div class="tab-content" id="tab-terms">
+    <div class="section">
+      <h2 class="section-title">条款与风险揭示</h2>
+      <p class="section-sub">投资前请仔细阅读以下条款。本投资基于新加坡 SFA 274/275 私募豁免发行,仅向合格投资人开放。</p>
+
+      <div class="risk-card">
+        <h4>商家经营风险 <span class="risk-level level-mid">中等</span></h4>
+        <p>商家为成立 18 个月的本地餐饮品牌,经营稳定但仍面临行业一般性风险(竞争加剧、租金上涨、消费疲软等)。月利息覆盖倍数达 170×,即使收入下降 50% 仍能足额付息。</p>
+      </div>
+
+      <div class="risk-card">
+        <h4>本金兑付风险 <span class="risk-level level-low">较低</span></h4>
+        <p>到期一次性还本 SGD 200,000。商家提供个人无限连带责任担保。如商家无力偿还,投资人可依据投资协议追索个人资产。RWS 平台和商米不承担兑付责任。</p>
+      </div>
+
+      <div class="risk-card">
+        <h4>智能合约风险 <span class="risk-level level-low">较低</span></h4>
+        <p>代币合约基于 Solana SPL 标准,经 OtterSec 完整审计并通过。合约代码开源可验证,无管理员后门。链上代币仅作为投资凭证,法律权利由链下投资协议保障。</p>
+      </div>
+
+      <div class="risk-card">
+        <h4>流动性风险 <span class="risk-level level-mid">中等</span></h4>
+        <p>本资产为私募发行,首期不开放二级市场转让。投资人需持有至到期(6 个月)。如有特殊情况需要退出,可联系 RWS 平台协调其他合格投资人受让(链下完成,链上更新持仓)。</p>
+      </div>
+
+      <div class="risk-card">
+        <h4>合规与监管风险 <span class="risk-level level-low">较低</span></h4>
+        <p>本发行依据新加坡 SFA Section 274/275 私募豁免,不需要 MAS 审批。投资人需为合格投资人(净资产 ≥ SGD 200 万 或 年收入 ≥ SGD 30 万),并完成 KYC 认证。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.chart-period-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    tab.parentElement.querySelectorAll('.chart-period-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

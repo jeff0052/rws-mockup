@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFFFFF">
+<title>RWS · 交易记录</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sunmi-orange: #FF6A13;
+  --sunmi-orange-dark: #E85D0F;
+  --sunmi-orange-light: #FFF1E8;
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F4F3EE;
+  --border: #E8E6DD;
+  --border-strong: #D5D3C8;
+  --text: #1A1A18;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --green: #1D9E75;
+  --green-light: #E6F4EE;
+  --red: #C24A3A;
+  --red-light: #FBEBE7;
+  --amber: #BA7517;
+  --amber-light: #FBF1E0;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html, body { background: var(--bg); }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
+
+/* ===== Header ===== */
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 32px; padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  width: 36px; height: 36px;
+  background: var(--sunmi-orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; color: #fff; font-size: 14px;
+}
+.brand-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+.brand-sub {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-left: 8px; padding: 4px 8px;
+  border: 1px solid var(--border-strong); border-radius: 4px;
+}
+.nav { display: flex; gap: 4px; margin-left: 32px; }
+.nav-item {
+  padding: 8px 14px; font-size: 13px; color: var(--text-2);
+  text-decoration: none; border-radius: 8px; font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text); }
+.nav-item.active { background: var(--sunmi-orange-light); color: var(--sunmi-orange); }
+.user-info { display: flex; align-items: center; gap: 16px; }
+.wallet {
+  font-family: var(--mono); font-size: 13px; color: var(--text-2);
+  padding: 8px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sunmi-orange);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; color: #fff; font-size: 14px;
+}
+
+/* ===== Page head ===== */
+.page-head { margin-bottom: 28px; }
+.page-title { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.page-sub { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+/* ===== Market stats row ===== */
+.market-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.stat-card .stat-label {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 8px; font-weight: 600;
+}
+.stat-card .stat-value {
+  font-size: 22px; font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: -0.01em;
+}
+.stat-card .stat-delta {
+  margin-top: 6px;
+  font-size: 12px; font-family: var(--mono); font-weight: 600;
+}
+.stat-delta.up { color: var(--green); }
+.stat-delta.down { color: var(--red); }
+.stat-delta.flat { color: var(--text-3); }
+
+/* ===== Card ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.card-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 24px; border-bottom: 1px solid var(--border);
+}
+.card-head h2 {
+  font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-head h2::before {
+  content: ''; width: 3px; height: 14px;
+  background: var(--sunmi-orange); border-radius: 2px;
+}
+.card-head h3 { font-size: 14px; font-weight: 600; }
+.card-meta {
+  font-size: 12px; color: var(--text-3); font-family: var(--mono);
+  display: flex; align-items: center; gap: 6px;
+}
+.live-dot {
+  width: 6px; height: 6px; background: var(--green);
+  border-radius: 50%; animation: pulse 1.6s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== Market table ===== */
+.market-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+.market-table thead th {
+  text-align: left; padding: 12px 24px;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-3); text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.market-table th.num, .market-table td.num { text-align: right; font-family: var(--mono); }
+.market-table tbody tr {
+  cursor: pointer; transition: background 0.12s;
+  border-bottom: 1px solid var(--border);
+}
+.market-table tbody tr:last-child { border-bottom: none; }
+.market-table tbody tr:hover { background: var(--surface-2); }
+.market-table tbody tr.active {
+  background: var(--sunmi-orange-light);
+  box-shadow: inset 3px 0 0 var(--sunmi-orange);
+}
+.market-table td { padding: 14px 24px; vertical-align: middle; }
+.token-cell { display: flex; flex-direction: column; gap: 2px; }
+.token-code {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--text);
+}
+.token-issued {
+  font-size: 11px; color: var(--text-3);
+}
+.merchant-cell { font-size: 13px; color: var(--text); }
+.merchant-cell .merchant-sub {
+  display: block; font-size: 11px; color: var(--text-3); margin-top: 2px;
+}
+.up { color: var(--green); }
+.down { color: var(--red); }
+.badge {
+  display: inline-block;
+  padding: 3px 8px; font-size: 11px;
+  font-family: var(--mono); font-weight: 600;
+  border-radius: 4px;
+}
+.badge-running { background: var(--green-light); color: var(--green); }
+.badge-pending { background: var(--amber-light); color: var(--amber); }
+.badge-matured { background: var(--surface-2); color: var(--text-3); }
+
+/* ===== Trade grid: orderbook + form ===== */
+.trade-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Orderbook */
+.orderbook-card .card-head .focused-token {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 13px; color: var(--text);
+}
+.orderbook { padding: 16px 24px 20px; }
+.ob-header {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  font-size: 10px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 6px 8px; margin-bottom: 4px; font-weight: 600;
+}
+.ob-header span:nth-child(2),
+.ob-header span:nth-child(3) { text-align: right; }
+.ob-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  font-family: var(--mono); font-size: 13px;
+  padding: 5px 8px;
+  position: relative;
+  border-radius: 4px; cursor: pointer;
+  z-index: 1;
+}
+.ob-row > span:not(.depth-bar) { position: relative; z-index: 2; }
+.ob-row span:nth-child(2),
+.ob-row span:nth-child(3) { text-align: right; color: var(--text-2); }
+.ob-row .price { font-weight: 600; }
+.ob-row.ask .price { color: var(--red); }
+.ob-row.bid .price { color: var(--green); }
+.ob-row .depth-bar {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  border-radius: 4px; opacity: 0.18; pointer-events: none;
+}
+.ob-row.ask .depth-bar { background: var(--red); }
+.ob-row.bid .depth-bar { background: var(--green); }
+.ob-row:hover { background: var(--surface-2); }
+.ob-mid {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 12px 8px; margin: 6px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+}
+.ob-mid .mid-price {
+  font-size: 18px; font-weight: 700;
+  color: var(--text);
+}
+.ob-mid .mid-meta { font-size: 12px; color: var(--text-2); }
+.ob-mid .mid-meta strong { font-weight: 600; }
+
+/* Trade form side */
+.trade-side { display: flex; flex-direction: column; gap: 16px; }
+.trade-tabs {
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--surface-2);
+  border-radius: 8px;
+}
+.trade-tabs .tab {
+  flex: 1; padding: 8px 0;
+  font-size: 13px; font-weight: 600;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--text-2); border-radius: 6px;
+  transition: all 0.12s;
+}
+.trade-tabs .tab.active {
+  background: var(--surface); color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.trade-tabs .tab.buy.active { color: var(--green); }
+.trade-tabs .tab.sell.active { color: var(--red); }
+
+.trade-form { padding: 20px 24px 24px; }
+.trade-form label {
+  display: block;
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 6px; font-weight: 600;
+}
+.input-wrap {
+  display: flex; align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  margin-bottom: 14px;
+  transition: border-color 0.15s;
+}
+.input-wrap:focus-within { border-color: var(--sunmi-orange); }
+.input-wrap input {
+  flex: 1; padding: 10px 12px;
+  font-family: var(--mono); font-size: 14px; font-weight: 500;
+  border: none; outline: none; background: transparent;
+  color: var(--text);
+}
+.input-wrap .suffix {
+  padding: 0 14px; font-size: 12px;
+  color: var(--text-3); font-family: var(--mono);
+}
+.quick-buttons {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 6px; margin-bottom: 16px;
+}
+.quick-buttons button {
+  padding: 6px 0; font-size: 11px; font-weight: 600;
+  font-family: var(--mono);
+  background: var(--surface); color: var(--text-2);
+  border: 1px solid var(--border); border-radius: 6px;
+  cursor: pointer; transition: all 0.12s;
+}
+.quick-buttons button:hover { background: var(--surface-2); color: var(--text); }
+.summary {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.summary > div {
+  display: flex; justify-content: space-between;
+  padding: 4px 0; font-size: 13px;
+}
+.summary > div span:first-child { color: var(--text-2); }
+.summary > div span:last-child { color: var(--text); font-family: var(--mono); font-weight: 500; }
+.summary > div.total { padding-top: 10px; margin-top: 4px; border-top: 1px solid var(--border); }
+.summary > div.total span:last-child { font-weight: 700; font-size: 14px; }
+
+.btn-primary {
+  width: 100%; padding: 12px;
+  background: var(--sunmi-orange); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background 0.15s;
+  font-family: 'Manrope', sans-serif; letter-spacing: -0.005em;
+}
+.btn-primary:hover { background: var(--sunmi-orange-dark); }
+.btn-primary.sell { background: var(--red); }
+.btn-primary.sell:hover { background: #A6402F; }
+
+.trade-note {
+  font-size: 11px; color: var(--text-3);
+  margin-top: 10px; line-height: 1.5;
+}
+
+/* Holding side card */
+.holding-card .card-head { padding: 14px 24px; }
+.holding-rows { padding: 8px 24px 18px; }
+.holding-rows > div {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 0; font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.holding-rows > div:last-child { border-bottom: none; }
+.holding-rows > div span:first-child { color: var(--text-2); }
+.holding-rows > div span:last-child { font-family: var(--mono); color: var(--text); font-weight: 500; }
+
+/* ===== Market trades table ===== */
+.trade-table, .my-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+.trade-table thead th, .my-table thead th {
+  text-align: left; padding: 12px 24px;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-3); text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.trade-table th.num, .trade-table td.num,
+.my-table th.num, .my-table td.num { text-align: right; font-family: var(--mono); }
+.trade-table tbody tr, .my-table tbody tr {
+  border-bottom: 1px solid var(--border);
+}
+.trade-table tbody tr:last-child, .my-table tbody tr:last-child { border-bottom: none; }
+.trade-table tbody tr:hover, .my-table tbody tr:hover { background: var(--surface-2); }
+.trade-table td, .my-table td { padding: 12px 24px; vertical-align: middle; font-family: var(--mono); }
+.trade-table td.text { font-family: 'Manrope', sans-serif; }
+
+.dir {
+  display: inline-block; padding: 2px 8px;
+  font-size: 11px; font-weight: 600;
+  border-radius: 4px; font-family: var(--mono);
+}
+.dir.buy { background: var(--green-light); color: var(--green); }
+.dir.sell { background: var(--red-light); color: var(--red); }
+.dir.coupon { background: var(--sunmi-orange-light); color: var(--sunmi-orange); }
+.dir.subscribe { background: var(--amber-light); color: var(--amber); }
+.dir.redeem { background: var(--surface-2); color: var(--text-2); }
+
+.tx-link {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text-2); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.tx-link:hover { color: var(--sunmi-orange); }
+.tx-link svg { width: 12px; height: 12px; }
+
+/* My orders / trades tabs */
+.my-tabs {
+  display: flex; gap: 4px;
+}
+.my-tabs .tab {
+  padding: 6px 12px; font-size: 13px; font-weight: 500;
+  background: transparent; border: 1px solid transparent;
+  border-radius: 6px; color: var(--text-2); cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+.my-tabs .tab.active {
+  background: var(--surface-2); color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-ghost {
+  padding: 5px 10px; font-size: 11px; font-weight: 600;
+  font-family: var(--mono);
+  background: var(--surface); color: var(--text-2);
+  border: 1px solid var(--border); border-radius: 6px;
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-ghost:hover { border-color: var(--red); color: var(--red); }
+
+.empty-state {
+  padding: 40px 24px; text-align: center;
+  color: var(--text-3); font-size: 13px;
+}
+
+.compliance {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 24px;
+}
+.compliance-icon {
+  width: 32px; height: 32px;
+  background: var(--sunmi-orange-light);
+  border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sunmi-orange); font-weight: 700; font-family: var(--mono);
+}
+.compliance-text {
+  font-size: 12px; color: var(--text-2); line-height: 1.6;
+}
+.compliance-text strong { color: var(--text); font-weight: 600; }
+
+.mockup-banner {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--sunmi-orange); color: #fff;
+  padding: 6px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 100; font-family: var(--mono);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .trade-grid { grid-template-columns: 1fr; }
+  .market-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .app { padding: 20px 16px; }
+  .header { flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; }
+  .nav { order: 3; width: 100%; margin-left: 0; overflow-x: auto; padding-bottom: 4px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; white-space: nowrap; }
+  .brand-name { font-size: 17px; }
+  .brand-sub { font-size: 10px; margin-left: 6px; padding: 3px 6px; }
+  .brand-mark { width: 32px; height: 32px; font-size: 13px; }
+  .wallet { font-size: 11px; padding: 6px 10px; }
+  .avatar { width: 32px; height: 32px; font-size: 12px; }
+  .user-info { gap: 10px; }
+  .page-title { font-size: 24px; }
+  .market-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card { padding: 14px 16px; }
+  .stat-card .stat-value { font-size: 18px; }
+  .market-table thead { display: none; }
+  .market-table tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 14px 16px; }
+  .market-table td { padding: 0 !important; font-size: 12px; }
+  .market-table td.num { text-align: left; }
+  .trade-grid { gap: 16px; }
+  .trade-form, .orderbook { padding: 16px; }
+  .trade-table, .my-table { font-size: 11px; }
+  .trade-table td, .my-table td { padding: 10px 12px; }
+  .trade-table thead th, .my-table thead th { padding: 10px 12px; font-size: 10px; }
+  .mockup-banner { top: 8px; right: 8px; padding: 4px 8px; font-size: 9px; }
+}
+</style>
+</head>
+<body>
+<div class="mockup-banner">Mockup · 概念演示</div>
+
+<div class="app">
+  <div class="header">
+    <div class="brand">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" title="返回索引">
+        <div class="brand-mark">R</div>
+        <div>
+          <span class="brand-name">RWS</span>
+          <span class="brand-sub">投资人后台</span>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="investor-dashboard.html" class="nav-item">我的资产</a>
+        <a href="asset-list.html" class="nav-item">资产市场</a>
+        <a href="transactions.html" class="nav-item active">交易记录</a>
+        <a href="merchant-dashboard.html" class="nav-item" style="margin-left: 12px; padding-left: 14px; border-left: 1px solid var(--border-strong);">商家视角 →</a>
+      </nav>
+    </div>
+    <div class="user-info">
+      <div class="wallet">7xKX...nP9k</div>
+      <div class="avatar">L</div>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <h1 class="page-title">交易记录</h1>
+    <p class="page-sub">RWA 二级流通 · 合格投资人之间转让 · SFA Section 275 私募豁免 · Solana 链上撮合</p>
+  </div>
+
+  <div class="market-stats">
+    <div class="stat-card">
+      <div class="stat-label">24H 成交额</div>
+      <div class="stat-value">SGD 38,420</div>
+      <div class="stat-delta up">↑ 12.4%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">24H 成交笔数</div>
+      <div class="stat-value">26</div>
+      <div class="stat-delta flat">7 日均 · 31</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">在挂订单</div>
+      <div class="stat-value">14</div>
+      <div class="stat-delta flat">买 8 · 卖 6</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">活跃标的</div>
+      <div class="stat-value">3 / 4</div>
+      <div class="stat-delta flat">SBK-RWA-01 未上市</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>在交易标的</h2>
+      <span class="card-meta"><span class="live-dot"></span>盘口实时</span>
+    </div>
+    <table class="market-table">
+      <thead>
+        <tr>
+          <th>代币</th>
+          <th>商户 / 期数</th>
+          <th class="num">最新成交</th>
+          <th class="num">24H 涨跌</th>
+          <th class="num">买一</th>
+          <th class="num">卖一</th>
+          <th class="num">24H 量</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="active">
+          <td>
+            <div class="token-cell">
+              <span class="token-code">JRP-RWA-01</span>
+              <span class="token-issued">已发行 2,000 张</span>
+            </div>
+          </td>
+          <td class="merchant-cell">
+            Jurong Point 餐厅
+            <span class="merchant-sub">第 2 期 · 还有 4 个月到期</span>
+          </td>
+          <td class="num">SGD 102.40</td>
+          <td class="num up">+2.4%</td>
+          <td class="num">102.10</td>
+          <td class="num">102.60</td>
+          <td class="num">186</td>
+          <td><span class="badge badge-running">● 运行中</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="token-cell">
+              <span class="token-code">JRP-RWA-00</span>
+              <span class="token-issued">已发行 1,000 张</span>
+            </div>
+          </td>
+          <td class="merchant-cell">
+            Jurong Point 餐厅
+            <span class="merchant-sub">第 1 期 · 还有 1 个月到期</span>
+          </td>
+          <td class="num">SGD 99.80</td>
+          <td class="num down">−0.6%</td>
+          <td class="num">99.50</td>
+          <td class="num">99.90</td>
+          <td class="num">42</td>
+          <td><span class="badge badge-running">● 运行中</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="token-cell">
+              <span class="token-code">TLC-RWA-01</span>
+              <span class="token-issued">已发行 1,800 张</span>
+            </div>
+          </td>
+          <td class="merchant-cell">
+            Tiong Lee Coffee
+            <span class="merchant-sub">第 1 期 · 还有 5 个月到期</span>
+          </td>
+          <td class="num">SGD 100.90</td>
+          <td class="num up">+0.4%</td>
+          <td class="num">100.70</td>
+          <td class="num">101.20</td>
+          <td class="num">68</td>
+          <td><span class="badge badge-running">● 运行中</span></td>
+        </tr>
+        <tr style="opacity: 0.55; cursor: default;">
+          <td>
+            <div class="token-cell">
+              <span class="token-code">SBK-RWA-01</span>
+              <span class="token-issued">未发行</span>
+            </div>
+          </td>
+          <td class="merchant-cell">
+            Sunny Bakery
+            <span class="merchant-sub">即将发行 · 5 月 28 日</span>
+          </td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-pending">○ 待发行</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="trade-grid">
+    <div class="card orderbook-card">
+      <div class="card-head">
+        <h2>盘口 · JRP-RWA-01</h2>
+        <span class="card-meta">面值 SGD 100 / 张 · 票息 8.0%</span>
+      </div>
+      <div class="orderbook">
+        <div class="ob-header">
+          <span>价格 (SGD)</span><span>数量</span><span>累计</span>
+        </div>
+
+        <div class="ob-row ask">
+          <span class="depth-bar" style="width: 95%"></span>
+          <span class="price">103.40</span><span>120</span><span>540</span>
+        </div>
+        <div class="ob-row ask">
+          <span class="depth-bar" style="width: 78%"></span>
+          <span class="price">103.10</span><span>80</span><span>420</span>
+        </div>
+        <div class="ob-row ask">
+          <span class="depth-bar" style="width: 62%"></span>
+          <span class="price">102.90</span><span>140</span><span>340</span>
+        </div>
+        <div class="ob-row ask">
+          <span class="depth-bar" style="width: 38%"></span>
+          <span class="price">102.80</span><span>60</span><span>200</span>
+        </div>
+        <div class="ob-row ask">
+          <span class="depth-bar" style="width: 28%"></span>
+          <span class="price">102.60</span><span>140</span><span>140</span>
+        </div>
+
+        <div class="ob-mid">
+          <span class="mid-price">102.40</span>
+          <span class="mid-meta"><strong style="color: var(--green)">+2.4%</strong> · 价差 SGD 0.50</span>
+        </div>
+
+        <div class="ob-row bid">
+          <span class="depth-bar" style="width: 26%"></span>
+          <span class="price">102.10</span><span>100</span><span>100</span>
+        </div>
+        <div class="ob-row bid">
+          <span class="depth-bar" style="width: 42%"></span>
+          <span class="price">101.80</span><span>60</span><span>160</span>
+        </div>
+        <div class="ob-row bid">
+          <span class="depth-bar" style="width: 60%"></span>
+          <span class="price">101.50</span><span>80</span><span>240</span>
+        </div>
+        <div class="ob-row bid">
+          <span class="depth-bar" style="width: 75%"></span>
+          <span class="price">101.20</span><span>60</span><span>300</span>
+        </div>
+        <div class="ob-row bid">
+          <span class="depth-bar" style="width: 92%"></span>
+          <span class="price">100.80</span><span>180</span><span>480</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trade-side">
+      <div class="card">
+        <div class="card-head" style="padding: 14px 16px;">
+          <div class="trade-tabs" style="width: 100%;">
+            <button class="tab buy active">买入</button>
+            <button class="tab sell">卖出</button>
+          </div>
+        </div>
+        <div class="trade-form">
+          <label>价格 (SGD / 张)</label>
+          <div class="input-wrap">
+            <input type="text" value="102.40">
+            <span class="suffix">SGD</span>
+          </div>
+
+          <label>数量 (张)</label>
+          <div class="input-wrap">
+            <input type="text" value="100">
+            <span class="suffix">张</span>
+          </div>
+          <div class="quick-buttons">
+            <button>25%</button>
+            <button>50%</button>
+            <button>75%</button>
+            <button>MAX</button>
+          </div>
+
+          <div class="summary">
+            <div><span>预计花费</span><span>SGD 10,240.00</span></div>
+            <div><span>手续费 (0.20%)</span><span>SGD 20.48</span></div>
+            <div><span>应计利息(到结算日)</span><span>SGD 22.10</span></div>
+            <div class="total"><span>合计</span><span>SGD 10,282.58</span></div>
+          </div>
+
+          <button class="btn-primary">立即买入 JRP-RWA-01</button>
+          <p class="trade-note">订单经 Solana 链上合约撮合,Gas 由平台代付。资金从绑定钱包(7xKX...nP9k)扣除,代币 T+0 到账。</p>
+        </div>
+      </div>
+
+      <div class="card holding-card">
+        <div class="card-head"><h3>当前持仓 · JRP-RWA-01</h3></div>
+        <div class="holding-rows">
+          <div><span>持有数量</span><span>500 张</span></div>
+          <div><span>建仓均价</span><span>SGD 100.00</span></div>
+          <div><span>当前市值</span><span>SGD 51,200</span></div>
+          <div><span>未实现盈亏</span><span class="up">+SGD 1,200 (+2.4%)</span></div>
+          <div><span>已收利息</span><span>SGD 1,360</span></div>
+          <div><span>下次付息</span><span>05-27 · SGD 333</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>全市场最新成交</h2>
+      <span class="card-meta"><span class="live-dot"></span>实时 · Solana 链上结算</span>
+    </div>
+    <table class="trade-table">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th class="text">代币</th>
+          <th class="text">方向</th>
+          <th class="num">价格</th>
+          <th class="num">数量</th>
+          <th class="num">成交额</th>
+          <th class="text">买方</th>
+          <th class="text">卖方</th>
+          <th class="text">Tx</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>14:38:12</td>
+          <td class="text"><span class="token-code">JRP-RWA-01</span></td>
+          <td class="text"><span class="dir buy">买</span></td>
+          <td class="num">102.40</td>
+          <td class="num">40</td>
+          <td class="num">4,096.00</td>
+          <td class="text">3pQ2...bH4z</td>
+          <td class="text">9eRS...vL7t</td>
+          <td class="text"><a class="tx-link" href="#">5kZ8...AqMr ↗</a></td>
+        </tr>
+        <tr>
+          <td>14:32:48</td>
+          <td class="text"><span class="token-code">JRP-RWA-01</span></td>
+          <td class="text"><span class="dir buy">买</span></td>
+          <td class="num">102.30</td>
+          <td class="num">100</td>
+          <td class="num">10,230.00</td>
+          <td class="text">7xKX...nP9k</td>
+          <td class="text">B1kT...zQ4w</td>
+          <td class="text"><a class="tx-link" href="#">8jH3...Tn7E ↗</a></td>
+        </tr>
+        <tr>
+          <td>14:18:05</td>
+          <td class="text"><span class="token-code">TLC-RWA-01</span></td>
+          <td class="text"><span class="dir sell">卖</span></td>
+          <td class="num">100.90</td>
+          <td class="num">60</td>
+          <td class="num">6,054.00</td>
+          <td class="text">Yfn4...rKp3</td>
+          <td class="text">9eRS...vL7t</td>
+          <td class="text"><a class="tx-link" href="#">2dW6...nFq9 ↗</a></td>
+        </tr>
+        <tr>
+          <td>13:54:22</td>
+          <td class="text"><span class="token-code">JRP-RWA-00</span></td>
+          <td class="text"><span class="dir buy">买</span></td>
+          <td class="num">99.80</td>
+          <td class="num">20</td>
+          <td class="num">1,996.00</td>
+          <td class="text">CqrM...8sLk</td>
+          <td class="text">3pQ2...bH4z</td>
+          <td class="text"><a class="tx-link" href="#">7gB1...4WnX ↗</a></td>
+        </tr>
+        <tr>
+          <td>13:41:09</td>
+          <td class="text"><span class="token-code">JRP-RWA-01</span></td>
+          <td class="text"><span class="dir sell">卖</span></td>
+          <td class="num">101.90</td>
+          <td class="num">25</td>
+          <td class="num">2,547.50</td>
+          <td class="text">B1kT...zQ4w</td>
+          <td class="text">7xKX...nP9k</td>
+          <td class="text"><a class="tx-link" href="#">4hS9...PmZ2 ↗</a></td>
+        </tr>
+        <tr>
+          <td>13:22:54</td>
+          <td class="text"><span class="token-code">TLC-RWA-01</span></td>
+          <td class="text"><span class="dir sell">卖</span></td>
+          <td class="num">101.10</td>
+          <td class="num">14</td>
+          <td class="num">1,415.40</td>
+          <td class="text">CqrM...8sLk</td>
+          <td class="text">Yfn4...rKp3</td>
+          <td class="text"><a class="tx-link" href="#">9aR3...EkD8 ↗</a></td>
+        </tr>
+        <tr>
+          <td>12:48:33</td>
+          <td class="text"><span class="token-code">JRP-RWA-01</span></td>
+          <td class="text"><span class="dir buy">买</span></td>
+          <td class="num">102.10</td>
+          <td class="num">21</td>
+          <td class="num">2,144.10</td>
+          <td class="text">9eRS...vL7t</td>
+          <td class="text">B1kT...zQ4w</td>
+          <td class="text"><a class="tx-link" href="#">6tP5...VnH1 ↗</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="my-tabs">
+        <button class="tab active">我的挂单 (2)</button>
+        <button class="tab">我的成交</button>
+        <button class="tab">利息 / 兑付</button>
+      </div>
+      <span class="card-meta">钱包 7xKX...nP9k</span>
+    </div>
+    <table class="my-table">
+      <thead>
+        <tr>
+          <th>挂单时间</th>
+          <th class="text">代币</th>
+          <th class="text">方向</th>
+          <th class="num">挂单价</th>
+          <th class="num">数量 / 已成交</th>
+          <th class="num">冻结资金</th>
+          <th class="text">状态</th>
+          <th class="text">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>04-28 14:22:01</td>
+          <td class="text"><span class="token-code">JRP-RWA-01</span></td>
+          <td class="text"><span class="dir buy">买入</span></td>
+          <td class="num">101.80</td>
+          <td class="num">100 / 0</td>
+          <td class="num">SGD 10,180</td>
+          <td class="text"><span class="badge badge-pending">挂单中</span></td>
+          <td class="text"><button class="btn-ghost">撤销</button></td>
+        </tr>
+        <tr>
+          <td>04-28 11:08:34</td>
+          <td class="text"><span class="token-code">TLC-RWA-01</span></td>
+          <td class="text"><span class="dir sell">卖出</span></td>
+          <td class="num">101.50</td>
+          <td class="num">50 / 14</td>
+          <td class="num">36 张冻结</td>
+          <td class="text"><span class="badge badge-pending">部分成交</span></td>
+          <td class="text"><button class="btn-ghost">撤销</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="compliance">
+    <div class="compliance-icon">i</div>
+    <div class="compliance-text">
+      <strong>合规提示 ·</strong> RWS 平台仅向新加坡 SFA Section 275 合格投资人开放,代币转让需双方均通过 KYC/AC 认证。所有成交在 Solana 链上结算并保留完整审计轨迹。本页数据为 Mockup 示例,不构成投资邀约。
+    </div>
+  </div>
+</div>
+
+<script>
+  // 标的列表点击切换 active(纯视觉)
+  document.querySelectorAll('.market-table tbody tr').forEach(row => {
+    if (row.style.cursor === 'default') return;
+    row.addEventListener('click', () => {
+      document.querySelectorAll('.market-table tbody tr').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+    });
+  });
+
+  // 买/卖 tab 切换
+  document.querySelectorAll('.trade-tabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabs = tab.parentElement.querySelectorAll('.tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const btn = document.querySelector('.btn-primary');
+      if (tab.classList.contains('sell')) {
+        btn.classList.add('sell');
+        btn.textContent = '立即卖出 JRP-RWA-01';
+      } else {
+        btn.classList.remove('sell');
+        btn.textContent = '立即买入 JRP-RWA-01';
+      }
+    });
+  });
+
+  // 我的挂单/成交/利息 tab 切换(纯视觉)
+  document.querySelectorAll('.my-tabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // 订单簿点击填入价格
+  document.querySelectorAll('.ob-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const price = row.querySelector('.price').textContent;
+      const priceInput = document.querySelector('.input-wrap input');
+      if (priceInput) priceInput.value = price;
+    });
+  });
+</script>
+</body>
+</html>

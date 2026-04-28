@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFFFFF">
+<title>RWS · 投资人后台</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sunmi-orange: #FF6A13;
+  --sunmi-orange-dark: #E85D0F;
+  --sunmi-orange-light: #FFF1E8;
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F4F3EE;
+  --border: #E8E6DD;
+  --border-strong: #D5D3C8;
+  --text: #1A1A18;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --green: #1D9E75;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html, body { background: var(--bg); }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+  width: 36px; height: 36px;
+  background: var(--sunmi-orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; color: #fff; font-size: 14px;
+}
+
+.brand-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+
+.brand-sub {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-left: 8px; padding: 4px 8px;
+  border: 1px solid var(--border-strong); border-radius: 4px;
+}
+
+.nav { display: flex; gap: 4px; margin-left: 32px; }
+.nav-item {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text); }
+.nav-item.active { background: var(--sunmi-orange-light); color: var(--sunmi-orange); }
+
+.user-info { display: flex; align-items: center; gap: 16px; }
+
+.wallet {
+  font-family: var(--mono); font-size: 13px; color: var(--text-2);
+  padding: 8px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sunmi-orange);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; color: #fff; font-size: 14px;
+}
+
+.hero { margin-bottom: 48px; }
+
+.hero-label {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.15em;
+  margin-bottom: 12px;
+}
+
+.hero-value {
+  font-size: 64px; font-weight: 600;
+  letter-spacing: -0.04em; line-height: 1;
+  margin-bottom: 8px; color: var(--text);
+}
+
+.hero-value .currency {
+  font-size: 28px; color: var(--sunmi-orange);
+  margin-right: 8px; vertical-align: super; font-weight: 700;
+}
+
+.hero-meta { display: flex; gap: 24px; align-items: center; margin-top: 20px; }
+
+.meta-item { font-size: 13px; color: var(--text-2); }
+.meta-item strong { color: var(--text); font-weight: 500; }
+
+.gain { color: var(--green); font-family: var(--mono); font-size: 13px; font-weight: 600; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.card-title {
+  font-size: 14px; font-weight: 600; margin-bottom: 4px;
+  display: flex; justify-content: space-between; align-items: baseline;
+  color: var(--text);
+}
+
+.card-sub { font-size: 12px; color: var(--text-3); margin-bottom: 20px; }
+
+.card-tag {
+  font-family: var(--mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 3px 8px; border-radius: 4px; font-weight: 600;
+}
+
+.tag-active {
+  background: rgba(29, 158, 117, 0.1);
+  color: var(--green);
+  border: 1px solid rgba(29, 158, 117, 0.3);
+}
+
+.holding-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.holding-row:last-child { border-bottom: none; }
+.holding-label { color: var(--text-2); font-size: 13px; }
+.holding-value { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
+
+.merchant-info {
+  padding: 16px; background: var(--surface-2);
+  border-radius: 10px; margin-top: 16px;
+}
+.merchant-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--text); }
+.merchant-sub {
+  font-size: 12px; color: var(--text-2);
+  display: flex; gap: 12px; align-items: center;
+}
+.dot { width: 4px; height: 4px; background: var(--text-3); border-radius: 50%; }
+
+.trust-badge {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 20px; padding: 14px 16px;
+  background: var(--sunmi-orange-light);
+  border: 1px solid rgba(255, 106, 19, 0.2);
+  border-radius: 10px;
+}
+.trust-icon {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--sunmi-orange);
+  border-radius: 8px; color: #fff; font-size: 14px; font-weight: 700;
+}
+.trust-text { flex: 1; font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.trust-text strong { color: var(--text); font-weight: 600; }
+
+.chart-container { height: 180px; margin: 16px 0; position: relative; }
+
+.chart-grid {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  pointer-events: none;
+}
+.chart-grid-line { height: 1px; background: var(--border); opacity: 0.6; }
+
+.bars {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; gap: 4px;
+  padding-bottom: 24px;
+}
+.bar {
+  flex: 1; background: var(--sunmi-orange);
+  border-radius: 2px 2px 0 0; opacity: 0.85;
+}
+.bar.weekend { background: var(--sunmi-orange-dark); opacity: 1; }
+
+.x-axis {
+  display: flex; justify-content: space-between; margin-top: 8px;
+  font-family: var(--mono); font-size: 10px; color: var(--text-3);
+}
+
+.chart-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.stat-label {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;
+}
+.stat-value { font-size: 18px; font-weight: 600; font-family: var(--mono); color: var(--text); }
+.stat-value .delta { font-size: 12px; margin-left: 4px; font-weight: 500; }
+
+.timeline { margin-top: 16px; }
+.event { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.event:last-child { border-bottom: none; }
+.event-time {
+  font-family: var(--mono); font-size: 11px; color: var(--text-3);
+  white-space: nowrap; padding-top: 2px; width: 64px; flex-shrink: 0;
+}
+.event-content { flex: 1; }
+.event-title { font-size: 13px; margin-bottom: 4px; color: var(--text); }
+.event-meta {
+  font-family: var(--mono); font-size: 11px; color: var(--text-3);
+  display: flex; gap: 8px; align-items: center;
+}
+.tx-link {
+  color: var(--sunmi-orange); text-decoration: none;
+  border-bottom: 1px dashed rgba(255, 106, 19, 0.3); font-weight: 500;
+}
+
+.disclosure {
+  margin-top: 32px; padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--sunmi-orange);
+  border-radius: 8px;
+  font-size: 12px; color: var(--text-2); line-height: 1.6;
+}
+.disclosure strong { color: var(--text); font-weight: 600; }
+
+.mockup-banner {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--sunmi-orange); color: #fff;
+  padding: 6px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 100; font-family: var(--mono);
+}
+
+@media (max-width: 768px) {
+  .app { padding: 20px 16px; }
+  .header { margin-bottom: 32px; padding-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .nav { order: 3; width: 100%; margin-left: 0; overflow-x: auto; padding-bottom: 4px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; white-space: nowrap; }
+  .brand-name { font-size: 17px; }
+  .brand-sub { font-size: 10px; margin-left: 6px; padding: 3px 6px; }
+  .brand-mark { width: 32px; height: 32px; font-size: 13px; }
+  .wallet { font-size: 11px; padding: 6px 10px; }
+  .avatar { width: 32px; height: 32px; font-size: 12px; }
+  .user-info { gap: 10px; }
+  .hero { margin-bottom: 36px; }
+  .hero-value { font-size: 44px; font-weight: 600; }
+  .hero-value .currency { font-size: 20px; }
+  .hero-meta { flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 16px; }
+  .grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+  .card { padding: 20px; border-radius: 14px; }
+  .holding-row { padding: 12px 0; flex-wrap: wrap; gap: 4px; }
+  .holding-label { font-size: 12px; }
+  .holding-value { font-size: 12px; }
+  .merchant-info { padding: 14px; margin-top: 14px; }
+  .merchant-sub { flex-wrap: wrap; gap: 8px; font-size: 11px; }
+  .trust-badge { padding: 12px 14px; margin-top: 16px; }
+  .trust-text { font-size: 11px; }
+  .chart-container { height: 140px; }
+  .chart-stats { gap: 12px; }
+  .stat-value { font-size: 16px; }
+  .stat-value .delta { font-size: 11px; }
+  .stat-label { font-size: 10px; }
+  .event { padding: 12px 0; gap: 12px; }
+  .event-time { width: 52px; font-size: 10px; }
+  .event-title { font-size: 12px; }
+  .event-meta { font-size: 10px; flex-wrap: wrap; }
+  .disclosure { padding: 16px 18px; font-size: 11px; margin-top: 24px; }
+  .mockup-banner { top: 8px; right: 8px; padding: 4px 8px; font-size: 9px; }
+}
+@media (max-width: 380px) {
+  .hero-value { font-size: 38px; }
+  .hero-value .currency { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="mockup-banner">Mockup · 概念演示</div>
+
+<div class="app">
+  <div class="header">
+    <div class="brand">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;" title="返回索引">
+        <div class="brand-mark">R</div>
+        <div>
+          <span class="brand-name">RWS</span>
+          <span class="brand-sub">投资人后台</span>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="investor-dashboard.html" class="nav-item active">我的资产</a>
+        <a href="asset-list.html" class="nav-item">资产市场</a>
+        <a href="transactions.html" class="nav-item">交易记录</a>
+        <a href="merchant-dashboard.html" class="nav-item" style="margin-left: 12px; padding-left: 14px; border-left: 1px solid var(--border-strong);">商家视角 →</a>
+      </nav>
+    </div>
+    <div class="user-info">
+      <div class="wallet">7xKX...nP9k</div>
+      <div class="avatar">L</div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">当前持仓总值</div>
+    <div class="hero-value"><span class="currency">SGD</span>52,180</div>
+    <div class="hero-meta">
+      <div class="meta-item">本金 <strong>SGD 50,000</strong></div>
+      <div class="meta-item">应计收益 <span class="gain">+2,180</span></div>
+      <div class="meta-item">距到期 <strong>122 天</strong></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-title">
+        我的 RWA 持仓
+        <span class="card-tag tag-active">● 链上活跃</span>
+      </div>
+      <div class="card-sub">JURONG-001 · Solana SPL Token</div>
+
+      <div class="holding-row"><span class="holding-label">代币代码</span><span class="holding-value">JRP-RWA-01</span></div>
+      <div class="holding-row"><span class="holding-label">持有数量</span><span class="holding-value">500 / 2,000</span></div>
+      <div class="holding-row"><span class="holding-label">面值</span><span class="holding-value">SGD 100 / 枚</span></div>
+      <div class="holding-row"><span class="holding-label">年化收益率</span><span class="holding-value" style="color: var(--green)">8.0%</span></div>
+      <div class="holding-row"><span class="holding-label">期限</span><span class="holding-value">6 个月 (2026-08-27 到期)</span></div>
+
+      <div class="merchant-info">
+        <div class="merchant-name">Jurong Point 餐厅</div>
+        <div class="merchant-sub">
+          <span>新加坡</span><span class="dot"></span>
+          <span>商米 POS · 2 台</span><span class="dot"></span>
+          <span>已运营 18 个月</span>
+        </div>
+      </div>
+
+      <div class="trust-badge">
+        <div class="trust-icon">⌗</div>
+        <div class="trust-text">
+          <strong>商米 POS 硬件签名验证</strong><br>
+          所有经营数据由商米 POS 设备级密钥实时签名,链上存证不可篡改
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        餐厅经营数据 (近 14 天)
+        <span class="card-tag tag-active">● 实时</span>
+      </div>
+      <div class="card-sub">每日流水 · 来源 商米 POS 硬件签名 · 链上哈希存证</div>
+
+      <div class="chart-container">
+        <div class="chart-grid">
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 65%"></div>
+          <div class="bar" style="height: 72%"></div>
+          <div class="bar" style="height: 58%"></div>
+          <div class="bar" style="height: 81%"></div>
+          <div class="bar" style="height: 76%"></div>
+          <div class="bar weekend" style="height: 92%"></div>
+          <div class="bar weekend" style="height: 88%"></div>
+          <div class="bar" style="height: 68%"></div>
+          <div class="bar" style="height: 73%"></div>
+          <div class="bar" style="height: 79%"></div>
+          <div class="bar" style="height: 84%"></div>
+          <div class="bar" style="height: 77%"></div>
+          <div class="bar weekend" style="height: 95%"></div>
+          <div class="bar weekend" style="height: 89%"></div>
+        </div>
+      </div>
+      <div class="x-axis">
+        <span>04-14</span><span>04-21</span><span>04-27</span>
+      </div>
+
+      <div class="chart-stats">
+        <div>
+          <div class="stat-label">日均流水</div>
+          <div class="stat-value">7,820 <span class="delta gain">+4.2%</span></div>
+        </div>
+        <div>
+          <div class="stat-label">月度合计</div>
+          <div class="stat-value">228K</div>
+        </div>
+        <div>
+          <div class="stat-label">已签名笔数</div>
+          <div class="stat-value">3,847</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">链上事件流</div>
+    <div class="card-sub">所有重要操作均上链,可在 Solana Explorer 验证</div>
+
+    <div class="timeline">
+      <div class="event">
+        <div class="event-time">10:42</div>
+        <div class="event-content">
+          <div class="event-title">每日经营数据哈希存证</div>
+          <div class="event-meta">
+            交易笔数: 287 · 流水: SGD 8,124
+            · <a href="#" class="tx-link">5KQ8...mP3a</a>
+          </div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-time">昨天</div>
+        <div class="event-content">
+          <div class="event-title">月度利息计提</div>
+          <div class="event-meta">
+            +SGD 333.33 · 累计 SGD 2,180
+            · <a href="#" class="tx-link">8nH2...kL5j</a>
+          </div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-time">3-15</div>
+        <div class="event-content">
+          <div class="event-title">代币铸造完成 · 认购成功</div>
+          <div class="event-meta">
+            500 JRP-RWA-01 · 投资 SGD 50,000
+            · <a href="#" class="tx-link">2tF4...wQ8r</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclosure">
+    <strong>风险提示</strong> · 本投资基于私募豁免(SFA Section 274/275)发行,仅向合格投资人开放。投资协议为商家与投资人之间的双边法律合约,链上代币作为投资凭证。投资有风险,本金和收益依赖商家持续经营能力,商米和 RWS 平台不承担兑付责任。
+  </div>
+</div>
+</body>
+</html>
