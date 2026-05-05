@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RWA Counsel Brief · 项目简报</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@400;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sunmi-orange: #FF6A13;
+  --sunmi-orange-dark: #E85D0F;
+  --sunmi-orange-light: #FFF1E8;
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F4F3EE;
+  --border: #E8E6DD;
+  --border-strong: #D5D3C8;
+  --text: #1A1A18;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --green: #1D9E75;
+  --red: #B23B3B;
+  --amber: #BA7517;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Source Serif 4', 'Times New Roman', serif;
+}
+
+html, body { background: var(--bg); }
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+}
+
+.app { max-width: 1080px; margin: 0 auto; padding: 40px 56px 80px; }
+
+/* Document header */
+.doc-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 28px;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 36px;
+}
+.brand-mark {
+  width: 36px; height: 36px;
+  background: var(--sunmi-orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; color: #fff; font-size: 14px;
+}
+.brand-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.brand-sub {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-left: 8px; padding: 4px 8px;
+  border: 1px solid var(--border-strong); border-radius: 4px;
+}
+.doc-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  line-height: 1.7;
+}
+.doc-meta .confidential {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 9px;
+  background: var(--text);
+  color: #fff;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Title block */
+.title-block {
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.title-block h1 {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.title-en {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--text-2);
+  font-size: 17px;
+  margin-bottom: 22px;
+}
+.title-attrs {
+  display: flex; flex-wrap: wrap; gap: 28px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.title-attrs strong { color: var(--text); font-weight: 600; }
+
+/* TOC */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 56px;
+}
+.toc-label {
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+  font-weight: 700;
+  font-family: var(--mono);
+}
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+}
+.toc-list li a {
+  display: flex; gap: 10px;
+  font-size: 14px; color: var(--text);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px dashed transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.toc-list li a:hover {
+  color: var(--sunmi-orange);
+  border-bottom-color: var(--sunmi-orange);
+}
+.toc-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Section */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.section-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  flex: 1;
+}
+.section-lang {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+/* Body text (Chinese) */
+.body-text { font-size: 15px; color: var(--text); line-height: 1.75; }
+.body-text p { margin-bottom: 16px; }
+.body-text p.lead {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.65;
+}
+.body-text strong { font-weight: 700; }
+
+/* Callout */
+.callout {
+  background: var(--sunmi-orange-light);
+  border-left: 3px solid var(--sunmi-orange);
+  padding: 18px 22px;
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.callout-label {
+  display: block;
+  font-size: 10px;
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+}
+
+/* Two-col compare */
+.compare {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.compare-cell {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  background: var(--surface);
+}
+.compare-cell.before { background: var(--surface-2); }
+.compare-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+}
+.compare-cell.before .compare-label { color: var(--text-3); }
+.compare-cell.after .compare-label { color: var(--sunmi-orange); }
+.compare-text { font-size: 13.5px; line-height: 1.65; color: var(--text); }
+
+/* Mockup grid (Section 2) */
+.mockup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.mockup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 18px 16px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.mockup-card:hover {
+  border-color: var(--sunmi-orange);
+  transform: translateY(-2px);
+}
+.mockup-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.mockup-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.mockup-role {
+  font-size: 10px;
+  color: var(--sunmi-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  font-family: var(--mono);
+  margin-bottom: 10px;
+}
+.mockup-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.55;
+  flex: 1;
+}
+.mockup-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--sunmi-orange);
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+/* English body */
+.en-body {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.en-body p { margin-bottom: 14px; }
+.en-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 28px 0 10px;
+  letter-spacing: -0.005em;
+}
+.en-body h3 .en-num {
+  font-family: var(--mono);
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  margin-right: 10px;
+  font-size: 14px;
+}
+.en-body ul { margin: 8px 0 14px 22px; }
+.en-body ul li { margin-bottom: 6px; font-size: 14px; line-height: 1.65; }
+.en-body code {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--surface-2);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.en-body strong { font-weight: 700; }
+
+/* Question card */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+}
+.q-num {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--text);
+  padding: 3px 9px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.q-text {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  letter-spacing: -0.005em;
+}
+.q-context {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.q-context strong { color: var(--text); font-weight: 600; }
+
+/* Scope blocks */
+.scope-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+.scope-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.scope-phase {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.scope-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.scope-tag.now { background: var(--sunmi-orange-light); color: var(--sunmi-orange); }
+.scope-tag.next { background: var(--surface-2); color: var(--text-2); }
+.scope-tag.out { background: #FAEDED; color: var(--red); }
+.scope-list { list-style: none; }
+.scope-list li {
+  display: flex; gap: 12px;
+  padding: 9px 0;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+  color: var(--text);
+}
+.scope-list li:last-child { border-bottom: none; }
+.scope-list .check { color: var(--sunmi-orange); font-weight: 700; flex-shrink: 0; font-family: var(--mono); }
+.scope-list .strike { color: var(--red); flex-shrink: 0; font-family: var(--mono); }
+
+/* Team grid */
+.team-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.team-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.team-role-label {
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+}
+.team-name-line {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.team-bio {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* Footer */
+.doc-foot {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.7;
+}
+.doc-foot strong { color: var(--text-2); font-weight: 600; }
+
+.mockup-banner {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--sunmi-orange); color: #fff;
+  padding: 6px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 100; font-family: var(--mono);
+}
+
+@media print {
+  .mockup-banner { display: none; }
+  .app { padding: 24px 32px; }
+  .section, .q-card, .scope-block { break-inside: avoid; }
+}
+
+@media (max-width: 768px) {
+  .app { padding: 24px 16px 60px; }
+  .doc-head { flex-direction: column; gap: 14px; }
+  .doc-meta { text-align: left; }
+  .title-block h1 { font-size: 28px; }
+  .toc-list { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; }
+  .mockup-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .title-attrs { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="mockup-banner">Counsel Brief · v0.1</div>
+
+<div class="app">
+
+  <div class="doc-head">
+    <a href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit;">
+      <div class="brand-mark">R</div>
+      <div>
+        <span class="brand-name">RWA</span>
+        <span class="brand-sub">Counsel Brief</span>
+      </div>
+    </a>
+    <div class="doc-meta">
+      Prepared for · 何律师 (Davis Polk · HK)<br>
+      Project Lead · [项目负责人姓名]<br>
+      Date · 2026-05-06 · Draft v0.1
+      <div class="confidential">Confidential · For Discussion</div>
+    </div>
+  </div>
+
+  <div class="title-block">
+    <h1>商米硬件背书的 RWA 发行平台 · 律师简报</h1>
+    <div class="title-en">Sunmi POS-anchored Real-World Asset Issuance Platform · Project Brief for Counsel</div>
+    <div class="title-attrs">
+      <span><strong>Sponsor</strong> · 商米科技 · 董事长 [姓名]</span>
+      <span><strong>试点</strong> · 新加坡 (一期 Jurong Point)</span>
+      <span><strong>合规框架</strong> · SG SFA s.274 / s.275</span>
+      <span><strong>链</strong> · Solana</span>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-label">目录 · Contents</div>
+    <ol class="toc-list">
+      <li><a href="#vision"><span class="toc-num">1.</span> Vision · 为什么是现在做</a></li>
+      <li><a href="#product"><span class="toc-num">2.</span> Product · 已完成产品形态</a></li>
+      <li><a href="#regulatory"><span class="toc-num">3.</span> Regulatory Architecture</a></li>
+      <li><a href="#questions"><span class="toc-num">4.</span> Open Questions for Counsel</a></li>
+      <li><a href="#scope"><span class="toc-num">5.</span> Proposed Engagement Scope</a></li>
+      <li><a href="#team"><span class="toc-num">6.</span> The Team · 团队与背书</a></li>
+    </ol>
+  </nav>
+
+  <!-- Section 1 - Vision -->
+  <section class="section" id="vision">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Vision · 为什么是现在做 RWA</h2>
+      <span class="section-lang">中文</span>
+    </div>
+    <div class="body-text">
+      <p class="lead">
+        RWA（Real-World Assets）市场过去三年的合规摩擦，集中在一个根本问题上——<strong>链下数据源不可独立验证</strong>。投资人尽职调查只能看历史财报，托管方只能信任发行人自报，监管侧只能事后审计。这把"信任发行人"这件事变成了整个产品结构最脆弱的一点。
+      </p>
+
+      <p>
+        商米的差异化不在金融工程，而在数据采集层。商米作为全球部署量超过 X 万台的支付硬件供应商，每一笔交易在 POS 终端上由设备级硬件密钥实时签名后再上链，把"信任发行人自报"替换成"信任硬件 + 信任数学"。这不是营销叙事，是合规架构上的实质改变。
+      </p>
+
+      <div class="callout">
+        <span class="callout-label">Core Thesis · 核心洞察</span>
+        当数据源本身被监管认可的硬件背书（商米 POS 在新加坡是 IMDA 注册的支付终端），RWA 发行的三个传统痛点——尽调成本、二级流通信息对称性、监管审计成本——同时下降。这是过去 RWA 项目都没有的杠杆点。
+      </div>
+
+      <div class="compare">
+        <div class="compare-cell before">
+          <div class="compare-label">Before · 传统 RWA</div>
+          <div class="compare-text">
+            发行人提交 PDF 财报 → 第三方审计 → 投资人凭信任买入 → 链上仅作记账。<br><br>
+            数据颗粒度：季度 / 月。可验证性：依赖人证。
+          </div>
+        </div>
+        <div class="compare-cell after">
+          <div class="compare-label">After · 商米 POS 背书</div>
+          <div class="compare-text">
+            POS 硬件签名每笔交易 → 哈希实时上链 → 投资人随时验证经营数据真实性。<br><br>
+            数据颗粒度：分钟级 / SKU 级。可验证性：密码学。
+          </div>
+        </div>
+      </div>
+
+      <p>
+        在此之上，未来 5 年投资决策正在快速 AI 化。AI 模型读不动 PDF 财报，但能秒级消化结构化的链上数据。这意味着<strong>谁掌握了高精度、机器可读、可验证的资产数据流，谁就掌握了下一代投资决策的底层燃料</strong>。商米同时具备"数据源"和"分发管道"两个杠杆，是少数能从硬件层切入 RWA 的玩家。
+      </p>
+
+      <p>
+        基于此，我们启动 RWA 试点：<strong>第一期</strong>面向新加坡 Jurong Point 单店，通过 SFA Section 275 私募豁免向合格投资人发行 6 个月期短期债务凭证；<strong>第二期</strong>扩展至 4 品牌 6-7 店，验证多代币并行发行和合格投资人间合规流通能力。
+      </p>
+    </div>
+  </section>
+
+  <!-- Section 2 - Product -->
+  <section class="section" id="product">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Product · 已完成的产品形态</h2>
+      <span class="section-lang">中文 · Demo</span>
+    </div>
+    <div class="body-text">
+      <p>
+        以下 6 张页面构成第一阶段产品的完整闭环：投资人侧浏览 / 决策 / 持仓 / 二级流通 + 商家侧融资管理。每张卡片可点开进入 mockup，会议中作为 demo 使用。
+      </p>
+      <p style="font-size:13px; color:var(--text-2); margin-top:-4px;">
+        <em>说明：mockup 中所有数字、餐厅、商户、合约地址均为示例占位，用于展示信息架构与流程，不代表实际发行参数。</em>
+      </p>
+    </div>
+
+    <div class="mockup-grid">
+      <a href="index.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">00 · INDEX</div>
+        <div class="mockup-name">项目索引</div>
+        <div class="mockup-role">导航</div>
+        <div class="mockup-desc">所有页面入口 + 项目定位、技术栈、预算结构概要。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+
+      <a href="asset-list.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">01 · MARKET</div>
+        <div class="mockup-name">资产市场</div>
+        <div class="mockup-role">投资人 · 浏览</div>
+        <div class="mockup-desc">合格投资人浏览开放中的 RWA 资产，按行业、状态、收益率筛选。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+
+      <a href="asset-detail.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">02 · DETAIL</div>
+        <div class="mockup-name">资产详情</div>
+        <div class="mockup-role">投资人 · 决策</div>
+        <div class="mockup-desc">4 个 tab：资产概况 / 经营数据（POS 签名流水）/ 链上交易 / 条款与风险揭示。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+
+      <a href="investor-dashboard.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">03 · PORTFOLIO</div>
+        <div class="mockup-name">我的资产</div>
+        <div class="mockup-role">投资人 · 持仓</div>
+        <div class="mockup-desc">持仓总值 + 单 RWA 持仓详情 + 餐厅实时经营数据 + 链上事件流。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+
+      <a href="transactions.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">04 · SECONDARY</div>
+        <div class="mockup-name">交易记录</div>
+        <div class="mockup-role">投资人 · 二级流通</div>
+        <div class="mockup-desc">合格投资人间撮合：在交易标的、订单簿盘口、买卖表单、成交流水、我的挂单。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+
+      <a href="merchant-dashboard.html" class="mockup-card" target="_blank">
+        <div class="mockup-num">05 · ISSUER</div>
+        <div class="mockup-name">商家融资后台</div>
+        <div class="mockup-role">商家 · 发行人</div>
+        <div class="mockup-desc">融资进度 + 投资人构成 + POS 设备状态 + 还款计划，覆盖认购到兑付全周期。</div>
+        <div class="mockup-link">Open page →</div>
+      </a>
+    </div>
+
+    <div class="callout" style="margin-top:28px">
+      <span class="callout-label">Demo 建议路径 · Suggested Walk-through</span>
+      建议演示顺序：<strong>02 资产详情</strong>（让律师看到投资人决策时看到的全部信息，重点是"经营数据"tab 中 POS 签名流水的真实性证据链）→ <strong>03 我的资产</strong>（持仓后实时数据）→ <strong>04 交易记录</strong>（二级流通如何在合规边界内运行）→ <strong>05 商家后台</strong>（发行人侧的合规义务承担界面）。
+    </div>
+  </section>
+
+  <!-- Section 3 - Regulatory Architecture -->
+  <section class="section" id="regulatory">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Regulatory Architecture</h2>
+      <span class="section-lang">English</span>
+    </div>
+    <div class="en-body">
+      <p>
+        The structure outlined below reflects our current working assumptions for Phase 1 (single-store issuance, Singapore). Each element is identified for counsel review; we do not assume any item is settled.
+      </p>
+
+      <h3><span class="en-num">3.1</span> Issuance vehicle</h3>
+      <p>
+        A Singapore private limited company (Pte. Ltd.) is established as a single-purpose issuance vehicle (the <strong>"SPV"</strong>), bankruptcy-remote from Sunmi and from the underlying merchant. The SPV is the sole legal issuer of the on-chain instrument; it holds the merchant's promissory note as its sole asset and has no other business. Working name: <code>RWA-JRP01 SPV Pte. Ltd.</code>
+      </p>
+      <ul>
+        <li><strong>Phase 1 approach:</strong> one SPV per issuance.</li>
+        <li><strong>Open for counsel:</strong> whether a series-LLC equivalent or umbrella SPV with segregated cells becomes preferable from Phase 2 (multi-merchant, multi-issuance) — see Q3.</li>
+      </ul>
+
+      <h3><span class="en-num">3.2</span> Securities framework</h3>
+      <p>
+        The instrument is structured as a <strong>debenture under the Singapore Securities and Futures Act 2001 (SFA)</strong>. We rely on the small offers / private placement exemptions:
+      </p>
+      <ul>
+        <li><strong>SFA s.272A</strong> — small offers cap (S$5m / 12 months), if applicable as a fallback.</li>
+        <li><strong>SFA s.274</strong> — institutional investors only.</li>
+        <li><strong>SFA s.275(1)</strong> — accredited investors.</li>
+        <li><strong>SFA s.275(1A)</strong> — limited offer, &lt;= 50 persons, &lt;= S$5m / 12 months.</li>
+      </ul>
+      <p>
+        Phase 1 issuance (S$200,000 / 6-month tenor) sits comfortably within s.275(1A). Phase 2 (4 brands, 6-7 stores in parallel) is where the 12-month aggregation rules become tight — see Q2.
+      </p>
+
+      <h3><span class="en-num">3.3</span> Token characterization</h3>
+      <p>
+        The on-chain token is intended to function as a <strong>transferable record of the holder's beneficial interest</strong> in the underlying SPV debenture, not as the legal instrument itself. The subscription agreement remains the operative contract; the token is the depository entry.
+      </p>
+      <ul>
+        <li>Token standard: SPL Token on Solana mainnet (Phase 1 does not require Token-2022 transfer-hook whitelisting because no public secondary market is offered).</li>
+        <li>Working classification: <strong>capital markets product</strong> under the SFA Second Schedule (debenture sub-category).</li>
+        <li>Explicitly <strong>not</strong> a digital payment token under the Payment Services Act.</li>
+      </ul>
+
+      <h3><span class="en-num">3.4</span> Investor onboarding</h3>
+      <p>
+        All subscribers must complete (a) Singpass / NRIC identity verification, (b) accredited-investor (AI) self-declaration with supporting evidence under MAS Notice SFA 04-N12, (c) suitability questionnaire, (d) wallet attestation linking the on-chain receiving address to the verified individual.
+      </p>
+      <ul>
+        <li>AI status is re-confirmed annually and at every new subscription.</li>
+        <li>Wallet binding is enforced at the platform layer; on-chain transfers to non-bound addresses are not supported during Phase 1.</li>
+      </ul>
+
+      <h3><span class="en-num">3.5</span> Secondary transferability</h3>
+      <p>
+        <strong>Phase 1: closed.</strong> No secondary market. Investors hold to the 6-month maturity. Hardship transfers, if any, are arranged off-chain between two AI-verified parties with the platform updating the on-chain holding registry — characterized as a private bilateral assignment, not a market.
+      </p>
+      <p>
+        <strong>Phase 2: limited P2P matching.</strong> AI-to-AI transfers via on-platform order book. Whether the platform itself constitutes a Recognized Market Operator (RMO) or qualifies for an exemption is a primary open question — see Q6.
+      </p>
+
+      <h3><span class="en-num">3.6</span> Credit support & remedies</h3>
+      <p>
+        The merchant (operating company) issues a promissory note to the SPV. Credit support stack:
+      </p>
+      <ul>
+        <li>Founder personal guarantee (unlimited, joint-and-several where multiple founders).</li>
+        <li>POS device cash-flow lock-up: a portion of daily POS settlement is auto-swept to the SPV's collection account.</li>
+        <li>Sunmi platform expressly disclaims payment liability; this is a debt of the merchant, not of Sunmi.</li>
+      </ul>
+      <p>
+        On default: investors' recourse is to the SPV, then to the merchant under the note, then to the founder under the guarantee. Dispute resolution: Singapore-seated arbitration (SIAC) under the subscription agreement.
+      </p>
+
+      <h3><span class="en-num">3.7</span> Custody & settlement</h3>
+      <p>
+        Subscription proceeds (USDC) are held by the SPV in a multi-sig wallet (3-of-5; signers include independent director, Sunmi treasury, and an external custodian). Release to the merchant follows a documented draw-down schedule. Coupon and principal payments are pushed back into the same multi-sig and distributed pro-rata to bound investor wallets on scheduled dates.
+      </p>
+
+      <h3><span class="en-num">3.8</span> Data integrity layer (the differentiator)</h3>
+      <p>
+        Each POS transaction is signed by a hardware key embedded in the Sunmi terminal at manufacture (root-of-trust attested by Sunmi's PKI). Aggregated daily / hourly merchant performance hashes are written on-chain. Investors and counsel can independently verify that on-chain disclosures match the hardware-attested source data.
+      </p>
+      <p>
+        We treat this layer as <strong>operational disclosure infrastructure</strong>, not as a regulatory carve-out — i.e., it improves enforcement of existing disclosure obligations rather than displacing them. Counsel's view on whether/how this should be reflected in the offering documents is welcomed (Q1).
+      </p>
+    </div>
+  </section>
+
+  <!-- Section 4 - Open Questions -->
+  <section class="section" id="questions">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Open Questions for Counsel</h2>
+      <span class="section-lang">English</span>
+    </div>
+    <div class="en-body">
+      <p>
+        The following are the eight questions on which we most need counsel's view, in rough order of bearing on Phase 1 launch. We have working positions on each; we are not seeking validation of those positions but rather the counter-arguments and risks we have not yet identified.
+      </p>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q1</span>
+      <div class="q-text">Should the hardware-attestation layer be expressly disclosed in offering documents, and if so, how do we avoid creating inadvertent reliance liability?</div>
+      <div class="q-context">
+        <strong>Context.</strong> Our value proposition rests on hardware-signed POS data. Disclosing it strengthens the offering narrative but may create an implied warranty as to the accuracy or availability of that data. Investors who later allege data-stream failure could assert reliance on those disclosures. We prefer factual description + clear disclaimers; counsel's view on the right line is sought.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q2</span>
+      <div class="q-text">How should the SFA s.275(1A) S$5m / 12-month aggregation cap be applied across multiple SPVs in Phase 2 (4 brands × 6-7 stores)?</div>
+      <div class="q-context">
+        <strong>Context.</strong> Phase 1 (one SPV, S$200k) is comfortably within the cap. Phase 2 contemplates parallel issuances by separate SPVs, each issuing to overlapping investor pools via a common platform. We need to understand how MAS treats aggregation when (a) issuers are technically separate but (b) the platform, sponsor, and investor base are common. This drives whether we need to gate Phase 2 by issuance windows, by investor pools, or by structural separation.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q3</span>
+      <div class="q-text">Single-purpose SPV per issuance versus an umbrella vehicle with segregated cells — which is preferable from Phase 2 onwards?</div>
+      <div class="q-context">
+        <strong>Context.</strong> One SPV per issuance maximizes bankruptcy remoteness but multiplies setup cost and operational overhead at scale. A series-LLC equivalent (or Singapore VCC sub-fund structure) reduces overhead but raises questions on cross-collateralization and creditor recourse. We have no preference and would like to be guided.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q4</span>
+      <div class="q-text">What is the enforceability of the founder's unlimited personal guarantee in Singapore, and what is the appropriate scope of Sunmi's payment-liability disclaimer?</div>
+      <div class="q-context">
+        <strong>Context.</strong> We rely on a founder personal guarantee as the primary credit-loss mitigant after the SPV's note. We also rely on Sunmi's express disclaimer that it is not a guarantor or paymaster. Both elements need to survive in distress scenarios, including a misrepresentation or unfair-contract-terms challenge. We want a clean opinion on enforceability and disclosure adequacy.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q5</span>
+      <div class="q-text">Is the on-chain SPL Token the security itself, or merely evidentiary of an off-chain subscription right?</div>
+      <div class="q-context">
+        <strong>Context.</strong> Our working position: the subscription agreement is the operative contract; the token is a transferable record. This affects (a) whether transfers require contract assignment formalities, (b) what happens to investor rights if the token is lost or sent to an unrecoverable address, (c) what disclosures are needed at the token level versus the contract level. Counsel's view determines downstream documentation.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q6</span>
+      <div class="q-text">When does our Phase 2 secondary-matching mechanism cross the threshold into Recognized Market Operator (RMO) territory under the SFA?</div>
+      <div class="q-context">
+        <strong>Context.</strong> Phase 1 has no secondary. Phase 2 contemplates AI-to-AI matching on an order book operated by the platform. We assume an exemption (e.g., MAS guidance for limited investor pools or principal-to-principal matching) is achievable, but we need to know the boundary and what design constraints follow — order-book versus RFQ, on-platform settlement versus off, custody location, etc.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q7</span>
+      <div class="q-text">Treatment of cross-border investors — Hong Kong, mainland China, and other jurisdictions — at the subscription and secondary stages.</div>
+      <div class="q-context">
+        <strong>Context.</strong> We expect investor demand from HK and possibly mainland-domiciled HNW. Phase 1 default: SG-resident AIs only. We need a mapped view on (a) which non-SG investors can be admitted under what local-law analysis, (b) whether reverse solicitation is a defensible posture, (c) the marketing-materials constraints that follow.
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num">Q8</span>
+      <div class="q-text">Data sovereignty and PDPA — who owns the merchant's POS-derived performance data once it is on-chain, and what disclosures and consents are required?</div>
+      <div class="q-context">
+        <strong>Context.</strong> Merchant performance data flows through Sunmi's hardware and platform, then onto a public chain in hashed and aggregated form. Singapore PDPA implications are non-trivial: who is the data controller, what consents do merchants give, what are investor rights to raw versus aggregated data, what happens to historic on-chain data when a merchant exits. We have a draft consent framework but want a counsel-level review.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5 - Engagement Scope -->
+  <section class="section" id="scope">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Proposed Engagement Scope</h2>
+      <span class="section-lang">English</span>
+    </div>
+    <div class="en-body">
+      <p>
+        We have a clear view of what we would like Davis Polk to take on, and where the boundary sits with other workstreams (technical implementation, on-chain audit, accounting). The structure below is a starting point for discussion — happy to be redirected.
+      </p>
+    </div>
+
+    <div class="scope-block">
+      <div class="scope-head">
+        <span class="scope-phase">Phase A · Pre-issuance (next 6-8 weeks)</span>
+        <span class="scope-tag now">Engage Now</span>
+      </div>
+      <ul class="scope-list">
+        <li><span class="check">A1.</span> Memo: Singapore SFA classification of the Phase 1 instrument and the s.275(1A) exemption analysis (covering Q1, Q2, Q5).</li>
+        <li><span class="check">A2.</span> SPV setup: incorporation of <code>RWA-JRP01 SPV Pte. Ltd.</code>, constitutional documents, independent director arrangements, and bank/custody account opening support.</li>
+        <li><span class="check">A3.</span> Drafting of offering documents: information memorandum, subscription agreement, accredited-investor declaration, suitability questionnaire, risk-disclosure schedule.</li>
+        <li><span class="check">A4.</span> Drafting of credit-support documents: merchant promissory note, founder personal guarantee, POS cash-flow lock-up agreement.</li>
+        <li><span class="check">A5.</span> Sunmi platform liability review: drafting and stress-testing the disclaimer language across user-facing surfaces (covering Q4).</li>
+        <li><span class="check">A6.</span> PDPA / data-consent framework review for merchant-side disclosures (covering Q8).</li>
+      </ul>
+    </div>
+
+    <div class="scope-block">
+      <div class="scope-head">
+        <span class="scope-phase">Phase B · Phase 1 → Phase 2 transition (3-6 months out)</span>
+        <span class="scope-tag next">Plan Now, Engage Later</span>
+      </div>
+      <ul class="scope-list">
+        <li><span class="check">B1.</span> Structural advice on multi-issuance vehicle architecture: per-issuance SPV vs. umbrella with segregated cells (covering Q3).</li>
+        <li><span class="check">B2.</span> Secondary-market design: RMO threshold analysis, P2P matching mechanism review, custody and settlement implications (covering Q6).</li>
+        <li><span class="check">B3.</span> Cross-border investor framework: jurisdiction-by-jurisdiction admission analysis, reverse-solicitation posture, marketing-materials constraints (covering Q7).</li>
+        <li><span class="check">B4.</span> Ongoing regulatory liaison support with MAS where appropriate (no-action letter / informal guidance, if warranted).</li>
+      </ul>
+    </div>
+
+    <div class="scope-block">
+      <div class="scope-head">
+        <span class="scope-phase">Out of scope · Handled by other workstreams</span>
+        <span class="scope-tag out">Not Requested</span>
+      </div>
+      <ul class="scope-list">
+        <li><span class="strike">×</span> Solana smart-contract audit — handled separately by OtterSec (engagement letter signed).</li>
+        <li><span class="strike">×</span> Technical infrastructure — built in-house; Sunmi engineering team owns implementation.</li>
+        <li><span class="strike">×</span> Tax structuring — engaged separately with [tax advisor TBC]; coordination welcomed but not primary scope.</li>
+        <li><span class="strike">×</span> KYC vendor selection — operational decision; counsel input welcomed on AI-verification adequacy only.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Fee structure · Open to Discussion</span>
+      We anticipate Phase A is fixed-fee or capped-fee work given the defined deliverables. Phase B is more naturally hourly with milestone gates. We are <strong>not</strong> looking for free-of-charge advisory and would prefer a clean engagement letter that allows the project to scale into Phase 2 without re-papering. Happy to discuss an indicative fee envelope at the meeting.
+    </div>
+  </section>
+
+  <!-- Section 6 - Team -->
+  <section class="section" id="team">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">The Team · 团队与背书</h2>
+      <span class="section-lang">中文</span>
+    </div>
+    <div class="body-text">
+      <p>
+        本项目由商米科技董事长直接发起并担任 sponsor。项目组在商米平台体系下独立运行，并独立向董事长汇报。
+      </p>
+
+      <div class="team-grid">
+        <div class="team-block">
+          <div class="team-role-label">Project Sponsor</div>
+          <div class="team-name-line">[商米董事长姓名]</div>
+          <div class="team-bio">
+            商米科技创始人 / 董事长。商米已在全球部署 X 万台 POS 终端，覆盖 Y 个国家。本 RWA 项目作为商米硬件资产数字化的关键试点，由董事长直接担任 sponsor 并把何律师介绍至本项目。
+          </div>
+        </div>
+
+        <div class="team-block">
+          <div class="team-role-label">Project Lead</div>
+          <div class="team-name-line">[项目负责人姓名]</div>
+          <div class="team-bio">
+            本项目产品 + 业务负责人。负责整体架构设计、监管对接、合作律所选定、试点商户签约。直接向董事长汇报。本简报由项目组准备。
+          </div>
+        </div>
+
+        <div class="team-block">
+          <div class="team-role-label">Platform Backing</div>
+          <div class="team-name-line">商米科技平台资源</div>
+          <div class="team-bio">
+            商米作为发行平台的技术底座、硬件密钥根证、商户网络入口与品牌背书。Phase 1 试点商户由商米现有商户网络中筛选确定（新加坡 Jurong Point 餐厅）。
+          </div>
+        </div>
+
+        <div class="team-block">
+          <div class="team-role-label">External Workstreams</div>
+          <div class="team-name-line">已签约 / 在洽合作方</div>
+          <div class="team-bio">
+            链上合约审计：OtterSec（Solana 生态主流）。技术实现：商米工程团队内部承担。税务顾问：洽谈中。本简报所列法律工作希望由 Davis Polk 承担。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:24px">
+        <span class="callout-label">为什么找何律师 · Why You</span>
+        商米董事长 specifically 推荐何律师参与本项目，核心理由是您在 [HK/SG 跨境结构 / fintech 监管 / 私募发行] 领域的经验积累。Phase 2 涉及多店多代币并行发行 + 合格投资人间合规流通 + 跨境投资人接入，正是 Phase A 法律结构需要前置考虑、避免后期返工的部分。我们希望从 Phase A 起就建立长期工作关系。
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-foot">
+    <p>
+      <strong>Confidentiality.</strong> This document is prepared solely for the addressee and contains preliminary, non-binding discussion materials. No part of this document constitutes legal advice, an offer to sell securities, or a solicitation of an offer to buy. Product mockups referenced are illustrative and use placeholder data.
+    </p>
+    <p style="margin-top:10px">
+      <strong>声明.</strong> 本文件仅供受文人使用，所含内容为初步讨论材料，不构成法律意见或投资邀约。所附产品 mockup 全部为示意，数据均为示例。
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
