@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目委托协议 · 商米 RWA 平台试点</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@400;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sunmi-orange: #FF6A13;
+  --sunmi-orange-dark: #E85D0F;
+  --sunmi-orange-light: #FFF1E8;
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F4F3EE;
+  --border: #E8E6DD;
+  --border-strong: #D5D3C8;
+  --text: #1A1A18;
+  --text-2: #5F5E5A;
+  --text-3: #888780;
+  --green: #1D9E75;
+  --red: #B23B3B;
+  --amber: #BA7517;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Source Serif 4', 'Times New Roman', serif;
+}
+
+html, body { background: var(--bg); }
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+.app { max-width: 1000px; margin: 0 auto; padding: 40px 56px 80px; }
+
+.doc-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 28px;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 36px;
+}
+.brand-mark {
+  width: 36px; height: 36px;
+  background: var(--sunmi-orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; color: #fff; font-size: 14px;
+}
+.brand-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.brand-sub {
+  font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-left: 8px; padding: 4px 8px;
+  border: 1px solid var(--border-strong); border-radius: 4px;
+}
+.doc-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  line-height: 1.7;
+}
+.doc-meta .draft {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 9px;
+  background: var(--amber);
+  color: #fff;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.title-block {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.title-block h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.title-sub {
+  font-size: 15px;
+  color: var(--text-2);
+  font-style: italic;
+  font-family: var(--serif);
+}
+
+.parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.party {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+.party-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+}
+.party-name {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.party-line {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 4px;
+  line-height: 1.55;
+}
+.party-line strong { color: var(--text); font-weight: 600; }
+
+.recitals {
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-bottom: 36px;
+}
+.recitals-title {
+  font-size: 11px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-3);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.recital {
+  display: flex; gap: 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.recital:last-child { margin-bottom: 0; }
+.recital-marker {
+  font-family: var(--mono);
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.clause {
+  margin-bottom: 32px;
+}
+.clause-head {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.clause-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--sunmi-orange);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.clause-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.clause-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text);
+}
+.clause-body p { margin-bottom: 12px; }
+.clause-body p:last-child { margin-bottom: 0; }
+.clause-body strong { font-weight: 700; }
+.clause-body code {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--surface-2);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.clause-body ol, .clause-body ul {
+  margin: 10px 0 14px 24px;
+}
+.clause-body li {
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.subclause {
+  display: flex; gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.subclause:last-child { border-bottom: none; padding-bottom: 4px; }
+.subclause-num {
+  font-family: var(--mono);
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+  min-width: 36px;
+}
+.subclause-text { flex: 1; font-size: 14px; line-height: 1.7; }
+
+.placeholder {
+  display: inline-block;
+  background: #FFF8E1;
+  border: 1px dashed var(--amber);
+  color: var(--amber);
+  padding: 0 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.budget-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.budget-phase {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.budget-phase:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 4px;
+}
+.budget-phase-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 12px;
+}
+.budget-phase-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.budget-phase-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.budget-row {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 16px;
+  padding: 7px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.budget-row.head {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.budget-row .amt {
+  font-family: var(--mono);
+  text-align: right;
+  font-weight: 600;
+}
+.budget-row.subtotal {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-weight: 700;
+}
+.budget-row.subtotal .amt { color: var(--sunmi-orange); }
+
+.budget-total {
+  background: var(--text);
+  color: #fff;
+  margin: 18px -24px -22px;
+  padding: 16px 24px;
+  border-radius: 0 0 10px 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.budget-total-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.budget-total-amt {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sunmi-orange);
+}
+
+.tranche-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 14px 0;
+}
+.tranche-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 110px;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.tranche-row:last-of-type { border-bottom: none; padding-bottom: 4px; }
+.tranche-row.head {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  font-weight: 700;
+  padding: 0 0 10px;
+}
+.tranche-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--sunmi-orange-light);
+  color: var(--sunmi-orange);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  letter-spacing: 0.06em;
+}
+.tranche-amt {
+  font-family: var(--mono);
+  text-align: right;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.signature-block {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 2px solid var(--text);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+.sig-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sunmi-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+}
+.sig-line {
+  border-bottom: 1px solid var(--text);
+  height: 60px;
+  margin-bottom: 10px;
+}
+.sig-meta { color: var(--text-2); line-height: 1.7; font-size: 13px; }
+.sig-meta strong { color: var(--text); font-weight: 600; }
+
+.doc-foot {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.7;
+}
+.doc-foot strong { color: var(--text-2); font-weight: 600; }
+
+.banner {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--amber); color: #fff;
+  padding: 6px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 100; font-family: var(--mono);
+}
+
+@media print {
+  .banner { display: none; }
+  .app { padding: 24px 32px; }
+  .clause, .budget-block, .tranche-table, .signature-block { break-inside: avoid; }
+}
+
+@media (max-width: 768px) {
+  .app { padding: 24px 16px 60px; }
+  .doc-head { flex-direction: column; gap: 14px; }
+  .doc-meta { text-align: left; }
+  .title-block h1 { font-size: 22px; }
+  .parties { grid-template-columns: 1fr; }
+  .signature-block { grid-template-columns: 1fr; gap: 32px; }
+  .tranche-row { grid-template-columns: 1fr; gap: 4px; }
+  .budget-row { grid-template-columns: 1fr 90px; }
+}
+</style>
+</head>
+<body>
+<div class="banner">Draft v0.1 · 草稿</div>
+
+<div class="app">
+
+  <div class="doc-head">
+    <a href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit;">
+      <div class="brand-mark">R</div>
+      <div>
+        <span class="brand-name">RWA</span>
+        <span class="brand-sub">项目委托协议</span>
+      </div>
+    </a>
+    <div class="doc-meta">
+      签约方 · 商米科技 ↔ 项目负责人<br>
+      项目 · 商米 RWA 平台一期试点<br>
+      日期 · 2026-05-06 · 草稿 v0.1
+      <div class="draft">未签署 · 仅供讨论</div>
+    </div>
+  </div>
+
+  <div class="title-block">
+    <h1>项目委托协议 · 商米 RWA 平台一期试点</h1>
+    <div class="title-sub">Project Engagement Agreement · Sunmi RWA Platform · Phase 0–2 Pilot</div>
+  </div>
+
+  <!-- Parties -->
+  <div class="parties">
+    <div class="party">
+      <div class="party-label">甲方 · Sunmi</div>
+      <div class="party-name">商米科技有限公司</div>
+      <div class="party-line"><strong>注册地</strong> · <span class="placeholder">注册地址</span></div>
+      <div class="party-line"><strong>法定代表人</strong> · <span class="placeholder">法定代表人</span></div>
+      <div class="party-line"><strong>项目 Sponsor</strong> · 董事长 <span class="placeholder">姓名</span></div>
+      <div class="party-line"><strong>项目联系人</strong> · <span class="placeholder">联系人 / 邮箱</span></div>
+    </div>
+    <div class="party">
+      <div class="party-label">乙方 · Project Lead</div>
+      <div class="party-name"><span class="placeholder">项目负责人 / 主体名称</span></div>
+      <div class="party-line"><strong>身份类型</strong> · <span class="placeholder">自然人 / 公司</span></div>
+      <div class="party-line"><strong>证件号 / 注册号</strong> · <span class="placeholder">身份证 / 公司注册号</span></div>
+      <div class="party-line"><strong>角色</strong> · 项目负责人（Project Lead）</div>
+      <div class="party-line"><strong>联系方式</strong> · <span class="placeholder">手机 / 邮箱</span></div>
+    </div>
+  </div>
+
+  <!-- Recitals -->
+  <div class="recitals">
+    <div class="recitals-title">鉴于 · Recitals</div>
+    <div class="recital">
+      <span class="recital-marker">A.</span>
+      <span>甲方基于商米 POS 终端硬件签名技术，发起 Real-World Assets（"<strong>RWA</strong>"）发行平台试点项目（"<strong>本项目</strong>"）。一期面向新加坡市场，向合格投资人发行 6 个月期短期债务凭证。</span>
+    </div>
+    <div class="recital">
+      <span class="recital-marker">B.</span>
+      <span>甲方董事长邀请乙方担任本项目的项目负责人，全面负责本项目从技术验证、数据价值验证至首笔 RWA 发行的执行交付。</span>
+    </div>
+    <div class="recital">
+      <span class="recital-marker">C.</span>
+      <span>为明确双方在本项目中的权利义务、预算安排、决策机制、报酬结构与责任边界，双方经友好协商，达成本协议。</span>
+    </div>
+  </div>
+
+  <!-- Clause 1 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 1 条</span>
+      <h2 class="clause-title">项目定义与目标</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>1.1 项目名称</strong>：商米 RWA 平台一期试点。</p>
+      <p><strong>1.2 试点地点</strong>：新加坡 Jurong Point（一期单店），具体商户由双方共同确认。</p>
+      <p><strong>1.3 项目目标</strong>：在约 12 周内完成以下三阶段交付，达成首笔 RWA 链上发行：</p>
+      <div class="subclause">
+        <span class="subclause-num">(a)</span>
+        <span class="subclause-text"><strong>Phase 0 · 技术可行性确认</strong>（Week 1）：商米 POS SDK 可用性评估，得出 Go / No-Go / 暂停 三种结论之一。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(b)</span>
+        <span class="subclause-text"><strong>Phase 1 · 数据价值验证</strong>（Week 2–8）：系统上线运行，运营 30 天，由 ANext（或同等持牌方）确认数据价值，商家获得贷款。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(c)</span>
+        <span class="subclause-text"><strong>Phase 2 · 首笔 RWA 发行</strong>（Week 5–12，与 Phase 1 并行）：通过持牌方完成链上发行，商家收到融资款。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clause 2 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 2 条</span>
+      <h2 class="clause-title">乙方角色与职责</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>2.1 角色</strong>：乙方担任本项目的项目负责人，直接向甲方董事长汇报。</p>
+      <p><strong>2.2 主要职责</strong>包括但不限于：</p>
+      <ul>
+        <li>整体架构设计与项目推进；</li>
+        <li>外部合规顾问 / 律师事务所（包括但不限于 Davis Polk）的选聘、对接与协调；</li>
+        <li>持牌方（如 ANext）的接入与合规通道搭建；</li>
+        <li>试点商户的尽职调查、签约与现场对接；</li>
+        <li>甲方内部技术、品牌、商务团队的协调；</li>
+        <li>智能合约开发与外部审计（SlowMist / CertiK / Hacken 等）的发包与验收；</li>
+        <li>项目预算的管理、使用与定期汇报；</li>
+        <li>Go / No-Go 决策点的材料准备与提交。</li>
+      </ul>
+      <p><strong>2.3 投入程度</strong>：乙方承诺在本项目期间投入 <span class="placeholder">不少于 80% / 全职</span> 工作时间。</p>
+    </div>
+  </div>
+
+  <!-- Clause 3 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 3 条</span>
+      <h2 class="clause-title">时间安排与里程碑</h2>
+    </div>
+    <div class="clause-body">
+      <p>本项目自协议签署之日起算，整体周期约 <strong>12 周（3 个月）</strong>。关键里程碑如下：</p>
+      <div class="subclause">
+        <span class="subclause-num">M1</span>
+        <span class="subclause-text"><strong>Phase 0 完成</strong>（Week 1）：SDK 评估报告交付 + Go-1 决策点。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">M2</span>
+        <span class="subclause-text"><strong>Phase 1 完成</strong>（Week 8）：可信经营报告系统上线运营 30 天 + ANext 数据价值认可意见 + 商家贷款落地 + Go-2 决策点。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">M3</span>
+        <span class="subclause-text"><strong>Phase 2 完成</strong>（Week 12）：首笔 RWA 链上发行完成 + 商家收到融资款 + 最终验收。</span>
+      </div>
+      <p><strong>3.4 延期处理</strong>：任一阶段延期超过 <span class="placeholder">2 周</span> 时，双方应在 <span class="placeholder">5 个工作日</span> 内协商：(a) 延期方案、(b) 范围调整、或 (c) 终止协议三种处理路径之一。</p>
+    </div>
+  </div>
+
+  <!-- Clause 4 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 4 条</span>
+      <h2 class="clause-title">项目预算</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>4.1 总预算</strong>：本项目总预算为 <strong>SGD 167,000</strong>（约 <strong>USD 125,000</strong>），具体明细见附表 A。<strong>本预算仅覆盖乙方负责执行的技术、产品、合规对接与项目管理工作；持牌方通道费用（如 ANext / 同等持牌发行方的发行通道费、KYC / AML / MAS 备案 / 资产结构通道费等）由甲方另行直接承担，不在本协议预算范围内。</strong></p>
+      <p><strong>4.2 预算构成</strong>：</p>
+      <ul>
+        <li>开发：SGD 100,000</li>
+        <li>合规（数据授权 + 商米合作 + 法律顾问）：SGD 12,000</li>
+        <li>审计：SGD 22,000</li>
+        <li>杂项（含应急储备）：SGD 33,000</li>
+      </ul>
+      <p><strong>4.3 应急储备</strong>：预算中已含各阶段 10% 应急储备，使用须经甲方书面批准。</p>
+      <p><strong>4.4 超支处理</strong>：单项开支超出预算项 <span class="placeholder">10%</span> 或合计超支 <span class="placeholder">SGD 20,000</span> 时，须事先获甲方书面同意。</p>
+      <p><strong>4.5 货币与汇率</strong>：本项目记账与结算货币为 SGD；如需以其他货币支付，按支付日银行中间价折算。</p>
+    </div>
+  </div>
+
+  <!-- Clause 5 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 5 条</span>
+      <h2 class="clause-title">拨付安排与 Go / No-Go 决策</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>5.1 分批拨付</strong>：预算分两批拨付至项目专用账户：</p>
+      <div class="tranche-table">
+        <div class="tranche-row head">
+          <span>批次</span><span>触发条件 / 覆盖范围</span><span>金额 (SGD)</span>
+        </div>
+        <div class="tranche-row">
+          <span><span class="tranche-tag">第一批</span></span>
+          <span>项目启动 · 覆盖 Phase 0 + Phase 1（技术验证 → 数据价值验证）<br><span style="font-size:11px; color:var(--text-3);">拨付时点：协议签署后 <span class="placeholder">5</span> 个工作日内</span></span>
+          <span class="tranche-amt">86,000</span>
+        </div>
+        <div class="tranche-row">
+          <span><span class="tranche-tag">第二批</span></span>
+          <span>Phase 1 达成 · 覆盖 Phase 2（链上开发 + 智能合约 + 审计 + Phase 2 应急储备）<br><span style="font-size:11px; color:var(--text-3);">拨付时点：Go-2 通过后 <span class="placeholder">10</span> 个工作日内</span></span>
+          <span class="tranche-amt">81,000</span>
+        </div>
+      </div>
+      <p><strong>5.2 Go / No-Go 决策点</strong>：</p>
+      <div class="subclause">
+        <span class="subclause-num">Go-1</span>
+        <span class="subclause-text"><strong>Phase 0 → Phase 1</strong>：判定标准为商米 POS SDK 可用性、采集层可工程化。乙方提交评估报告，甲方在 <span class="placeholder">5 个工作日</span> 内书面答复 Go / No-Go / 暂停。详细判定见附表 C。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">Go-2</span>
+        <span class="subclause-text"><strong>Phase 1 → Phase 2</strong>：判定标准为 (a) 系统稳定运营 30 天、(b) ANext 出具数据价值认可意见、(c) 商家完成贷款落地。乙方提交阶段交付物，甲方在 <span class="placeholder">10 个工作日</span> 内书面答复 Go / No-Go。详细判定见附表 C。</span>
+      </div>
+      <p><strong>5.3 No-Go 后果</strong>：若 Go-1 或 Go-2 任一决策点未通过，第二批拨付不发生；已支付的第一批资金按附表 C 结算原则处理。</p>
+    </div>
+  </div>
+
+  <!-- Clause 6 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 6 条</span>
+      <h2 class="clause-title">乙方报酬</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>6.1 报酬结构</strong>：本条款的具体金额由双方另行单独确认，原则上不公开于本协议正文。以下为结构框架：</p>
+      <p><strong>6.2 月度管理费</strong>：项目期间，甲方按月向乙方支付管理费 <span class="placeholder">SGD X / 月</span>，于每月末通过银行转账支付。</p>
+      <p><strong>6.3 里程碑奖金</strong>：</p>
+      <ul>
+        <li>Phase 0 完成（Go-1 通过）：<span class="placeholder">SGD X</span></li>
+        <li>Phase 1 完成（Go-2 通过）：<span class="placeholder">SGD X</span></li>
+        <li>Phase 2 完成（首笔 RWA 发行落地）：<span class="placeholder">SGD X</span></li>
+      </ul>
+      <p><strong>6.4 成功费</strong>：首笔 RWA 发行成功完成后，甲方一次性向乙方支付成功费 <span class="placeholder">SGD X 或发行金额的 X%</span>，以两者较高者为准。</p>
+      <p><strong>6.5 长期分润（可选）</strong>：自首笔发行起 <span class="placeholder">24 个月</span> 内，乙方按 <span class="placeholder">X%</span> 比例参与本平台所有 RWA 发行的平台费分成；具体计算口径见附表 D（另行签订）。</p>
+      <p><strong>6.6 备注</strong>：6.2–6.5 各项报酬均为<strong>税前金额</strong>，乙方自行承担相关个人所得税或企业税负。本协议不构成劳动关系。</p>
+    </div>
+  </div>
+
+  <!-- Clause 7 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 7 条</span>
+      <h2 class="clause-title">预算管理权与开支</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>7.1 开支权限</strong>：乙方有权按附表 A 的预算明细动用资金，包括对外发包、签约第三方供应商、聘用项目临时人员。</p>
+      <p><strong>7.2 单项审批阈值</strong>：单项支出超过 <span class="placeholder">SGD 20,000</span>，或单一对外合同金额超过 <span class="placeholder">SGD 50,000</span> 的，须事先获甲方书面批准。</p>
+      <p><strong>7.3 定期报告</strong>：乙方应于每月 <span class="placeholder">第 5 个工作日</span> 之前向甲方提交上月资金使用报告，含发票存档与实际开支明细。</p>
+      <p><strong>7.4 资金账户</strong>：本项目资金存放于乙方在 <span class="placeholder">银行 / 地区</span> 开立的项目专用账户，账户信息向甲方备案。</p>
+      <p><strong>7.5 持牌方通道费用</strong>：第 4.1 条所述的持牌方通道费用，由甲方按持牌方实际报价直接支付，<strong>不经由乙方账户流转</strong>。乙方负责协调持牌方对接，但不承担该项费用的预算管理责任。</p>
+    </div>
+  </div>
+
+  <!-- Clause 8 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 8 条</span>
+      <h2 class="clause-title">决策权与汇报机制</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>8.1 乙方决策权</strong>：在项目执行层面，乙方对以下事项有完整决策权：</p>
+      <ul>
+        <li>项目内部人员安排与团队组建；</li>
+        <li>预算项内的开支决策（受第 7.2 条约束）；</li>
+        <li>非重大第三方供应商的选择。</li>
+      </ul>
+      <p><strong>8.2 甲方批准事项</strong>：以下事项须乙方提请、甲方书面批准：</p>
+      <ul>
+        <li>合作律师事务所的最终选定（包括 Davis Polk 聘用书签署）；</li>
+        <li>SPV 主体设立及股权结构；</li>
+        <li>持牌发行通道方（如 ANext）的最终选定；</li>
+        <li>试点商户的最终确认与签约；</li>
+        <li>智能合约审计方的选定；</li>
+        <li>对外宣传、媒体披露材料的发布。</li>
+      </ul>
+      <p><strong>8.3 汇报机制</strong>：</p>
+      <ul>
+        <li>周报：每周 <span class="placeholder">周五</span> 提交书面周报；</li>
+        <li>月度会议：每月召开 1 次进度评审会；</li>
+        <li>里程碑评审：每阶段结束时召开正式 Go / No-Go 评审。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Clause 9 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 9 条</span>
+      <h2 class="clause-title">知识产权</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>9.1 甲方既有权利</strong>：商米品牌、POS 硬件 IP、设备密钥根证、商户数据采集体系等甲方既有 IP 仍由甲方独占享有，本协议不作任何转让。</p>
+      <p><strong>9.2 项目期间产生的 IP</strong>：本项目期间，由乙方或乙方组织的团队为本项目专门开发的<strong>产品逻辑、流程、设计、文档、代码</strong>等成果，IP 归属约定如下：</p>
+      <div class="subclause">
+        <span class="subclause-num">(a)</span>
+        <span class="subclause-text">与商米 POS 数据采集 / 硬件签名直接绑定的实现：归甲方所有。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(b)</span>
+        <span class="subclause-text">RWA 发行业务逻辑 / 投资人交互流程 / 合规结构设计：<span class="placeholder">归甲方 / 共有 / 归乙方（请双方协商）</span>。</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(c)</span>
+        <span class="subclause-text">乙方独立开发并在本项目前已存在的方法论与工具：仍归乙方所有；乙方在本项目期间授予甲方非独占、不可转让的使用许可。</span>
+      </div>
+      <p><strong>9.3 第三方 IP</strong>：项目期间委托第三方（如智能合约开发、审计）产生的 IP 归属，由各自的发包合同约定，原则上交付物归甲方所有。</p>
+    </div>
+  </div>
+
+  <!-- Clause 10 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 10 条</span>
+      <h2 class="clause-title">保密义务</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>10.1</strong> 双方相互对在项目期间获得的对方非公开信息、商业秘密、技术资料、商户信息、投资人信息承担保密义务。</p>
+      <p><strong>10.2 例外</strong>：不构成保密义务的信息包括：(a) 已经公开的信息；(b) 接收方在接收前已合法持有的信息；(c) 经对方书面同意公开的信息；(d) 根据法律或监管要求必须披露的信息。</p>
+      <p><strong>10.3 期限</strong>：保密义务自协议签署之日起持续至本协议终止后 <span class="placeholder">3 年</span>。</p>
+    </div>
+  </div>
+
+  <!-- Clause 11 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 11 条</span>
+      <h2 class="clause-title">排他性与竞业限制</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>11.1 项目期间</strong>：乙方不得直接或间接为任何与本项目构成实质竞争关系的第三方提供同类 RWA 项目咨询或负责人服务。</p>
+      <p><strong>11.2 项目结束后</strong>：项目正式终止之日起 <span class="placeholder">6 个月</span> 内，乙方不得接受由本项目商户、持牌方或律所发起的与本项目高度竞争的同类委托，除非获甲方书面同意。</p>
+      <p><strong>11.3</strong> 本条不限制乙方在不冲突领域的其他业务活动。</p>
+    </div>
+  </div>
+
+  <!-- Clause 12 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 12 条</span>
+      <h2 class="clause-title">协议终止与结算</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>12.1 甲方单方终止权</strong>：以下情形之一，甲方可书面通知乙方终止本协议：</p>
+      <ul>
+        <li>Go-1 或 Go-2 判定为 No-Go；</li>
+        <li>乙方严重违反本协议且经书面通知 <span class="placeholder">15 个工作日</span> 内未予纠正；</li>
+        <li>乙方失能或丧失承担本项目的能力。</li>
+      </ul>
+      <p><strong>12.2 乙方单方终止权</strong>：甲方逾期支付应付款项 <span class="placeholder">30 天</span> 以上，或单方实质性变更项目目标导致乙方无法继续履行，乙方可终止本协议。</p>
+      <p><strong>12.3 结算原则</strong>：协议终止时：</p>
+      <div class="subclause">
+        <span class="subclause-num">(a)</span>
+        <span class="subclause-text">已发生且已批准的预算开支：由甲方承担；</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(b)</span>
+        <span class="subclause-text">乙方按比例享有截至终止日的月度管理费；</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(c)</span>
+        <span class="subclause-text">已完成阶段的里程碑奖金按已通过的 Go 决策点结算；</span>
+      </div>
+      <div class="subclause">
+        <span class="subclause-num">(d)</span>
+        <span class="subclause-text">成功费、长期分润：仅在完成对应触发条件时支付，否则不予支付。</span>
+      </div>
+      <p><strong>12.4 不可抗力</strong>：因不可抗力（包括但不限于监管政策重大变化）导致项目无法继续，双方协商终止，未发生但已承诺的款项不再支付。</p>
+    </div>
+  </div>
+
+  <!-- Clause 13 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 13 条</span>
+      <h2 class="clause-title">责任与责任限制</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>13.1 乙方尽职义务</strong>：乙方应以专业、勤勉、谨慎的方式履行本协议项下职责。</p>
+      <p><strong>13.2 不构成兑付担保</strong>：乙方的角色为项目执行负责人，<strong>不构成对 RWA 发行后投资人本金及收益的任何担保或兜底</strong>。投资人对发行人（SPV / 商户）的追索权利不延伸至乙方。</p>
+      <p><strong>13.3 责任限额</strong>：除故意或重大过失外，乙方因履行本协议产生的责任上限不超过 <span class="placeholder">乙方已收取报酬总额的 100%</span>。</p>
+    </div>
+  </div>
+
+  <!-- Clause 14 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 14 条</span>
+      <h2 class="clause-title">适用法律与争议解决</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>14.1 适用法律</strong>：本协议适用 <span class="placeholder">新加坡 / 香港 / 中国大陆 法律</span>（请双方协商确定）。</p>
+      <p><strong>14.2 争议解决</strong>：因本协议引起的争议，双方应首先友好协商；协商不成的，提交 <span class="placeholder">新加坡国际仲裁中心（SIAC）/ 香港国际仲裁中心（HKIAC）</span> 按届时有效的仲裁规则仲裁。仲裁地：<span class="placeholder">新加坡 / 香港</span>。仲裁语言：中文。仲裁裁决终局。</p>
+    </div>
+  </div>
+
+  <!-- Clause 15 -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">第 15 条</span>
+      <h2 class="clause-title">一般条款</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>15.1 协议生效</strong>：本协议自双方授权代表签字（盖章）之日起生效。</p>
+      <p><strong>15.2 完整协议</strong>：本协议（含附表 A / B / C 及双方另行单独签订的报酬附表）构成双方就本项目的完整协议。</p>
+      <p><strong>15.3 修改</strong>：本协议的任何修改须经双方书面同意。</p>
+      <p><strong>15.4 通知</strong>：双方间的正式通知应以书面形式（含电子邮件）送达本协议首页所列联系方式。</p>
+      <p><strong>15.5 可分割性</strong>：本协议任一条款无效或不可执行，不影响其他条款的效力。</p>
+      <p><strong>15.6 文本</strong>：本协议以中文订立，正本一式两份，双方各执一份。</p>
+    </div>
+  </div>
+
+  <!-- Appendix A -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">附表 A</span>
+      <h2 class="clause-title">项目预算明细</h2>
+    </div>
+
+    <div class="budget-block">
+      <div class="budget-phase">
+        <div class="budget-phase-head">
+          <span class="budget-phase-title">Phase 0 · 技术可行性确认</span>
+          <span class="budget-phase-sub">Week 1 · SDK 可用 → Go / 不可用 → 暂停</span>
+        </div>
+        <div class="budget-row head"><span>明细</span><span>SGD</span></div>
+        <div class="budget-row"><span>开发费（SDK 评估 + 采集层）</span><span class="amt">8,000</span></div>
+        <div class="budget-row"><span>AI 工具（Claude Pro / API）</span><span class="amt">1,000</span></div>
+        <div class="budget-row"><span>测试环境搭建</span><span class="amt">1,000</span></div>
+        <div class="budget-row"><span>差旅（商米技术团队对接）</span><span class="amt">1,500</span></div>
+        <div class="budget-row"><span>POS 测试终端（如商米未提供）</span><span class="amt">1,500</span></div>
+        <div class="budget-row"><span>文档、通讯等</span><span class="amt">1,000</span></div>
+        <div class="budget-row subtotal"><span>Phase 0 小计</span><span class="amt">14,000</span></div>
+      </div>
+
+      <div class="budget-phase">
+        <div class="budget-phase-head">
+          <span class="budget-phase-title">Phase 1 · 数据价值验证</span>
+          <span class="budget-phase-sub">Week 2-8 · 系统上线 + 运营 30 天 + 商家获贷</span>
+        </div>
+        <div class="budget-row head"><span>明细</span><span>SGD</span></div>
+        <div class="budget-row"><span>开发费（模块 2-5 + 基础设施, 7 周）</span><span class="amt">40,000</span></div>
+        <div class="budget-row"><span>AWS 基础设施（ECS / RDS / S3 / API Gateway）</span><span class="amt">2,000</span></div>
+        <div class="budget-row"><span>业务开发费（8 周）</span><span class="amt">4,000</span></div>
+        <div class="budget-row"><span>数据授权协议（餐饮连锁, 律师起草）</span><span class="amt">4,000</span></div>
+        <div class="budget-row"><span>商米合作协议（IP / 数据权限 / 商务）</span><span class="amt">6,000</span></div>
+        <div class="budget-row"><span>法律顾问（合同审阅, SGD 400/h × 5h）</span><span class="amt">2,000</span></div>
+        <div class="budget-row"><span>POS 正式测试终端 ×2-3 台</span><span class="amt">1,500</span></div>
+        <div class="budget-row"><span>试点现场部署与数据校验</span><span class="amt">5,000</span></div>
+        <div class="budget-row"><span>项目管理</span><span class="amt">1,000</span></div>
+        <div class="budget-row"><span>应急储备（Phase 0+1 的 10%）</span><span class="amt">6,500</span></div>
+        <div class="budget-row subtotal"><span>Phase 1 小计</span><span class="amt">72,000</span></div>
+      </div>
+
+      <div class="budget-phase">
+        <div class="budget-phase-head">
+          <span class="budget-phase-title">Phase 2 · 首笔 RWA 发行</span>
+          <span class="budget-phase-sub">Week 5-12 · 与 Phase 1 并行 · 链上开发 + 智能合约 + 审计</span>
+        </div>
+        <div class="budget-row head"><span>明细</span><span>SGD</span></div>
+        <div class="budget-row"><span>开发费（链上开发, 5 周）</span><span class="amt">22,000</span></div>
+        <div class="budget-row"><span>智能合约开发（ERC-3643, 外包 / 专业审查）</span><span class="amt">17,000</span></div>
+        <div class="budget-row"><span>AWS 基础设施（Phase 2 新增, 12 周）</span><span class="amt">7,000</span></div>
+        <div class="budget-row"><span>AI 工具（12 周）</span><span class="amt">3,000</span></div>
+        <div class="budget-row"><span>智能合约安全审计（SlowMist / CertiK / Hacken）</span><span class="amt">22,000</span></div>
+        <div class="budget-row"><span>应急储备（Phase 2 的 10%）</span><span class="amt">10,000</span></div>
+        <div class="budget-row subtotal"><span>Phase 2 小计</span><span class="amt">81,000</span></div>
+      </div>
+
+      <div class="budget-total">
+        <span class="budget-total-label">项目总计（中位数）</span>
+        <span class="budget-total-amt">SGD 167,000 · 约 USD 125,000</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px; color:var(--text-3); line-height:1.7; margin-top:14px;">
+      <strong>说明 1：</strong>预算金额为基于现有信息的中位数估算，实际开支以最终供应商报价及合同金额为准；超支处理见第 4.4 条。
+    </p>
+    <p style="font-size:12px; color:var(--text-3); line-height:1.7; margin-top:6px;">
+      <strong>说明 2：</strong>原 Phase 2 预算中 "持牌方合规发行全套（通道 / KYC / AML / 资产结构 / 法律 / MAS）SGD 250,000" 已从本协议预算中剥离，由甲方在持牌方对接后另行直接支付，不经由乙方账户流转（见第 4.1 条与 7.5 条）。
+    </p>
+  </div>
+
+  <!-- Appendix B -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">附表 B</span>
+      <h2 class="clause-title">阶段交付清单（Deliverables）</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>Phase 0 · 技术可行性确认</strong></p>
+      <ul>
+        <li>商米 POS SDK 可用性评估报告</li>
+        <li>采集层技术方案（含数据签名、上链链路）</li>
+        <li>测试环境部署文档</li>
+        <li>Go / No-Go 决策建议书（提交甲方）</li>
+      </ul>
+      <p><strong>Phase 1 · 数据价值验证</strong></p>
+      <ul>
+        <li>可信经营报告系统（可运行版本）</li>
+        <li>试点商户签约文件（数据授权协议）</li>
+        <li>30 天运营数据 + 上链哈希存证记录</li>
+        <li>ANext（或同等持牌方）出具的数据价值认可意见</li>
+        <li>商家贷款落地证明</li>
+        <li>Phase 1 项目复盘报告</li>
+      </ul>
+      <p><strong>Phase 2 · 首笔 RWA 发行</strong></p>
+      <ul>
+        <li>SPV 设立完成证明（公司注册、章程、独立董事到位）</li>
+        <li>智能合约部署 + 第三方审计报告</li>
+        <li>首笔 RWA 链上发行成功记录（交易哈希）</li>
+        <li>商家收到融资款的资金流证明</li>
+        <li>项目完整复盘文档 + 第二期建议书</li>
+      </ul>
+      <p style="font-size:12px; color:var(--text-3); margin-top:10px;">
+        <strong>注：</strong>持牌方负责的发行文件全套（IM / 认购协议 / 风险披露 / KYC 流程等）由持牌方直接交付甲方，不在本附表交付物范围内；乙方负责对接与协调。
+      </p>
+    </div>
+  </div>
+
+  <!-- Appendix C -->
+  <div class="clause">
+    <div class="clause-head">
+      <span class="clause-num">附表 C</span>
+      <h2 class="clause-title">Go / No-Go 决策标准</h2>
+    </div>
+    <div class="clause-body">
+      <p><strong>Go-1（Phase 0 → Phase 1）</strong></p>
+      <ul>
+        <li><strong>Go</strong>：商米 POS SDK 可获取每笔交易的硬件签名 + 关键字段可读取（金额、时间、SKU、设备 ID）+ 签名可上链验证。</li>
+        <li><strong>暂停</strong>：SDK 部分可用但需商米侧补充开发；明确补充范围与时间表。</li>
+        <li><strong>No-Go</strong>：SDK 不具备硬件签名能力 / 采集层不可工程化。</li>
+      </ul>
+      <p><strong>Go-2（Phase 1 → Phase 2）</strong></p>
+      <ul>
+        <li><strong>Go</strong>：同时满足以下条件：(a) 系统上线运营 ≥ 30 日且 SLA 达标；(b) ANext 或同等持牌方出具数据价值认可意见；(c) 商家完成贷款落地；(d) 无重大合规或技术风险。</li>
+        <li><strong>No-Go</strong>：以上任一条件未达成且无可补救路径。</li>
+      </ul>
+      <p><strong>No-Go 后的资金结算</strong></p>
+      <ul>
+        <li>已发生且已批准的预算开支：由甲方承担，已支付部分不退还；</li>
+        <li>剩余未使用资金：在 No-Go 决定后 <span class="placeholder">15 个工作日</span> 内退还至甲方指定账户；</li>
+        <li>乙方按比例享有截至 No-Go 日的月度管理费；</li>
+        <li>已通过阶段的里程碑奖金按第 12.3 条结算。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Signature -->
+  <div class="signature-block">
+    <div>
+      <div class="sig-label">甲方 · 商米科技有限公司</div>
+      <div class="sig-line"></div>
+      <div class="sig-meta">
+        授权代表 · <strong><span class="placeholder">姓名</span></strong><br>
+        职务 · <strong><span class="placeholder">职务</span></strong><br>
+        日期 · <strong><span class="placeholder">YYYY-MM-DD</span></strong><br>
+        盖章 · <span class="placeholder">公司公章</span>
+      </div>
+    </div>
+    <div>
+      <div class="sig-label">乙方 · 项目负责人</div>
+      <div class="sig-line"></div>
+      <div class="sig-meta">
+        姓名 / 主体 · <strong><span class="placeholder">姓名 / 公司</span></strong><br>
+        证件号 · <strong><span class="placeholder">身份证 / 公司注册号</span></strong><br>
+        日期 · <strong><span class="placeholder">YYYY-MM-DD</span></strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-foot">
+    <p>
+      <strong>免责声明 · Disclaimer.</strong> 本协议为初稿草拟，仅供讨论用途。本协议任何条款的最终生效以双方签字盖章为准；签署前必须经合格法律顾问审阅。本文件不构成法律意见。
+    </p>
+    <p style="margin-top:8px;">
+      <strong>占位符说明.</strong> 标有 <span class="placeholder" style="display:inline-block;">黄色占位符</span> 的字段，请双方在签署前填写或与法律顾问协商确认。
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
