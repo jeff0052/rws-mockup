@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商米 RWA · 战略文件套件 (6 图)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.06), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.06), transparent 50%),
+      #0A1628;
+    padding: 48px 32px 80px;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    font-size: 11px; color: #D4AF37;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .title {
+    font-size: 36px; font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .title .accent { color: #D4AF37; }
+  .sub {
+    font-size: 14px; color: #9BB0C8;
+    letter-spacing: 1px;
+  }
+
+  /* Reading order banner */
+  .reading-order {
+    margin: 28px auto 36px;
+    max-width: 900px;
+    padding: 14px 22px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px;
+  }
+  .reading-order .label {
+    color: #D4AF37; font-weight: 700; letter-spacing: 1.5px;
+    font-size: 11px; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .reading-order .flow {
+    color: #FFFFFF;
+    font-weight: 500;
+  }
+  .reading-order .flow span {
+    color: #D4AF37; font-weight: 800;
+    margin: 0 2px;
+  }
+  .reading-order .flow .arrow {
+    color: #9BB0C8; margin: 0 6px; font-weight: 400;
+  }
+
+  /* Cards grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 1080px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,175,55,0.5);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
+  }
+
+  /* Preview */
+  .preview {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0A1628;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(155,176,200,0.15);
+  }
+  .preview iframe {
+    width: 1600px;
+    height: 900px;
+    border: 0;
+    transform-origin: top left;
+    pointer-events: none;
+    position: absolute;
+    top: 0; left: 0;
+  }
+  /* Scale to fit. Card ~400px wide. 400/1600 = 0.25 */
+  /* but we use aspect-ratio container, scale set via JS for responsive */
+  .preview .scaler {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1600px;
+    height: 900px;
+    transform-origin: top left;
+  }
+  .badge-num {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: rgba(212,175,55,0.95);
+    color: #0A1628;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .badge-audience {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(10,22,40,0.85);
+    color: #9BB0C8;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    z-index: 2;
+    border: 1px solid rgba(155,176,200,0.3);
+  }
+
+  /* Card body */
+  .body {
+    padding: 16px 18px 18px;
+    display: flex; flex-direction: column;
+    flex: 1;
+  }
+  .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+  .desc {
+    font-size: 12px;
+    color: #9BB0C8;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    flex: 1;
+  }
+  .actions {
+    display: flex; gap: 8px;
+  }
+  .btn {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    transition: background 0.15s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #D4AF37, #8B6914);
+    color: #0A1628;
+  }
+  .btn-primary:hover { background: linear-gradient(135deg, #FFD96B, #B8941F); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: #C8D6E5;
+    border: 1px solid rgba(155,176,200,0.3);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); color: #FFF; }
+
+  /* Footer notes */
+  .notes {
+    margin-top: 48px;
+    padding: 20px 28px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.15);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 720px) { .notes { grid-template-columns: 1fr; } }
+  .note h4 {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px;
+    text-transform: uppercase; font-weight: 700; margin-bottom: 8px;
+  }
+  .note p {
+    font-size: 12px; color: #C8D6E5; line-height: 1.6;
+  }
+  .note p b { color: #FFFFFF; font-weight: 600; }
+
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 11px;
+    color: #6B7F99;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .footer .brand { color: #D4AF37; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow">SUNMI · RWA · STRATEGIC DECK</div>
+    <div class="title">商米 RWA · <span class="accent">战略文件套件</span></div>
+    <div class="sub">六张图讲清楚：从战略 · 结构 · 产品 · 执行 · 分工 · 退出</div>
+  </div>
+
+  <div class="reading-order">
+    <div class="label">建议阅读顺序</div>
+    <div class="flow">
+      <span>01</span> 结构<span class="arrow">→</span>
+      <span>02</span> 战略<span class="arrow">→</span>
+      <span>03</span> 产品<span class="arrow">→</span>
+      <span>04</span> 排期<span class="arrow">→</span>
+      <span>06</span> 分工<span class="arrow">→</span>
+      <span>05</span> 退出
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- Card 01 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">01</div>
+        <div class="badge-audience">律师 / 监管</div>
+        <div class="scaler"><iframe src="rwa-structure-diagram.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">整体结构 · 牌照 · 风控模型</div>
+        <div class="desc">L0 牌照矩阵 (1/9/7号牌) + L1 资金流 + L2 数据流 + L3 五大风控措施。给法律和监管看的整体合规架构。</div>
+        <div class="actions">
+          <a href="rwa-structure-diagram.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 02 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">02</div>
+        <div class="badge-audience">董事会 / 战投</div>
+        <div class="scaler"><iframe src="rwa-roadmap-diagram.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">三阶段同心圆能力闭环</div>
+        <div class="desc">数据闭环 → 发行闭环 → 交易闭环。四象限能力轴（牌照 / 技术 / 团队 / 资产）贯穿全程。先做数据可信。</div>
+        <div class="actions">
+          <a href="rwa-roadmap-diagram.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 03 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">03</div>
+        <div class="badge-audience">合格投资人</div>
+        <div class="scaler"><iframe src="rwa-phase1-execution.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">HK Phase 1 · 双轨链上资产</div>
+        <div class="desc">2000 万样板基金 · 4 步执行流 · 通用 Token (FT) 覆盖广度投资人 vs 特定门店 NFT 锁定深度投资人。</div>
+        <div class="actions">
+          <a href="rwa-phase1-execution.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 04 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">04</div>
+        <div class="badge-audience">执行团队</div>
+        <div class="scaler"><iframe src="rwa-phase1-timeline.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">12 个月 Gantt 时间线</div>
+        <div class="desc">5 条并行工作流 × 6 个核心里程碑。Q1 设结构 · Q2 接数据 · Q3 完成发行 · Q4 持续运营。</div>
+        <div class="actions">
+          <a href="rwa-phase1-timeline.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 05 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">05</div>
+        <div class="badge-audience">律师 / 投资人</div>
+        <div class="scaler"><iframe src="rwa-exit-mechanism.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">FT / NFT 二级市场退出机制</div>
+        <div class="desc">双轨退出路径 + 智能合约层 + 法律层。FT 走标准化高频转让，NFT 走定向转让 + 资产处置。</div>
+        <div class="actions">
+          <a href="rwa-exit-mechanism.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 06 -->
+    <div class="card">
+      <div class="preview">
+        <div class="badge-num">06</div>
+        <div class="badge-audience">商务 / 谈判</div>
+        <div class="scaler"><iframe src="rwa-partner-matrix.html" loading="lazy" scrolling="no"></iframe></div>
+      </div>
+      <div class="body">
+        <div class="name">合作方 RACI 分工矩阵</div>
+        <div class="desc">7 合作方 × 9 业务环节 · R/S/C/I 责任分配。商米主导 3 项 · 持牌方主导 4 项 · 技术方主导 2 项。</div>
+        <div class="actions">
+          <a href="rwa-partner-matrix.html" class="btn btn-primary" target="_blank">打开全屏 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h4>使用方式</h4>
+      <p>每张图都是独立的 <b>16:9 1600×900</b> 单页 HTML。<br>点击 <b>打开全屏</b> 后浏览器 <b>Cmd/Ctrl + P</b> 可直接另存 PDF，或者 <b>截图贴进 PPT</b>。</p>
+    </div>
+    <div class="note">
+      <h4>三种场景</h4>
+      <p><b>对投资人：</b>用 02 + 03 + 05<br>
+         <b>对律师：</b>用 01 + 05 + 06<br>
+         <b>对执行团队：</b>用 04 + 06</p>
+    </div>
+    <div class="note">
+      <h4>设计原则</h4>
+      <p>深蓝 + 金色 = 投行 / 麦肯锡风。<br>
+         <b>数据可信</b> → <b>资产可信</b> → <b>发行可信</b> → <b>交易可信</b>。</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="brand">SUNMI · RWA INFRASTRUCTURE</span> &nbsp;·&nbsp; HK PHASE 1 · 2026
+  </div>
+
+</div>
+
+<script>
+  // Responsive scale: fit 1600x900 iframes into card preview boxes.
+  function rescale() {
+    document.querySelectorAll('.preview').forEach(p => {
+      const w = p.clientWidth;
+      const scale = w / 1600;
+      const scaler = p.querySelector('.scaler');
+      if (scaler) scaler.style.transform = `scale(${scale})`;
+    });
+  }
+  window.addEventListener('load', rescale);
+  window.addEventListener('resize', rescale);
+  // Re-scale once iframes are likely settled
+  setTimeout(rescale, 500);
+</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA 基金 · 香港第一期 · 双轨链上资产结构</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  /* ----- Header ----- */
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .title {
+    font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF;
+  }
+  .title .accent { color: #D4AF37; }
+  .subtitle {
+    font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase;
+  }
+  /* ----- Key params strip ----- */
+  .params {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .param-card {
+    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .param-label { font-size: 10px; color: #9BB0C8; letter-spacing: 1.5px; text-transform: uppercase; }
+  .param-value { font-size: 14px; font-weight: 700; color: #FFFFFF; }
+  .param-value .gold { color: #D4AF37; }
+  /* ----- Flow row (Top) ----- */
+  .flow {
+    display: flex; align-items: stretch; gap: 0;
+    margin-bottom: 16px;
+    height: 178px;
+  }
+  .flow-block {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .flow-step {
+    position: absolute; top: -9px; left: 12px;
+    background: #D4AF37; color: #0A1628;
+    font-size: 10px; font-weight: 800;
+    padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .flow-title {
+    font-size: 13px; font-weight: 700; color: #FFFFFF;
+    margin-top: 6px; margin-bottom: 6px;
+  }
+  .flow-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .flow-item {
+    background: rgba(70,130,180,0.12);
+    border: 1px solid rgba(70,130,180,0.3);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 11px; color: #E0EBF7;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .flow-item .ico { font-size: 13px; flex: 0 0 auto; }
+  .flow-item .meta { color: #9BB0C8; font-size: 10px; margin-left: auto; }
+  .flow-item.gold { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.4); }
+  .flow-arrow {
+    flex: 0 0 28px;
+    display: flex; align-items: center; justify-content: center;
+    color: #D4AF37; font-size: 22px;
+    position: relative;
+  }
+  /* ----- Dual token panel ----- */
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 0;
+    height: 460px;
+  }
+  .token-card {
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .token-ft {
+    background: linear-gradient(135deg, rgba(58,120,176,0.22) 0%, rgba(19,49,92,0.4) 100%);
+    border: 1px solid rgba(107,174,229,0.5);
+  }
+  .token-nft {
+    background: linear-gradient(135deg, rgba(168,85,247,0.18) 0%, rgba(80,40,130,0.35) 100%);
+    border: 1px solid rgba(192,132,252,0.5);
+  }
+  .token-card::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+  .token-ft::before { background: linear-gradient(90deg, #6BAEE5, #3A78B0); }
+  .token-nft::before { background: linear-gradient(90deg, #C084FC, #9333EA); }
+
+  .token-head {
+    display: flex; align-items: center; gap: 14px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .token-icon {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex: 0 0 auto;
+  }
+  .token-ft .token-icon { background: linear-gradient(135deg, #6BAEE5, #1E5F8E); }
+  .token-nft .token-icon { background: linear-gradient(135deg, #C084FC, #6B2BCC); }
+
+  .token-name { font-size: 18px; font-weight: 800; color: #FFFFFF; letter-spacing: 0.5px; }
+  .token-en { font-size: 11px; color: #9BB0C8; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+  .token-tagline {
+    font-size: 12px; margin-top: 4px;
+    line-height: 1.4;
+  }
+  .token-ft .token-tagline { color: #6BAEE5; }
+  .token-nft .token-tagline { color: #C084FC; }
+
+  .token-attrs {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 6px 12px;
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+  .attr-key { color: #9BB0C8; font-weight: 500; }
+  .attr-val { color: #FFFFFF; }
+  .attr-val .hi { color: #D4AF37; font-weight: 600; }
+
+  .token-footer {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px;
+    color: #9BB0C8;
+  }
+  .token-footer .audience { color: #FFFFFF; font-weight: 600; }
+
+  /* Divider between cards */
+  .vs-divider {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px;
+    position: relative;
+  }
+  .vs-divider::before {
+    content: "";
+    position: absolute;
+    top: 10%; bottom: 10%; left: 50%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(212,175,55,0.4) 30%, rgba(212,175,55,0.4) 70%, transparent);
+  }
+  .vs-badge {
+    background: linear-gradient(135deg, #D4AF37, #8B6914);
+    color: #0A1628;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; letter-spacing: 1px;
+    box-shadow: 0 4px 16px rgba(212,175,55,0.4);
+    z-index: 1;
+  }
+  .vs-label {
+    font-size: 10px; color: #D4AF37;
+    letter-spacing: 2px;
+    z-index: 1;
+    background: #0A1628;
+    padding: 2px 6px;
+  }
+  .vs-merge {
+    position: absolute;
+    top: 30px;
+    font-size: 9px;
+    color: #9BB0C8;
+    text-align: center;
+    line-height: 1.4;
+    width: 120%;
+  }
+  .vs-source {
+    position: absolute;
+    bottom: 30px;
+    font-size: 9px;
+    color: #9BB0C8;
+    text-align: center;
+    line-height: 1.4;
+    width: 120%;
+  }
+
+  /* Footer principle */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text {
+    font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px;
+  }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA 基金 · 香港第一期 · <span class="accent">双轨链上资产结构</span></div>
+      <div class="subtitle" style="margin-top:6px;">HK PHASE 1 · 2000 万样板基金 · FT + NFT 双层代币化</div>
+    </div>
+    <div class="subtitle">产品结构 · 机密</div>
+  </div>
+
+  <!-- Key parameters strip -->
+  <div class="params">
+    <div class="param-card">
+      <div class="param-label">注册地</div>
+      <div class="param-value">香港 · <span class="gold">Phase 1</span></div>
+    </div>
+    <div class="param-card">
+      <div class="param-label">基金规模</div>
+      <div class="param-value"><span class="gold">HKD 2,000 万</span> · 样板</div>
+    </div>
+    <div class="param-card">
+      <div class="param-label">发起方</div>
+      <div class="param-value">商米 + 持牌合作方</div>
+    </div>
+    <div class="param-card">
+      <div class="param-label">标的来源</div>
+      <div class="param-value">商米自寻 · 自营网络</div>
+    </div>
+    <div class="param-card">
+      <div class="param-label">投资人</div>
+      <div class="param-value">香港合格投资人 (PI)</div>
+    </div>
+  </div>
+
+  <!-- ===== Top horizontal flow ===== -->
+  <div class="flow">
+    <div class="flow-block">
+      <div class="flow-step">STEP 1</div>
+      <div class="flow-title">基金设立 · HK SPV</div>
+      <div class="flow-content">
+        <div class="flow-item gold"><span class="ico">🏛️</span><span>HK 持牌基金 / SPV</span><span class="meta">HKD 20M</span></div>
+        <div class="flow-item"><span class="ico">🏢</span><span>商米（发起 / 数据 / 风控）</span></div>
+        <div class="flow-item"><span class="ico">⚖️</span><span>持牌合作方（基金 / 律 / 托管）</span></div>
+        <div class="flow-item"><span class="ico">👥</span><span>合格投资人（HK PI）</span></div>
+      </div>
+    </div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-block">
+      <div class="flow-step">STEP 2</div>
+      <div class="flow-title">自寻标的 · 资产包</div>
+      <div class="flow-content">
+        <div class="flow-item"><span class="ico">🍱</span><span>连锁餐饮门店</span><span class="meta">3-5 家</span></div>
+        <div class="flow-item"><span class="ico">🏪</span><span>标准化零售门店</span><span class="meta">3-5 家</span></div>
+        <div class="flow-item"><span class="ico">📋</span><span>权属 + 收益权 协议</span></div>
+        <div class="flow-item gold"><span class="ico">🎯</span><span>共 5-10 家样板门店</span></div>
+      </div>
+    </div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-block">
+      <div class="flow-step">STEP 3</div>
+      <div class="flow-title">数据采集 · 现金流上链</div>
+      <div class="flow-content">
+        <div class="flow-item"><span class="ico">💳</span><span>POS / 支付流水</span></div>
+        <div class="flow-item"><span class="ico">📡</span><span>IoT / 经营数据 / 库存</span></div>
+        <div class="flow-item"><span class="ico">🏦</span><span>银行流水交叉验证</span></div>
+        <div class="flow-item gold"><span class="ico">🔗</span><span>链上凭证 + 智能合约</span></div>
+      </div>
+    </div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-block">
+      <div class="flow-step">STEP 4</div>
+      <div class="flow-title">收益现金流 · 待分配</div>
+      <div class="flow-content">
+        <div class="flow-item"><span class="ico">💵</span><span>门店经营净现金流</span></div>
+        <div class="flow-item"><span class="ico">📊</span><span>月度 / 季度结算</span></div>
+        <div class="flow-item gold"><span class="ico">⚙️</span><span>智能合约自动分账</span></div>
+        <div class="flow-item gold"><span class="ico">⬇️</span><span>分为 FT + NFT 双轨发行</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Dual token comparison ===== -->
+  <div class="dual">
+    <!-- Generic Token (FT) -->
+    <div class="token-card token-ft">
+      <div class="token-head">
+        <div class="token-icon">🪙</div>
+        <div>
+          <div class="token-name">通用 Token</div>
+          <div class="token-en">FUNGIBLE TOKEN · FT</div>
+          <div class="token-tagline">对应基金整体收益 · 标准化 · 可流通</div>
+        </div>
+      </div>
+      <div class="token-attrs">
+        <div class="attr-key">对应资产</div>
+        <div class="attr-val">基金<span class="hi">整体收益池</span>（5-10 家门店现金流合并）</div>
+
+        <div class="attr-key">收益逻辑</div>
+        <div class="attr-val">按持有份额<span class="hi">比例分红</span> · 智能合约自动分配</div>
+
+        <div class="attr-key">发行总量</div>
+        <div class="attr-val">与 HKD 20M 基金规模 1:1 锚定</div>
+
+        <div class="attr-key">投资门槛</div>
+        <div class="attr-val">较低 · 可拆分至小额份额</div>
+
+        <div class="attr-key">流动性</div>
+        <div class="attr-val">较高 · 同质化 · 易于二级转让</div>
+
+        <div class="attr-key">附加权益</div>
+        <div class="attr-val">无（纯收益型）</div>
+
+        <div class="attr-key">退出方式</div>
+        <div class="attr-val">二级市场转让 + 基金回购</div>
+
+        <div class="attr-key">合规结构</div>
+        <div class="attr-val">基金收益权代币化 · HK PI 限定</div>
+      </div>
+      <div class="token-footer">
+        <span>适合人群：</span>
+        <span class="audience">分散投资人 · 财务回报导向</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="vs-divider">
+      <div class="vs-source">同一基金<br>同一现金流池</div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-label">DUAL TRACK</div>
+      <div class="vs-merge">两类资产并行发行<br>合规结构隔离</div>
+    </div>
+
+    <!-- Specific NFT -->
+    <div class="token-card token-nft">
+      <div class="token-head">
+        <div class="token-icon">🎫</div>
+        <div>
+          <div class="token-name">特定门店 NFT</div>
+          <div class="token-en">NON-FUNGIBLE TOKEN · NFT</div>
+          <div class="token-tagline">对应单一门店权益 · 唯一性 · 收藏属性</div>
+        </div>
+      </div>
+      <div class="token-attrs">
+        <div class="attr-key">对应资产</div>
+        <div class="attr-val"><span class="hi">单一门店</span>的收益权 + 经营权益</div>
+
+        <div class="attr-key">收益逻辑</div>
+        <div class="attr-val">该门店<span class="hi">独立现金流</span>分红 + 经营分润</div>
+
+        <div class="attr-key">发行总量</div>
+        <div class="attr-val">与门店数量匹配 · 每店一张或多张</div>
+
+        <div class="attr-key">投资门槛</div>
+        <div class="attr-val">较高 · 单张对应整店或大份额</div>
+
+        <div class="attr-key">流动性</div>
+        <div class="attr-val">较低 · 异质化 · 一店一价</div>
+
+        <div class="attr-key">附加权益</div>
+        <div class="attr-val">命名权 / VIP / 优先认购 / 数据看板</div>
+
+        <div class="attr-key">退出方式</div>
+        <div class="attr-val">NFT 转让 + 门店资产处置清算</div>
+
+        <div class="attr-key">合规结构</div>
+        <div class="attr-val">基金子级权益 · 法律协议绑定门店</div>
+      </div>
+      <div class="token-footer">
+        <span>适合人群：</span>
+        <span class="audience">战略 / 定向 / 行业型投资人</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer principle -->
+  <div class="footer-band">
+    <div class="text">
+      一个基金 · 一套现金流 · <span>双轨链上资产</span> &nbsp;·&nbsp;
+      <span>FT</span> 覆盖广度投资人 &nbsp;|&nbsp; <span>NFT</span> 锁定深度投资人
+    </div>
+    <div class="brand">SUNMI · HK PHASE 1</div>
+  </div>
+</div>
+</body>
+</html>

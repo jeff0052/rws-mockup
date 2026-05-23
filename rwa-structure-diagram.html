@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>小型实体现金流资产 · RWA 基金结构与风险控制模型</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  /* ----- L0 牌照层 ----- */
+  .licenses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .licenses::before {
+    content: "L0 · 香港 SFC 牌照矩阵";
+    position: absolute; top: -8px; left: 0;
+    background: #0A1628; padding: 0 10px;
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+  }
+  .license-card {
+    background: linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 100%);
+    border: 1px solid rgba(212,175,55,0.45);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 12px;
+    align-items: center;
+    position: relative;
+  }
+  .license-num {
+    background: linear-gradient(180deg, #D4AF37 0%, #8B6914 100%);
+    color: #0A1628;
+    border-radius: 6px;
+    text-align: center;
+    padding: 8px 0;
+    font-weight: 800;
+  }
+  .license-num .big { font-size: 22px; display: block; line-height: 1; }
+  .license-num .label { font-size: 9px; letter-spacing: 1px; margin-top: 2px; display: block; }
+  .license-body .scope { font-size: 13px; font-weight: 700; color: #FFFFFF; }
+  .license-body .scope .en { color: #9BB0C8; font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .license-body .desc { font-size: 11px; color: #C8D6E5; margin-top: 3px; line-height: 1.5; }
+  .license-body .maps { font-size: 10px; color: #D4AF37; margin-top: 3px; letter-spacing: 0.5px; }
+  .lic-badge {
+    display: inline-block;
+    background: #D4AF37; color: #0A1628;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 3px;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .title {
+    font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF;
+  }
+  .title .accent { color: #D4AF37; }
+  .subtitle {
+    font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .layers {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 12px;
+    height: calc(100% - 190px);
+    position: relative;
+  }
+  .layer {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.18);
+    border-radius: 10px;
+    padding: 14px 20px;
+    position: relative;
+    display: flex; align-items: center;
+  }
+  .layer-label {
+    position: absolute;
+    left: -10px; top: 14px;
+    background: #D4AF37;
+    color: #0A1628;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 0 4px 4px 0;
+    letter-spacing: 1px;
+  }
+  .layer-title {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 14px; font-weight: 700; letter-spacing: 6px;
+    color: #D4AF37;
+    margin-right: 18px;
+    padding: 8px 14px 8px 0;
+    border-right: 2px solid rgba(212,175,55,0.4);
+    white-space: nowrap;
+  }
+  .nodes {
+    flex: 1;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  /* ----- Layer 1: 资金流 ----- */
+  .node {
+    background: linear-gradient(180deg, #1B3A6B 0%, #14294D 100%);
+    border: 1px solid rgba(155,176,200,0.35);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+    min-width: 130px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .node-license {
+    position: absolute;
+    top: -8px; right: -8px;
+    background: #D4AF37;
+    color: #0A1628;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    border: 1.5px solid #0A1628;
+  }
+  .node .icon { font-size: 22px; margin-bottom: 6px; display: block; }
+  .node .name { font-size: 13px; font-weight: 600; color: #FFFFFF; line-height: 1.4; }
+  .node.core { background: linear-gradient(180deg, #D4AF37 0%, #B8941F 100%); border-color: #D4AF37; }
+  .node.core .name { color: #0A1628; }
+  .arrow {
+    flex: 0 0 36px; height: 2px; background: #4A6FA5;
+    position: relative;
+  }
+  .arrow::after {
+    content: "";
+    position: absolute; right: -1px; top: -4px;
+    border-left: 8px solid #4A6FA5;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+  .arrow.gold { background: #D4AF37; }
+  .arrow.gold::after { border-left-color: #D4AF37; }
+  .arrow .label {
+    position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: #9BB0C8; white-space: nowrap;
+  }
+  .arrow.return { background: #D4AF37; height: 2px; }
+  /* ----- Layer 2: 数据流 ----- */
+  .data-sources {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    flex: 1;
+  }
+  .data-chip {
+    background: rgba(70,130,180,0.15);
+    border: 1px solid rgba(70,130,180,0.4);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: #C8D6E5;
+    text-align: center;
+    font-weight: 500;
+  }
+  .l2-flow {
+    display: flex; align-items: center; gap: 14px; width: 100%;
+  }
+  .funnel {
+    background: linear-gradient(180deg, #13315C 0%, #0B2545 100%);
+    border: 1px solid #4A6FA5;
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .funnel .name { font-size: 12px; color: #FFFFFF; font-weight: 600; line-height: 1.4; }
+  .funnel .sub { font-size: 10px; color: #9BB0C8; margin-top: 4px; }
+  .output {
+    background: linear-gradient(135deg, #D4AF37 0%, #8B6914 100%);
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #0A1628;
+    text-align: center;
+    min-width: 200px;
+    box-shadow: 0 4px 16px rgba(212,175,55,0.3);
+  }
+  .output .name { font-size: 13px; font-weight: 700; line-height: 1.5; }
+  .output .tags { font-size: 10px; margin-top: 4px; opacity: 0.8; }
+  /* ----- Layer 3: 风险控制 ----- */
+  .risks {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    flex: 1;
+  }
+  .risk-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.25);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .risk-header {
+    background: linear-gradient(90deg, #8B2C2C, #6B1F1F);
+    color: #FFFFFF;
+    font-size: 12px; font-weight: 700;
+    padding: 6px 8px;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .risk-arrow {
+    text-align: center;
+    color: #D4AF37;
+    font-size: 10px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .risk-control {
+    background: linear-gradient(90deg, #1E4D3A, #15382B);
+    color: #C8E6D5;
+    font-size: 10.5px;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 1.5;
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .footer {
+    position: absolute;
+    bottom: 12px; left: 56px; right: 56px;
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: #6B7F99;
+    letter-spacing: 1px;
+  }
+  .footer .brand { color: #D4AF37; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">小型实体现金流资产 · <span class="accent">RWA 基金结构与风险控制模型</span></div>
+      <div class="subtitle" style="margin-top:6px;">FROM REAL-WORLD CASH FLOW TO INSTITUTIONAL-GRADE RWA</div>
+    </div>
+    <div class="subtitle">投资人路演 · 机密文件</div>
+  </div>
+
+  <!-- L0: 牌照矩阵 -->
+  <div class="licenses">
+    <div class="license-card">
+      <div class="license-num"><span class="big">1</span><span class="label">TYPE 1</span></div>
+      <div class="license-body">
+        <div class="scope">发行 RWA<span class="en">Dealing in Securities</span></div>
+        <div class="desc">证券交易 / 承销 / 代销，覆盖 RWA 产品的发行与一级市场认购环节</div>
+        <div class="maps">▼ 对应 L1：投资人 → RWA 基金 / SPV</div>
+      </div>
+    </div>
+    <div class="license-card">
+      <div class="license-num"><span class="big">9</span><span class="label">TYPE 9</span></div>
+      <div class="license-body">
+        <div class="scope">托管 / 资产管理<span class="en">Asset Management</span></div>
+        <div class="desc">基金运营、资产组合管理、底层资产持续监控与净值核算</div>
+        <div class="maps">▼ 对应 L1 / L2：资产包持有 + 数据采集与估值</div>
+      </div>
+    </div>
+    <div class="license-card">
+      <div class="license-num"><span class="big">7</span><span class="label">TYPE 7</span></div>
+      <div class="license-body">
+        <div class="scope">交易 RWA<span class="en">Automated Trading Services</span></div>
+        <div class="desc">提供自动化交易平台，支持二级市场流通、撮合与清算</div>
+        <div class="maps">▼ 对应 L1：收益返还 / 二级市场退出</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layers">
+
+    <!-- Layer 1: 资金流 -->
+    <div class="layer">
+      <div class="layer-label">L1</div>
+      <div class="layer-title">资&nbsp;金&nbsp;流</div>
+      <div class="nodes">
+        <div class="node">
+          <span class="icon">👥</span>
+          <div class="name">投资人<br>家族办公室</div>
+        </div>
+        <div class="arrow"><span class="label">出资</span></div>
+        <div class="node">
+          <div class="node-license">1号牌</div>
+          <span class="icon">🏛️</span>
+          <div class="name">RWA 基金<br>SPV 主体</div>
+        </div>
+        <div class="arrow"><span class="label">投资配置</span></div>
+        <div class="node core">
+          <div class="node-license">9号牌</div>
+          <span class="icon">🏪</span>
+          <div class="name">小型实体<br>资产包</div>
+        </div>
+        <div class="arrow"><span class="label">日常经营</span></div>
+        <div class="node">
+          <span class="icon">💵</span>
+          <div class="name">经营现金流</div>
+        </div>
+        <div class="arrow gold"><span class="label">分配收益</span></div>
+        <div class="node">
+          <div class="node-license">7号牌</div>
+          <span class="icon">📈</span>
+          <div class="name">收益返还<br>二级流通</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 2: 资产与数据流 -->
+    <div class="layer">
+      <div class="layer-label">L2</div>
+      <div class="layer-title">数&nbsp;据&nbsp;流</div>
+      <div class="l2-flow">
+        <div class="data-sources">
+          <div class="data-chip">餐饮门店</div>
+          <div class="data-chip">POS 设备</div>
+          <div class="data-chip">收款流水</div>
+          <div class="data-chip">会员数据</div>
+          <div class="data-chip">库存数据</div>
+          <div class="data-chip">经营报表</div>
+        </div>
+        <div class="arrow"><span class="label">实时采集</span></div>
+        <div class="funnel">
+          <div class="name">数字化采集系统</div>
+          <div class="sub">标准化 · 实时同步 · 可追溯</div>
+        </div>
+        <div class="arrow gold"><span class="label">标准化输出</span></div>
+        <div class="output">
+          <div class="name">可审计 · 可验证 · 可追踪<br>的资产现金流</div>
+          <div class="tags">CORE ASSET LAYER</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 3: 风险控制 -->
+    <div class="layer">
+      <div class="layer-label">L3</div>
+      <div class="layer-title">风&nbsp;控&nbsp;层</div>
+      <div class="risks">
+        <div class="risk-card">
+          <div class="risk-header">数据造假风险</div>
+          <div class="risk-arrow">▼ 对应控制 ▼</div>
+          <div class="risk-control">POS 数据<br>+ 银行流水<br>+ 第三方审计<br>交叉验证</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-header">权属确认风险</div>
+          <div class="risk-arrow">▼ 对应控制 ▼</div>
+          <div class="risk-control">股权协议<br>+ 收益权协议<br>+ 资产登记文件</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-header">清算退出风险</div>
+          <div class="risk-arrow">▼ 对应控制 ▼</div>
+          <div class="risk-control">回购条款<br>+ 资产处置机制<br>+ 优先劣后结构</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-header">现金流波动风险</div>
+          <div class="risk-arrow">▼ 对应控制 ▼</div>
+          <div class="risk-control">多资产包分散<br>+ 历史经营数据<br>+ 动态监控</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-header">合规风险</div>
+          <div class="risk-arrow">▼ 对应控制 ▼</div>
+          <div class="risk-control">律师审查<br>+ 基金结构设计<br>+ 监管边界确认</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div>不是简单开店 · 而是把线下门店现金流 <span style="color:#D4AF37;">标准化 · 数据化 · 证券化</span></div>
+    <div class="brand">RWA · REAL-WORLD ASSETS</div>
+  </div>
+</div>
+
+<script>
+  // 打印优化：A4 横版或 16:9 PPT 截图
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "p" && (e.metaKey || e.ctrlKey)) {
+      document.body.style.background = "#FFFFFF";
+    }
+  });
+</script>
+</body>
+</html>

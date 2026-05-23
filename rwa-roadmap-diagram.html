@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · 三阶段同心圆能力闭环模型</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 32px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .title {
+    font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF;
+  }
+  .title .accent { color: #D4AF37; }
+  .subtitle {
+    font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .main {
+    display: grid;
+    grid-template-columns: 720px 1fr;
+    gap: 32px;
+    height: calc(100% - 130px);
+    position: relative;
+  }
+  /* ----- SVG container ----- */
+  .chart {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(155,176,200,0.15);
+    border-radius: 12px;
+    padding: 8px;
+  }
+  .chart-caption {
+    position: absolute;
+    bottom: 12px; left: 16px; right: 16px;
+    text-align: center;
+    font-size: 11px; color: #9BB0C8;
+    letter-spacing: 1px;
+  }
+  /* ----- Right side: stage cards ----- */
+  .stages {
+    display: flex; flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
+  .stage-card {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-radius: 10px;
+    padding: 14px 18px 14px 22px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stage-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+  }
+  .stage-1::before { background: linear-gradient(180deg, #2D8F70 0%, #155538 100%); }
+  .stage-2::before { background: linear-gradient(180deg, #4A8FCC 0%, #13315C 100%); }
+  .stage-3::before { background: linear-gradient(180deg, #F0C75A 0%, #8B6914 100%); }
+
+  .stage-num {
+    font-size: 38px; font-weight: 800; font-style: italic;
+    line-height: 1;
+    align-self: start;
+    margin-top: 2px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.4));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .stage-1 .stage-num { background: linear-gradient(180deg, #4FBF9B, #1B6B4D); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stage-2 .stage-num { background: linear-gradient(180deg, #6BAEE5, #1E5F8E); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stage-3 .stage-num { background: linear-gradient(180deg, #FFD96B, #B8941F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .stage-body { min-width: 0; }
+  .stage-title {
+    font-size: 16px; font-weight: 700; color: #FFFFFF;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .stage-title .en {
+    font-size: 11px; color: #9BB0C8; letter-spacing: 1.5px; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .stage-tagline {
+    font-size: 12px; color: #D4AF37;
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+  }
+  .stage-bullets {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 18px;
+  }
+  .stage-bullet {
+    font-size: 11.5px;
+    color: #C8D6E5;
+    display: flex; gap: 6px;
+    line-height: 1.5;
+  }
+  .stage-bullet b {
+    color: #FFFFFF;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .stage-bullet::before {
+    content: "▸";
+    color: #D4AF37;
+    flex: 0 0 auto;
+  }
+
+  /* ----- Bottom strategy band ----- */
+  .strategy-band {
+    position: absolute;
+    bottom: 18px;
+    left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 18px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .strategy-band .principle {
+    font-size: 12.5px; color: #FFFFFF; font-weight: 600; letter-spacing: 1px;
+  }
+  .strategy-band .principle span { color: #D4AF37; margin: 0 6px; }
+  .strategy-band .brand {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">三阶段同心圆能力闭环模型</span></div>
+      <div class="subtitle" style="margin-top:6px;">DATA-FIRST · ISSUANCE-NEXT · TRADING-LAST</div>
+    </div>
+    <div class="subtitle">战略路线图 · 机密</div>
+  </div>
+
+  <div class="main">
+    <!-- ===== Left: SVG concentric chart ===== -->
+    <div class="chart">
+      <svg viewBox="0 0 720 720" width="660" height="660" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="coreGrad" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="#FFE89C"/>
+            <stop offset="100%" stop-color="#B8941F"/>
+          </radialGradient>
+          <linearGradient id="ring1Grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2D8F70"/>
+            <stop offset="100%" stop-color="#0F3D30"/>
+          </linearGradient>
+          <linearGradient id="ring2Grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3A78B0"/>
+            <stop offset="100%" stop-color="#13315C"/>
+          </linearGradient>
+          <linearGradient id="ring3Grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#D4AF37"/>
+            <stop offset="100%" stop-color="#7A5C10"/>
+          </linearGradient>
+          <marker id="arrowEnd" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#D4AF37"/>
+          </marker>
+        </defs>
+
+        <!-- Subtle outer halo -->
+        <circle cx="360" cy="360" r="296" fill="none" stroke="rgba(212,175,55,0.12)" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- Stage 3 ring (outer): radius 225, stroke-width 70 -->
+        <circle cx="360" cy="360" r="225" fill="none" stroke="url(#ring3Grad)" stroke-width="70" opacity="0.92"/>
+        <!-- Stage 2 ring: radius 155 -->
+        <circle cx="360" cy="360" r="155" fill="none" stroke="url(#ring2Grad)" stroke-width="70" opacity="0.95"/>
+        <!-- Stage 1 ring (inner): radius 85 -->
+        <circle cx="360" cy="360" r="85" fill="none" stroke="url(#ring1Grad)" stroke-width="70" opacity="0.95"/>
+
+        <!-- Ring boundary lines for crisp edges -->
+        <circle cx="360" cy="360" r="50" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+        <circle cx="360" cy="360" r="120" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+        <circle cx="360" cy="360" r="190" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+        <circle cx="360" cy="360" r="260" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+
+        <!-- Diagonal cross dividers (45° / 135°) -->
+        <line x1="176" y1="176" x2="544" y2="544" stroke="rgba(10,22,40,0.6)" stroke-width="2"/>
+        <line x1="544" y1="176" x2="176" y2="544" stroke="rgba(10,22,40,0.6)" stroke-width="2"/>
+
+        <!-- Core circle -->
+        <circle cx="360" cy="360" r="50" fill="url(#coreGrad)" stroke="#FFE89C" stroke-width="1.5"/>
+        <text x="360" y="354" text-anchor="middle" fill="#0A1628" font-size="17" font-weight="800" letter-spacing="2">商米核心</text>
+        <text x="360" y="372" text-anchor="middle" fill="#0A1628" font-size="9.5" font-weight="600" letter-spacing="1">数据·设备·支付·品牌</text>
+
+        <!-- Axis labels (outside ring 3) -->
+        <text x="360" y="58" text-anchor="middle" fill="#D4AF37" font-size="15" font-weight="700" letter-spacing="3">牌照与合规</text>
+        <text x="690" y="365" text-anchor="middle" fill="#D4AF37" font-size="15" font-weight="700" letter-spacing="3">技术与数据</text>
+        <text x="360" y="690" text-anchor="middle" fill="#D4AF37" font-size="15" font-weight="700" letter-spacing="3">团队能力</text>
+        <text x="30" y="365" text-anchor="start" fill="#D4AF37" font-size="15" font-weight="700" letter-spacing="3">资产与业务</text>
+
+        <!-- ===== Cell labels ===== -->
+        <!-- N (牌照): cells at y = 360 - radius -->
+        <text x="360" y="280" text-anchor="middle" fill="#E8F5F0" font-size="12" font-weight="600">外部合作</text>
+        <text x="360" y="295" text-anchor="middle" fill="#9BB0C8" font-size="10">基金·律所·托管</text>
+
+        <text x="360" y="208" text-anchor="middle" fill="#E0EBF7" font-size="12" font-weight="600">自建发行</text>
+        <text x="360" y="223" text-anchor="middle" fill="#9BB0C8" font-size="10">1号 + 9号牌</text>
+
+        <text x="360" y="138" text-anchor="middle" fill="#0A1628" font-size="12" font-weight="700">完整持牌</text>
+        <text x="360" y="153" text-anchor="middle" fill="#3D2F08" font-size="10" font-weight="600">+ 7号 ATS</text>
+
+        <!-- E (技术): cells at x = 360 + radius, vertically centered -->
+        <text x="445" y="358" text-anchor="middle" fill="#E8F5F0" font-size="12" font-weight="600">数据采集</text>
+        <text x="445" y="372" text-anchor="middle" fill="#9BB0C8" font-size="10">防篡改·上链</text>
+
+        <text x="515" y="358" text-anchor="middle" fill="#E0EBF7" font-size="12" font-weight="600">评级体系</text>
+        <text x="515" y="372" text-anchor="middle" fill="#9BB0C8" font-size="10">报告自动化</text>
+
+        <text x="585" y="358" text-anchor="middle" fill="#0A1628" font-size="12" font-weight="700">交易系统</text>
+        <text x="585" y="372" text-anchor="middle" fill="#3D2F08" font-size="10" font-weight="600">链上份额登记</text>
+
+        <!-- S (团队): cells at y = 360 + radius -->
+        <text x="360" y="438" text-anchor="middle" fill="#E8F5F0" font-size="12" font-weight="600">7 人小队</text>
+        <text x="360" y="452" text-anchor="middle" fill="#9BB0C8" font-size="10">跑通最小闭环</text>
+
+        <text x="360" y="508" text-anchor="middle" fill="#E0EBF7" font-size="12" font-weight="600">发行 + 合规团队</text>
+        <text x="360" y="522" text-anchor="middle" fill="#9BB0C8" font-size="10">法律 / 评级 / 报告</text>
+
+        <text x="360" y="578" text-anchor="middle" fill="#0A1628" font-size="12" font-weight="700">做市 + 风控团队</text>
+        <text x="360" y="592" text-anchor="middle" fill="#3D2F08" font-size="10" font-weight="600">交易 / 流动性</text>
+
+        <!-- W (资产): cells at x = 360 - radius -->
+        <text x="275" y="358" text-anchor="middle" fill="#E8F5F0" font-size="12" font-weight="600">样板资产包</text>
+        <text x="275" y="372" text-anchor="middle" fill="#9BB0C8" font-size="10">连锁餐饮门店</text>
+
+        <text x="205" y="358" text-anchor="middle" fill="#E0EBF7" font-size="12" font-weight="600">标准化矩阵</text>
+        <text x="205" y="372" text-anchor="middle" fill="#9BB0C8" font-size="10">多行业资产包</text>
+
+        <text x="135" y="358" text-anchor="middle" fill="#0A1628" font-size="12" font-weight="700">组合 + 流转</text>
+        <text x="135" y="372" text-anchor="middle" fill="#3D2F08" font-size="10" font-weight="600">二级市场退出</text>
+
+        <!-- Stage marker arrow (NE direction showing evolution) -->
+        <path d="M 415 305 Q 470 250 530 195" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arrowEnd)" opacity="0.85"/>
+        <text x="500" y="265" fill="#D4AF37" font-size="11" font-weight="700" letter-spacing="1" transform="rotate(-42 500 265)">能力演进方向</text>
+
+        <!-- Stage badges on the SW diagonal (counter to evolution arrow, no clash) -->
+        <g transform="translate(294 426)">
+          <rect x="-22" y="-11" width="44" height="22" rx="11" fill="#1B6B4D" stroke="#4FBF9B" stroke-width="1.5"/>
+          <text x="0" y="4" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="700">STAGE 1</text>
+        </g>
+        <g transform="translate(244 476)">
+          <rect x="-22" y="-11" width="44" height="22" rx="11" fill="#1E5F8E" stroke="#6BAEE5" stroke-width="1.5"/>
+          <text x="0" y="4" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="700">STAGE 2</text>
+        </g>
+        <g transform="translate(194 526)">
+          <rect x="-22" y="-11" width="44" height="22" rx="11" fill="#8B6914" stroke="#FFD96B" stroke-width="1.5"/>
+          <text x="0" y="4" text-anchor="middle" fill="#0A1628" font-size="11" font-weight="700">STAGE 3</text>
+        </g>
+      </svg>
+      <div class="chart-caption">先做数据可信 · 再做发行可信 · 最后做交易可信</div>
+    </div>
+
+    <!-- ===== Right: 3 stage cards ===== -->
+    <div class="stages">
+
+      <div class="stage-card stage-1">
+        <div class="stage-num">01</div>
+        <div class="stage-body">
+          <div class="stage-title">最小闭环 · 数据型 RWA 样板 <span class="en">MINIMUM VIABLE LOOP</span></div>
+          <div class="stage-tagline">不碰金融牌照 · 先证明"资产是真的、现金流是真的、报告是持续的"</div>
+          <div class="stage-bullets">
+            <div class="stage-bullet"><b>商米主导：</b>资产选择 / 数据采集 / 风控建模</div>
+            <div class="stage-bullet"><b>合作方完成：</b>基金 / 法律 / 托管 / 发行合规</div>
+            <div class="stage-bullet"><b>样板资产：</b>连锁餐饮 + 标准化零售门店</div>
+            <div class="stage-bullet"><b>关键产出：</b>一套可复制的 RWA 资产生产方法</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-card stage-2">
+        <div class="stage-num">02</div>
+        <div class="stage-body">
+          <div class="stage-title">发行闭环 · 自己掌握资产发行能力 <span class="en">ISSUANCE INFRASTRUCTURE</span></div>
+          <div class="stage-tagline">从"资产数据提供方"升级为"资产发行组织方"——把发行能力拿回来</div>
+          <div class="stage-bullets">
+            <div class="stage-bullet"><b>自建能力：</b>基金管理 / 收益权设计 / 法律模板</div>
+            <div class="stage-bullet"><b>评级体系：</b>资产分层 + 投资人报告自动化</div>
+            <div class="stage-bullet"><b>牌照布局：</b>香港 SFC 1号 + 9号牌照</div>
+            <div class="stage-bullet"><b>角色变化：</b>外部持牌机构 → 服务商定位</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-card stage-3">
+        <div class="stage-num">03</div>
+        <div class="stage-body">
+          <div class="stage-title">交易闭环 · 流动性与完整市场能力 <span class="en">FULL MARKET CAPABILITY</span></div>
+          <div class="stage-tagline">底层数据 / 发行成熟之后，才进入流动性层——否则越早交易越危险</div>
+          <div class="stage-bullets">
+            <div class="stage-bullet"><b>流动性机制：</b>份额转让 / 做市撮合 / 价格发现</div>
+            <div class="stage-bullet"><b>交易设施：</b>撮合系统 + 链上份额登记 + 清算</div>
+            <div class="stage-bullet"><b>牌照补齐：</b>香港 SFC 7号 ATS 交易牌照</div>
+            <div class="stage-bullet"><b>终极形态：</b>线下实体资产 RWA 基础设施平台</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="strategy-band">
+    <div class="principle">
+      数据可信 <span>→</span> 资产可信 <span>→</span> 发行可信 <span>→</span> 交易可信
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span style="color:#9BB0C8; font-weight:400;">把商米的线下设备网络，升级为实体资产金融化网络</span>
+    </div>
+    <div class="brand">SUNMI · RWA INFRASTRUCTURE</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · FT/NFT 二级市场退出机制</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
+  .title .accent { color: #D4AF37; }
+  .subtitle { font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Main grid: two columns (FT/NFT) + bottom layers */
+  .main {
+    display: grid;
+    grid-template-rows: 1fr 200px;
+    gap: 14px;
+    height: calc(100% - 110px);
+  }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+  }
+  .col {
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .col-ft {
+    background: linear-gradient(180deg, rgba(58,120,176,0.18) 0%, rgba(19,49,92,0.3) 100%);
+    border: 1px solid rgba(107,174,229,0.45);
+  }
+  .col-nft {
+    background: linear-gradient(180deg, rgba(168,85,247,0.16) 0%, rgba(80,40,130,0.3) 100%);
+    border: 1px solid rgba(192,132,252,0.45);
+  }
+  .col::before {
+    content: ""; position: absolute; top:0; left:0; right:0; height: 4px;
+  }
+  .col-ft::before { background: linear-gradient(90deg, #6BAEE5, #3A78B0); }
+  .col-nft::before { background: linear-gradient(90deg, #C084FC, #9333EA); }
+
+  .col-head {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 10px; margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .col-head .ico {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .col-ft .col-head .ico { background: linear-gradient(135deg, #6BAEE5, #1E5F8E); }
+  .col-nft .col-head .ico { background: linear-gradient(135deg, #C084FC, #6B2BCC); }
+  .col-head .name { font-size: 16px; font-weight: 800; color: #FFFFFF; }
+  .col-head .sub { font-size: 11px; color: #9BB0C8; letter-spacing: 1.5px; margin-top: 2px; }
+
+  /* Holding period strip */
+  .stage {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+  }
+  .stage .label {
+    font-size: 9.5px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 700;
+    text-transform: uppercase;
+  }
+  .stage .body { color: #E8ECF1; margin-top: 3px; line-height: 1.4; }
+  .stage .body b { color: #FFFFFF; }
+
+  /* Exit options */
+  .exits-title {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+    margin: 4px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed rgba(212,175,55,0.25);
+  }
+  .exits {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .exit-card {
+    background: rgba(0,0,0,0.25);
+    border-left: 3px solid;
+    border-radius: 4px;
+    padding: 8px 12px;
+  }
+  .col-ft .exit-card { border-left-color: #6BAEE5; }
+  .col-nft .exit-card { border-left-color: #C084FC; }
+  .exit-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .exit-name { font-size: 12px; font-weight: 700; color: #FFFFFF; }
+  .exit-tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  .tag-hi { background: rgba(70,200,130,0.2); color: #4FBF9B; border: 1px solid rgba(70,200,130,0.4); }
+  .tag-md { background: rgba(212,175,55,0.2); color: #D4AF37; border: 1px solid rgba(212,175,55,0.4); }
+  .tag-lo { background: rgba(255,120,120,0.15); color: #FF8C8C; border: 1px solid rgba(255,120,120,0.4); }
+  .exit-desc {
+    font-size: 10.5px; color: #C8D6E5; line-height: 1.45;
+  }
+
+  /* VS divider */
+  .vs {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px;
+    position: relative;
+  }
+  .vs::before {
+    content: "";
+    position: absolute;
+    top: 8%; bottom: 8%; left: 50%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(212,175,55,0.4) 20%, rgba(212,175,55,0.4) 80%, transparent);
+  }
+  .vs-label {
+    background: #0A1628;
+    color: #D4AF37;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 6px;
+    letter-spacing: 1px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    z-index: 1;
+  }
+
+  /* Bottom layers: smart contract + legal */
+  .layers-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .layer-card {
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex; flex-direction: column;
+  }
+  .layer-sc {
+    background: linear-gradient(135deg, rgba(212,175,55,0.14), rgba(212,175,55,0.04));
+    border: 1px solid rgba(212,175,55,0.4);
+  }
+  .layer-legal {
+    background: linear-gradient(135deg, rgba(155,176,200,0.14), rgba(155,176,200,0.04));
+    border: 1px solid rgba(155,176,200,0.4);
+  }
+  .layer-head {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 8px; margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .layer-head .ico { font-size: 22px; }
+  .layer-head .name { font-size: 14px; font-weight: 800; color: #FFFFFF; }
+  .layer-head .en { font-size: 10px; color: #9BB0C8; letter-spacing: 1.5px; margin-left: auto; }
+  .layer-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 14px;
+    flex: 1;
+  }
+  .layer-point {
+    font-size: 11px;
+    color: #C8D6E5;
+    display: flex; gap: 6px;
+    line-height: 1.45;
+  }
+  .layer-point::before {
+    content: "▸"; color: #D4AF37; flex: 0 0 auto;
+  }
+  .layer-point b { color: #FFFFFF; font-weight: 600; }
+
+  /* Footer */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text { font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px; }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand { font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">FT / NFT 二级市场退出机制</span></div>
+      <div class="subtitle" style="margin-top:6px;">EXIT PATHS · LIQUIDITY DESIGN · SMART CONTRACT + LEGAL LAYER</div>
+    </div>
+    <div class="subtitle">退出设计 · 机密</div>
+  </div>
+
+  <div class="main">
+    <div class="columns">
+      <!-- ===== FT 路径 ===== -->
+      <div class="col col-ft">
+        <div class="col-head">
+          <div class="ico">🪙</div>
+          <div>
+            <div class="name">通用 Token · FT</div>
+            <div class="sub">FUNGIBLE · 高流动 · 标准化</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="label">持有期 · HOLDING</div>
+          <div class="body"><b>锁定期 6 个月</b>，期内享受基金<b>整体收益按份额分红</b>，智能合约月度自动结算</div>
+        </div>
+
+        <div class="exits-title">▼ 退出路径 ▼</div>
+        <div class="exits">
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">A · 二级市场转让</div>
+              <div class="exit-tag tag-hi">高流动</div>
+            </div>
+            <div class="exit-desc">通过持牌 ATS（7号牌）撮合 / OTC 转让 · 接力 KYC · 链上即时过户 · 价格随基金 NAV 浮动</div>
+          </div>
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">B · 基金定期回购</div>
+              <div class="exit-tag tag-md">中流动</div>
+            </div>
+            <div class="exit-desc">每季度开放回购窗口 · 按 NAV 定价 · 回购上限 = 基金现金储备 · 智能合约自动燃烧份额</div>
+          </div>
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">C · 基金到期清算</div>
+              <div class="exit-tag tag-md">期末</div>
+            </div>
+            <div class="exit-desc">基金到期（如 3 年）· 处置底层资产 · 按持仓比例分配清算所得 · 智能合约最终分账</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="vs">
+        <div class="vs-label">同源·异构</div>
+      </div>
+
+      <!-- ===== NFT 路径 ===== -->
+      <div class="col col-nft">
+        <div class="col-head">
+          <div class="ico">🎫</div>
+          <div>
+            <div class="name">特定门店 NFT</div>
+            <div class="sub">NON-FUNGIBLE · 低流动 · 收藏型</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="label">持有期 · HOLDING</div>
+          <div class="body"><b>锁定期 12 个月</b>，期内享受单店<b>独立现金流分红 + 经营权益</b>（命名 / VIP / 优先认购）</div>
+        </div>
+
+        <div class="exits-title">▼ 退出路径 ▼</div>
+        <div class="exits">
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">A · NFT 二级转让</div>
+              <div class="exit-tag tag-md">中流动</div>
+            </div>
+            <div class="exit-desc">合规 NFT 市场（KYC 白名单买方）· 一店一价 · 接力签署门店权益协议 · 链上所有权变更</div>
+          </div>
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">B · 基金回购 NFT</div>
+              <div class="exit-tag tag-md">中流动</div>
+            </div>
+            <div class="exit-desc">由基金按估值模型回购 · 估值 = 该门店未来现金流折现 · 基金转售或并入下期产品</div>
+          </div>
+          <div class="exit-card">
+            <div class="exit-head">
+              <div class="exit-name">C · 门店资产处置</div>
+              <div class="exit-tag tag-lo">期末</div>
+            </div>
+            <div class="exit-desc">门店关停 / 出售 / 转让 · 处置所得归 NFT 持有人 · 法律协议同步执行 · NFT 销毁</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Bottom layers: Smart Contract + Legal ===== -->
+    <div class="layers-bottom">
+      <div class="layer-card layer-sc">
+        <div class="layer-head">
+          <span class="ico">⚙️</span>
+          <span class="name">智能合约层</span>
+          <span class="en">SMART CONTRACT LAYER</span>
+        </div>
+        <div class="layer-points">
+          <div class="layer-point"><b>转让登记：</b>链上即时过户 + 历史可追溯</div>
+          <div class="layer-point"><b>收益分配：</b>按持仓自动分账 · 月度结算</div>
+          <div class="layer-point"><b>白名单校验：</b>仅 KYC 通过钱包可接收</div>
+          <div class="layer-point"><b>回购燃烧：</b>FT 燃烧份额 / NFT 销毁凭证</div>
+          <div class="layer-point"><b>NAV 预言机：</b>链下估值 → 链上锚定</div>
+          <div class="layer-point"><b>清算触发：</b>到期自动启动分配逻辑</div>
+        </div>
+      </div>
+
+      <div class="layer-card layer-legal">
+        <div class="layer-head">
+          <span class="ico">⚖️</span>
+          <span class="name">法律 / 合规层</span>
+          <span class="en">LEGAL & COMPLIANCE LAYER</span>
+        </div>
+        <div class="layer-points">
+          <div class="layer-point"><b>转让协议：</b>SPA + 收益权 / NFT 权益接力</div>
+          <div class="layer-point"><b>KYC 接力：</b>新买方完成 PI 适当性验证</div>
+          <div class="layer-point"><b>HK 监管：</b>SFC PI 限定 + 持续披露义务</div>
+          <div class="layer-point"><b>权属变更：</b>门店收益权 / 经营权法律登记</div>
+          <div class="layer-point"><b>反洗钱：</b>链上钱包 ↔ 链下身份对账</div>
+          <div class="layer-point"><b>清算执行：</b>资产处置 → 收益分配 → 注销</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      <span>链上即时过户</span> + <span>链下法律接力</span> + <span>NAV 预言机锚定</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span style="color:#9BB0C8; font-weight:400;">FT 走标准化高频转让，NFT 走定向转让 + 资产处置 —— 流动性按风险分层</span>
+    </div>
+    <div class="brand">SUNMI · EXIT MECHANISM</div>
+  </div>
+</div>
+</body>
+</html>

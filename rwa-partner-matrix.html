@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · 合作方分工矩阵</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
+  .title .accent { color: #D4AF37; }
+  .subtitle { font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Legend strip */
+  .legend {
+    display: flex; gap: 14px; align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.15);
+    border-radius: 6px;
+  }
+  .legend-label {
+    font-size: 10.5px; color: #9BB0C8; letter-spacing: 1.5px; font-weight: 700;
+    margin-right: 4px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: #C8D6E5;
+  }
+  .legend-chip {
+    width: 22px; height: 22px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+
+  /* Matrix */
+  .matrix {
+    display: grid;
+    grid-template-columns: 240px repeat(7, 1fr);
+    gap: 4px;
+    height: calc(100% - 230px);
+  }
+  .col-head {
+    background: linear-gradient(180deg, rgba(212,175,55,0.18), rgba(212,175,55,0.05));
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 6px;
+    padding: 8px 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    gap: 4px;
+  }
+  .col-head .ico { font-size: 18px; }
+  .col-head .name { font-size: 11px; font-weight: 700; color: #FFFFFF; line-height: 1.3; }
+  .col-head .role { font-size: 9px; color: #D4AF37; letter-spacing: 1px; text-transform: uppercase; }
+
+  .row-head {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.18);
+    border-left: 3px solid #D4AF37;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .row-head .stage-num {
+    font-size: 9.5px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+  }
+  .row-head .stage-name {
+    font-size: 12px; font-weight: 700; color: #FFFFFF; margin-top: 2px;
+    line-height: 1.3;
+  }
+  .row-head .stage-sub {
+    font-size: 9.5px; color: #9BB0C8; margin-top: 2px;
+  }
+
+  .cell {
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    position: relative;
+    border: 1px solid transparent;
+  }
+  .cell .lbl {
+    position: absolute;
+    bottom: 4px; left: 4px; right: 4px;
+    text-align: center;
+    font-size: 8.5px; font-weight: 600;
+    letter-spacing: 0.3px;
+    opacity: 0.85;
+  }
+  /* R 主导 */
+  .cell.r {
+    background: linear-gradient(135deg, #D4AF37, #8B6914);
+    color: #0A1628;
+    border-color: #FFE89C;
+    box-shadow: 0 2px 8px rgba(212,175,55,0.3);
+  }
+  .cell.r .lbl { color: #3D2F08; }
+  /* S 执行 */
+  .cell.s {
+    background: linear-gradient(135deg, rgba(58,120,176,0.7), rgba(19,49,92,0.7));
+    color: #FFFFFF;
+    border-color: rgba(107,174,229,0.5);
+  }
+  .cell.s .lbl { color: #C8D6E5; }
+  /* C 配合 */
+  .cell.c {
+    background: rgba(45,143,112,0.45);
+    color: #FFFFFF;
+    border-color: rgba(79,191,155,0.5);
+  }
+  .cell.c .lbl { color: #C5E5D5; }
+  /* I 知会 */
+  .cell.i {
+    background: rgba(155,176,200,0.15);
+    color: #9BB0C8;
+    border-color: rgba(155,176,200,0.3);
+  }
+  .cell.i .lbl { color: #9BB0C8; opacity: 0.7; }
+  /* 不参与 */
+  .cell.x {
+    background: rgba(255,255,255,0.02);
+    color: rgba(155,176,200,0.25);
+    border-color: rgba(155,176,200,0.08);
+    border-style: dashed;
+  }
+
+  /* Summary footer */
+  .summary {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 240px repeat(7, 1fr);
+    gap: 4px;
+  }
+  .summary-label {
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; align-items: center;
+    font-size: 11px; font-weight: 700; color: #D4AF37; letter-spacing: 1px;
+  }
+  .summary-cell {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.15);
+    border-radius: 6px;
+    padding: 6px 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .summary-cell .big {
+    font-size: 20px; font-weight: 800; color: #D4AF37; line-height: 1;
+  }
+  .summary-cell .lbl {
+    font-size: 9.5px; color: #9BB0C8; letter-spacing: 0.5px;
+  }
+  .summary-cell .lbl b { color: #FFFFFF; font-weight: 600; }
+
+  /* Footer band */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text { font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px; }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand { font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">合作方分工矩阵</span></div>
+      <div class="subtitle" style="margin-top:6px;">PARTNER RACI · 9 业务环节 × 7 合作方 · 谁主导 / 谁执行 / 谁配合 / 谁知会</div>
+    </div>
+    <div class="subtitle">分工治理 · 内部使用</div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-label">图例</div>
+    <div class="legend-item"><div class="legend-chip" style="background:linear-gradient(135deg,#D4AF37,#8B6914);color:#0A1628;">R</div>主导 (Responsible / Owner)</div>
+    <div class="legend-item"><div class="legend-chip" style="background:rgba(58,120,176,0.7);color:#FFF;border:1px solid rgba(107,174,229,0.5);">S</div>执行 (Support / Doer)</div>
+    <div class="legend-item"><div class="legend-chip" style="background:rgba(45,143,112,0.45);color:#FFF;border:1px solid rgba(79,191,155,0.5);">C</div>配合 (Consult)</div>
+    <div class="legend-item"><div class="legend-chip" style="background:rgba(155,176,200,0.15);color:#9BB0C8;border:1px solid rgba(155,176,200,0.3);">I</div>知会 (Inform)</div>
+    <div class="legend-item"><div class="legend-chip" style="background:rgba(255,255,255,0.02);color:rgba(155,176,200,0.4);border:1px dashed rgba(155,176,200,0.2);">—</div>不参与</div>
+  </div>
+
+  <!-- Matrix -->
+  <div class="matrix">
+    <!-- Column headers -->
+    <div></div>
+    <div class="col-head">
+      <div class="ico">🏢</div>
+      <div class="name">商米</div>
+      <div class="role">SPONSOR · 发起方</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">🏛️</div>
+      <div class="name">持牌基金<br>管理人</div>
+      <div class="role">FUND MGR · HK SFC</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">⚖️</div>
+      <div class="name">律所</div>
+      <div class="role">LEGAL · 法律顾问</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">🏦</div>
+      <div class="name">托管行</div>
+      <div class="role">CUSTODIAN</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">📊</div>
+      <div class="name">审计师</div>
+      <div class="role">AUDITOR</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">⚙️</div>
+      <div class="name">技术 /<br>智能合约方</div>
+      <div class="role">TECH · CHAIN</div>
+    </div>
+    <div class="col-head">
+      <div class="ico">👥</div>
+      <div class="name">合格投资人</div>
+      <div class="role">INVESTOR · PI</div>
+    </div>
+
+    <!-- Row 1: 基金设立 -->
+    <div class="row-head">
+      <div class="stage-num">01 · 设立</div>
+      <div class="stage-name">基金 / SPV 注册</div>
+      <div class="stage-sub">HK 法律实体 · 章程</div>
+    </div>
+    <div class="cell c">C<span class="lbl">提供商业方案</span></div>
+    <div class="cell r">R<span class="lbl">主导设立</span></div>
+    <div class="cell s">S<span class="lbl">起草文件</span></div>
+    <div class="cell i">I<span class="lbl">账户预备</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+
+    <!-- Row 2: 资产寻找 -->
+    <div class="row-head">
+      <div class="stage-num">02 · 资产</div>
+      <div class="stage-name">标的寻找 / 尽调 / 签约</div>
+      <div class="stage-sub">门店权益 + 收益权</div>
+    </div>
+    <div class="cell r">R<span class="lbl">自有网络</span></div>
+    <div class="cell c">C<span class="lbl">合规审查</span></div>
+    <div class="cell s">S<span class="lbl">协议谈判</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+
+    <!-- Row 3: 数据采集 -->
+    <div class="row-head">
+      <div class="stage-num">03 · 数据</div>
+      <div class="stage-name">POS / IoT 接入 + 上链</div>
+      <div class="stage-sub">实时采集 · 防篡改</div>
+    </div>
+    <div class="cell r">R<span class="lbl">核心能力</span></div>
+    <div class="cell i">I<span class="lbl">数据接收</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell c">C<span class="lbl">数据校验</span></div>
+    <div class="cell s">S<span class="lbl">链上凭证</span></div>
+    <div class="cell x">—</div>
+
+    <!-- Row 4: 风控 -->
+    <div class="row-head">
+      <div class="stage-num">04 · 风控</div>
+      <div class="stage-name">建模 / 估值 / 评级</div>
+      <div class="stage-sub">现金流模型 · NAV</div>
+    </div>
+    <div class="cell r">R<span class="lbl">模型主导</span></div>
+    <div class="cell c">C<span class="lbl">合规审定</span></div>
+    <div class="cell c">C<span class="lbl">条款审查</span></div>
+    <div class="cell x">—</div>
+    <div class="cell c">C<span class="lbl">独立审计</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+
+    <!-- Row 5: 发行文件 -->
+    <div class="row-head">
+      <div class="stage-num">05 · 合规</div>
+      <div class="stage-name">发行文件 / 合规备案</div>
+      <div class="stage-sub">PPM / 适当性 / SFC</div>
+    </div>
+    <div class="cell c">C<span class="lbl">业务输入</span></div>
+    <div class="cell r">R<span class="lbl">监管对接</span></div>
+    <div class="cell s">S<span class="lbl">文件起草</span></div>
+    <div class="cell c">C<span class="lbl">账户安排</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+
+    <!-- Row 6: 募资 KYC -->
+    <div class="row-head">
+      <div class="stage-num">06 · 募资</div>
+      <div class="stage-name">投资人开发 / KYC / 路演</div>
+      <div class="stage-sub">HK PI 认证 + 适当性</div>
+    </div>
+    <div class="cell c">C<span class="lbl">品牌背书</span></div>
+    <div class="cell r">R<span class="lbl">募资主体</span></div>
+    <div class="cell s">S<span class="lbl">协议签署</span></div>
+    <div class="cell i">I<span class="lbl">资金归集</span></div>
+    <div class="cell x">—</div>
+    <div class="cell x">—</div>
+    <div class="cell s">S<span class="lbl">认购方</span></div>
+
+    <!-- Row 7: 链上发行 -->
+    <div class="row-head">
+      <div class="stage-num">07 · 上链</div>
+      <div class="stage-name">FT / NFT 链上发行</div>
+      <div class="stage-sub">智能合约部署</div>
+    </div>
+    <div class="cell c">C<span class="lbl">业务规则</span></div>
+    <div class="cell c">C<span class="lbl">合规校验</span></div>
+    <div class="cell c">C<span class="lbl">条款映射</span></div>
+    <div class="cell c">C<span class="lbl">资金清结</span></div>
+    <div class="cell x">—</div>
+    <div class="cell r">R<span class="lbl">合约部署</span></div>
+    <div class="cell i">I<span class="lbl">钱包接收</span></div>
+
+    <!-- Row 8: 运营报告 -->
+    <div class="row-head">
+      <div class="stage-num">08 · 运营</div>
+      <div class="stage-name">监控 / 审计 / 报告</div>
+      <div class="stage-sub">月报 · 季报 · 年报</div>
+    </div>
+    <div class="cell r">R<span class="lbl">日常运营</span></div>
+    <div class="cell c">C<span class="lbl">合规报告</span></div>
+    <div class="cell i">I<span class="lbl">法律咨询</span></div>
+    <div class="cell c">C<span class="lbl">资金对账</span></div>
+    <div class="cell s">S<span class="lbl">独立审计</span></div>
+    <div class="cell c">C<span class="lbl">数据接口</span></div>
+    <div class="cell i">I<span class="lbl">接收报告</span></div>
+
+    <!-- Row 9: 分配退出 -->
+    <div class="row-head">
+      <div class="stage-num">09 · 退出</div>
+      <div class="stage-name">收益分配 / 退出 / 清算</div>
+      <div class="stage-sub">回购 · 转让 · 清算</div>
+    </div>
+    <div class="cell c">C<span class="lbl">业务执行</span></div>
+    <div class="cell r">R<span class="lbl">清算主导</span></div>
+    <div class="cell s">S<span class="lbl">权益变更</span></div>
+    <div class="cell s">S<span class="lbl">资金分配</span></div>
+    <div class="cell i">I<span class="lbl">最终审计</span></div>
+    <div class="cell c">C<span class="lbl">合约执行</span></div>
+    <div class="cell i">I<span class="lbl">接收清算款</span></div>
+  </div>
+
+  <!-- Summary: count of R per partner -->
+  <div class="summary">
+    <div class="summary-label">主导环节数（R）</div>
+    <div class="summary-cell"><div class="big">3</div><div class="lbl"><b>商米</b> 主导</div></div>
+    <div class="summary-cell"><div class="big">4</div><div class="lbl"><b>基金管理人</b> 主导</div></div>
+    <div class="summary-cell"><div class="big">0</div><div class="lbl"><b>律所</b> 配合</div></div>
+    <div class="summary-cell"><div class="big">0</div><div class="lbl"><b>托管行</b> 配合</div></div>
+    <div class="summary-cell"><div class="big">0</div><div class="lbl"><b>审计</b> 独立</div></div>
+    <div class="summary-cell"><div class="big">2</div><div class="lbl"><b>技术方</b> 主导</div></div>
+    <div class="summary-cell"><div class="big">0</div><div class="lbl"><b>投资人</b> 认购方</div></div>
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      <span>商米</span> 主导资产 / 数据 / 运营 &nbsp;·&nbsp;
+      <span>持牌方</span> 主导基金 / 合规 / 募资 &nbsp;·&nbsp;
+      <span>技术方</span> 主导链上发行 &nbsp;·&nbsp;
+      <span style="color:#9BB0C8;font-weight:400;">三方主导 + 四方配合 = 完整闭环</span>
+    </div>
+    <div class="brand">SUNMI · PARTNER RACI</div>
+  </div>
+</div>
+</body>
+</html>
