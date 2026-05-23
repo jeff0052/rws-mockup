@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · 第一阶段 12 个月执行时间线</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .title {
+    font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF;
+  }
+  .title .accent { color: #D4AF37; }
+  .subtitle {
+    font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* ===== Timeline ===== */
+  .timeline {
+    position: relative;
+    height: calc(100% - 110px);
+    display: flex; flex-direction: column;
+  }
+  .gantt {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+    flex: 1;
+    min-height: 0;
+  }
+  .gantt-left {
+    border-right: 1px solid rgba(155,176,200,0.15);
+    padding-right: 12px;
+    display: flex; flex-direction: column;
+  }
+  .gantt-right {
+    padding-left: 12px;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+
+  /* Header row (months + quarters) */
+  .header-row {
+    height: 56px;
+    border-bottom: 1px solid rgba(155,176,200,0.2);
+    position: relative;
+  }
+  .quarters-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    height: 24px;
+  }
+  .quarter {
+    background: rgba(212,175,55,0.12);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #D4AF37; letter-spacing: 2px;
+  }
+  .months-strip {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+    height: 28px;
+    margin-top: 4px;
+  }
+  .month {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #9BB0C8;
+    border-right: 1px dashed rgba(155,176,200,0.1);
+  }
+  .month.q-end { border-right: 1px solid rgba(212,175,55,0.3); }
+
+  /* Workstream rows */
+  .ws-label {
+    height: 54px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700;
+    border-bottom: 1px solid rgba(155,176,200,0.08);
+    padding-right: 8px;
+  }
+  .ws-label .swatch {
+    width: 4px; height: 28px; border-radius: 2px;
+    flex: 0 0 auto;
+  }
+  .ws-label .name { color: #FFFFFF; }
+  .ws-label .sub { color: #9BB0C8; font-size: 9px; font-weight: 400; margin-left: auto; }
+
+  .ws-track {
+    height: 54px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    align-items: center;
+    border-bottom: 1px solid rgba(155,176,200,0.08);
+    position: relative;
+  }
+  /* vertical month grid lines as backdrop */
+  .ws-track::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(100%/12 - 1px),
+      rgba(155,176,200,0.06) calc(100%/12 - 1px),
+      rgba(155,176,200,0.06) calc(100%/12)
+    );
+    pointer-events: none;
+  }
+  .ws-track::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 25%; width: 1px;
+    background: rgba(212,175,55,0.18);
+    box-shadow: calc(100%/3) 0 0 0 rgba(212,175,55,0.18),
+                calc(200%/3) 0 0 0 rgba(212,175,55,0.18);
+  }
+
+  .task {
+    grid-column: var(--start) / span var(--span);
+    height: 32px;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 11px; font-weight: 600;
+    color: #FFFFFF;
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .task.asset    { background: linear-gradient(90deg, #2D8F70, #155538); }
+  .task.data     { background: linear-gradient(90deg, #3A78B0, #13315C); }
+  .task.legal    { background: linear-gradient(90deg, #8B5CF6, #5B21B6); }
+  .task.raise    { background: linear-gradient(90deg, #F0884F, #B85A1F); }
+  .task.ops      { background: linear-gradient(90deg, #D4AF37, #8B6914); color: #0A1628; }
+
+  /* Milestones row */
+  .milestones-row {
+    height: 50px;
+    margin-top: 8px;
+    border-top: 1px dashed rgba(212,175,55,0.3);
+    padding-top: 8px;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+  }
+  .milestone-track {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    padding-left: 12px;
+    position: relative;
+  }
+  .milestone {
+    grid-column: var(--at) / span 1;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px;
+  }
+  .milestone .diamond {
+    width: 14px; height: 14px;
+    background: #D4AF37;
+    border: 2px solid #FFE89C;
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px rgba(212,175,55,0.6);
+  }
+  .milestone .ml-label {
+    font-size: 9.5px;
+    color: #D4AF37;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .ml-section-label {
+    display: flex; align-items: center;
+    font-size: 11px; font-weight: 700;
+    color: #D4AF37;
+    letter-spacing: 1px;
+  }
+
+  /* Footer key deliverables */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text {
+    font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px;
+  }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">第一阶段 12 个月执行时间线</span></div>
+      <div class="subtitle" style="margin-top:6px;">HK PHASE 1 · MONTH-BY-MONTH ROADMAP · 5 条工作流并行 · 6 个核心里程碑</div>
+    </div>
+    <div class="subtitle">执行排期 · 内部使用</div>
+  </div>
+
+  <div class="timeline">
+    <div class="gantt">
+      <!-- Left side: workstream labels -->
+      <div class="gantt-left">
+        <div class="header-row"></div>
+        <div class="ws-label"><div class="swatch" style="background:#2D8F70"></div><div class="name">资产端</div><div class="sub">商米主导</div></div>
+        <div class="ws-label"><div class="swatch" style="background:#3A78B0"></div><div class="name">数据端</div><div class="sub">商米主导</div></div>
+        <div class="ws-label"><div class="swatch" style="background:#8B5CF6"></div><div class="name">法律 / 合规</div><div class="sub">合作方主导</div></div>
+        <div class="ws-label"><div class="swatch" style="background:#F0884F"></div><div class="name">募资 / 发行</div><div class="sub">合作方 + 商米</div></div>
+        <div class="ws-label"><div class="swatch" style="background:#D4AF37"></div><div class="name">运营 / 报告</div><div class="sub">商米主导</div></div>
+      </div>
+
+      <!-- Right side: gantt tracks -->
+      <div class="gantt-right">
+        <div class="header-row">
+          <div class="quarters-strip">
+            <div class="quarter">Q1 · 启动</div>
+            <div class="quarter">Q2 · 搭建</div>
+            <div class="quarter">Q3 · 发行</div>
+            <div class="quarter">Q4 · 运营</div>
+          </div>
+          <div class="months-strip">
+            <div class="month">M1</div><div class="month">M2</div><div class="month q-end">M3</div>
+            <div class="month">M4</div><div class="month">M5</div><div class="month q-end">M6</div>
+            <div class="month">M7</div><div class="month">M8</div><div class="month q-end">M9</div>
+            <div class="month">M10</div><div class="month">M11</div><div class="month">M12</div>
+          </div>
+        </div>
+
+        <!-- 资产端 -->
+        <div class="ws-track">
+          <div class="task asset" style="--start:1; --span:3;">找标的 · 尽调</div>
+          <div class="task asset" style="--start:4; --span:2;">签约 · 收益权确认</div>
+          <div class="task asset" style="--start:6; --span:7;">资产持续监控 · 经营介入</div>
+        </div>
+
+        <!-- 数据端 -->
+        <div class="ws-track">
+          <div class="task data" style="--start:2; --span:4;">POS / IoT 接入</div>
+          <div class="task data" style="--start:5; --span:3;">现金流模型 + 防篡改</div>
+          <div class="task data" style="--start:7; --span:6;">链上凭证 + 报告系统</div>
+        </div>
+
+        <!-- 法律 / 合规 -->
+        <div class="ws-track">
+          <div class="task legal" style="--start:1; --span:3;">基金设立 · SPV 注册</div>
+          <div class="task legal" style="--start:3; --span:4;">发行文件 + PI 适当性</div>
+          <div class="task legal" style="--start:6; --span:3;">合规备案 · 持续披露</div>
+        </div>
+
+        <!-- 募资 / 发行 -->
+        <div class="ws-track">
+          <div class="task raise" style="--start:4; --span:4;">投资人开发 + 路演</div>
+          <div class="task raise" style="--start:7; --span:2;">认购 · KYC · 适当性</div>
+          <div class="task raise" style="--start:8; --span:2;">FT / NFT 链上发行</div>
+        </div>
+
+        <!-- 运营 / 报告 -->
+        <div class="ws-track">
+          <div class="task ops" style="--start:9; --span:1;">首期分配</div>
+          <div class="task ops" style="--start:10; --span:3;">月报 · 季报 · 审计 · 收益分配</div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="milestones-row" style="grid-column: 1 / -1;">
+          <div class="ml-section-label">核心里程碑</div>
+          <div class="milestone-track">
+            <div class="milestone" style="--at:3;">
+              <div class="diamond"></div>
+              <div class="ml-label">M3<br>SPV 注册</div>
+            </div>
+            <div class="milestone" style="--at:5;">
+              <div class="diamond"></div>
+              <div class="ml-label">M5<br>资产签约</div>
+            </div>
+            <div class="milestone" style="--at:7;">
+              <div class="diamond"></div>
+              <div class="ml-label">M7<br>数据系统上线</div>
+            </div>
+            <div class="milestone" style="--at:8;">
+              <div class="diamond"></div>
+              <div class="ml-label">M8<br>首次募资完成</div>
+            </div>
+            <div class="milestone" style="--at:9;">
+              <div class="diamond"></div>
+              <div class="ml-label">M9<br>链上发行</div>
+            </div>
+            <div class="milestone" style="--at:12;">
+              <div class="diamond"></div>
+              <div class="ml-label">M12<br>年度报告 + 分配</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      Q1 设结构 <span>·</span> Q2 接数据 <span>·</span> Q3 完成发行 <span>·</span> Q4 持续运营
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <span style="color:#9BB0C8; font-weight:400;">12 个月跑通"找标的 → 接数据 → 设结构 → 发行 → 持续报告"完整闭环</span>
+    </div>
+    <div class="brand">SUNMI · PHASE 1 TIMELINE</div>
+  </div>
+</div>
+</body>
+</html>
