@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · 风险模型 · 四维分析</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
+  .title .accent { color: #D4AF37; }
+  .subtitle { font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Main 2x2 quadrant grid */
+  .quads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+    height: calc(100% - 110px);
+  }
+  .quad {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .quad-label {
+    position: absolute;
+    top: -1px; left: 16px;
+    background: #D4AF37; color: #0A1628;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 0 0 4px 4px;
+    letter-spacing: 1.5px;
+  }
+  .quad-title {
+    font-size: 14px; font-weight: 700; color: #FFFFFF;
+    margin-top: 12px; margin-bottom: 10px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .quad-title .en {
+    font-size: 10px; color: #9BB0C8; letter-spacing: 1.5px;
+    font-weight: 500;
+  }
+
+  /* ===== Q1: 风险全景 ===== */
+  .risk-categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    flex: 1;
+  }
+  .risk-cat {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-left: 3px solid;
+    border-radius: 6px;
+    padding: 7px 10px;
+    display: flex; flex-direction: column;
+    gap: 3px;
+  }
+  .risk-cat.high { border-left-color: #FF5C5C; }
+  .risk-cat.med  { border-left-color: #F0C75A; }
+  .risk-cat.low  { border-left-color: #4FBF9B; }
+
+  .rc-head {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .rc-name {
+    font-size: 12px; font-weight: 700; color: #FFFFFF;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .rc-tag {
+    font-size: 9px; font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .rc-tag.high { background: rgba(255,92,92,0.2); color: #FF8C8C; border: 1px solid rgba(255,92,92,0.4); }
+  .rc-tag.med  { background: rgba(240,199,90,0.2); color: #FFD96B; border: 1px solid rgba(240,199,90,0.4); }
+  .rc-tag.low  { background: rgba(79,191,155,0.2); color: #4FBF9B; border: 1px solid rgba(79,191,155,0.4); }
+  .rc-items {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .rc-item {
+    font-size: 10.5px; color: #C8D6E5; line-height: 1.4;
+    display: flex; gap: 5px;
+  }
+  .rc-item .code {
+    color: #D4AF37; font-weight: 700; font-size: 9.5px; min-width: 24px;
+  }
+
+  /* ===== Q2: 概率×影响 矩阵 ===== */
+  .heatmap-wrap {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    grid-template-rows: 1fr 24px;
+    gap: 4px;
+  }
+  .y-axis {
+    display: flex; flex-direction: column; justify-content: space-around;
+    align-items: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 10px; color: #9BB0C8; letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .y-axis .a-label {
+    font-size: 10.5px; color: #D4AF37; letter-spacing: 2px; font-weight: 800;
+  }
+  .heatmap {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 2px;
+    position: relative;
+  }
+  .hm-cell {
+    position: relative;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 3px;
+    flex-wrap: wrap;
+    padding: 2px;
+  }
+  /* P×I score color coding */
+  .s-1, .s-2, .s-3, .s-4, .s-5 { background: rgba(79,191,155,0.18); border: 1px solid rgba(79,191,155,0.3); }
+  .s-6, .s-7, .s-8, .s-9, .s-10 { background: rgba(240,199,90,0.16); border: 1px solid rgba(240,199,90,0.3); }
+  .s-11, .s-12, .s-13, .s-14, .s-15 { background: rgba(240,140,79,0.18); border: 1px solid rgba(240,140,79,0.4); }
+  .s-16, .s-17, .s-18, .s-19, .s-20, .s-21, .s-22, .s-23, .s-24, .s-25 { background: rgba(255,92,92,0.22); border: 1px solid rgba(255,92,92,0.5); }
+
+  .bubble {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #0A1628;
+    border: 1.5px solid #D4AF37;
+    color: #D4AF37;
+    font-size: 10px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .x-axis {
+    grid-column: 2;
+    display: flex; justify-content: space-around; align-items: center;
+    font-size: 10px; color: #9BB0C8; font-weight: 600;
+    border-top: 1px solid rgba(155,176,200,0.2);
+    padding-top: 2px;
+  }
+  .x-axis .a-label {
+    font-size: 10.5px; color: #D4AF37; letter-spacing: 2px; font-weight: 800;
+    margin-left: 12px;
+  }
+
+  /* Legend */
+  .hm-legend {
+    margin-top: 8px;
+    padding: 6px 8px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(155,176,200,0.15);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 8px;
+    font-size: 9.5px;
+    color: #C8D6E5;
+  }
+  .hm-legend .lg-item {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .hm-legend .lg-num {
+    color: #D4AF37; font-weight: 800; font-size: 9.5px; min-width: 22px;
+  }
+  .lg-color {
+    display: flex; gap: 10px; margin-top: 6px;
+    font-size: 9px;
+  }
+  .lg-color span {
+    display: flex; align-items: center; gap: 4px;
+    color: #9BB0C8;
+  }
+  .lg-color .chip {
+    width: 12px; height: 12px; border-radius: 2px; display: inline-block;
+  }
+
+  /* ===== Q3: 风控防御体系 ===== */
+  .defense-stack {
+    flex: 1;
+    display: flex; flex-direction: column;
+    gap: 5px;
+    position: relative;
+  }
+  .def-layer {
+    background: linear-gradient(90deg, rgba(212,175,55,0.18), rgba(212,175,55,0.04));
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 6px;
+    padding: 7px 10px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    align-items: center;
+    position: relative;
+  }
+  .def-layer::before {
+    content: "";
+    position: absolute;
+    left: -1px; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, #FFE89C, #8B6914);
+    border-radius: 6px 0 0 6px;
+  }
+  .def-num {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .def-num .n {
+    background: linear-gradient(135deg, #D4AF37, #8B6914);
+    color: #0A1628;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+  }
+  .def-num .lbl {
+    font-size: 11px; font-weight: 700; color: #D4AF37; letter-spacing: 1px;
+  }
+  .def-body { min-width: 0; }
+  .def-name {
+    font-size: 12.5px; font-weight: 700; color: #FFFFFF;
+    margin-bottom: 2px;
+  }
+  .def-controls {
+    font-size: 10.5px; color: #C8D6E5; line-height: 1.4;
+  }
+  .def-controls b { color: #D4AF37; font-weight: 600; }
+
+  /* ===== Q4: 早期预警 + 压力测试 ===== */
+  .q4-grid {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+  }
+  .q4-section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.18);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; flex-direction: column;
+  }
+  .q4-header {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 700; color: #D4AF37;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+    border-bottom: 1px dashed rgba(212,175,55,0.25);
+  }
+  .ew-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    flex: 1;
+  }
+  .ew-item {
+    display: flex; gap: 6px;
+    font-size: 10.5px; color: #C8D6E5;
+    line-height: 1.45;
+  }
+  .ew-item::before {
+    content: "⚠"; color: #FFD96B; font-size: 11px;
+  }
+  .ew-item b { color: #FFFFFF; }
+  .ew-item .th { color: #FF8C8C; font-weight: 700; }
+
+  .st-list {
+    display: flex; flex-direction: column; gap: 5px;
+    flex: 1;
+  }
+  .st-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    background: rgba(255,140,140,0.05);
+    border-left: 3px solid #FF8C8C;
+    padding: 5px 10px;
+    border-radius: 0 4px 4px 0;
+    font-size: 10.5px;
+  }
+  .st-scenario { color: #FFFFFF; font-weight: 600; line-height: 1.4; }
+  .st-scenario .desc { color: #9BB0C8; font-weight: 400; }
+  .st-impact {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+  .st-impact.green { background: rgba(79,191,155,0.18); color: #4FBF9B; }
+  .st-impact.yellow { background: rgba(240,199,90,0.18); color: #FFD96B; }
+  .st-impact.orange { background: rgba(240,140,79,0.2); color: #FFB37A; }
+
+  /* Footer band */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text { font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px; }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand { font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">风险模型 · 四维分析</span></div>
+      <div class="subtitle" style="margin-top:6px;">RISK UNIVERSE · P×I MATRIX · DEFENSE STACK · WARNING & STRESS TEST</div>
+    </div>
+    <div class="subtitle">风控建模 · 机密</div>
+  </div>
+
+  <div class="quads">
+
+    <!-- ===== Q1: 风险全景 ===== -->
+    <div class="quad">
+      <div class="quad-label">Q1</div>
+      <div class="quad-title">风险全景 · 6 大类 12 项 <span class="en">RISK UNIVERSE</span></div>
+      <div class="risk-categories">
+        <div class="risk-cat high">
+          <div class="rc-head">
+            <div class="rc-name">🏪 资产 / 信用</div>
+            <div class="rc-tag high">HIGH</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R1</span>数据造假 · POS / 财务伪造</div>
+            <div class="rc-item"><span class="code">R2</span>经营恶化 · 客流 / 毛利下滑</div>
+            <div class="rc-item"><span class="code">R3</span>单店倒闭 · 关停 / 跑路</div>
+          </div>
+        </div>
+
+        <div class="risk-cat med">
+          <div class="rc-head">
+            <div class="rc-name">⚙️ 运营</div>
+            <div class="rc-tag med">MED</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R4</span>数据采集失败 · 设备故障</div>
+            <div class="rc-item"><span class="code">R5</span>合作方违约 · 持牌方 / 律所</div>
+          </div>
+        </div>
+
+        <div class="risk-cat med">
+          <div class="rc-head">
+            <div class="rc-name">📉 市场</div>
+            <div class="rc-tag med">MED</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R6</span>现金流月度波动</div>
+            <div class="rc-item"><span class="code">R7</span>行业景气下行</div>
+            <div class="rc-item"><span class="code">R8</span>NFT 二级流动性折扣</div>
+          </div>
+        </div>
+
+        <div class="risk-cat high">
+          <div class="rc-head">
+            <div class="rc-name">⚖️ 监管</div>
+            <div class="rc-tag high">HIGH</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R9</span>监管收紧 · SFC 政策变更</div>
+          </div>
+        </div>
+
+        <div class="risk-cat high">
+          <div class="rc-head">
+            <div class="rc-name">🔐 技术</div>
+            <div class="rc-tag high">HIGH</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R10</span>智能合约漏洞</div>
+            <div class="rc-item"><span class="code">R11</span>私钥管理 / 多签</div>
+          </div>
+        </div>
+
+        <div class="risk-cat low">
+          <div class="rc-head">
+            <div class="rc-name">💧 流动性</div>
+            <div class="rc-tag low">LOW</div>
+          </div>
+          <div class="rc-items">
+            <div class="rc-item"><span class="code">R12</span>投资人集中赎回</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Q2: P×I 矩阵 ===== -->
+    <div class="quad">
+      <div class="quad-label">Q2</div>
+      <div class="quad-title">概率 × 影响 矩阵 <span class="en">P × I HEATMAP</span></div>
+      <div class="heatmap-wrap">
+        <div class="y-axis">
+          <span class="a-label">影响 IMPACT →</span>
+          <span>1 · 极轻</span><span>2 · 轻</span><span>3 · 中</span><span>4 · 重</span><span>5 · 灾难</span>
+        </div>
+        <div class="heatmap">
+          <!-- Row I=5 (top) -->
+          <div class="hm-cell s-5"></div>
+          <div class="hm-cell s-10"><div class="bubble">R10</div></div>
+          <div class="hm-cell s-15"></div>
+          <div class="hm-cell s-20"><div class="bubble">R1</div></div>
+          <div class="hm-cell s-25"></div>
+          <!-- Row I=4 -->
+          <div class="hm-cell s-4"></div>
+          <div class="hm-cell s-8"><div class="bubble">R5</div><div class="bubble">R11</div></div>
+          <div class="hm-cell s-12"><div class="bubble">R9</div></div>
+          <div class="hm-cell s-16"></div>
+          <div class="hm-cell s-20"></div>
+          <!-- Row I=3 -->
+          <div class="hm-cell s-3"></div>
+          <div class="hm-cell s-6"></div>
+          <div class="hm-cell s-9"><div class="bubble">R7</div><div class="bubble">R3</div></div>
+          <div class="hm-cell s-12"><div class="bubble">R2</div></div>
+          <div class="hm-cell s-15"></div>
+          <!-- Row I=2 -->
+          <div class="hm-cell s-2"></div>
+          <div class="hm-cell s-4"></div>
+          <div class="hm-cell s-6"><div class="bubble">R4</div></div>
+          <div class="hm-cell s-8"><div class="bubble">R6</div><div class="bubble">R8</div></div>
+          <div class="hm-cell s-10"></div>
+          <!-- Row I=1 (bottom) -->
+          <div class="hm-cell s-1"></div>
+          <div class="hm-cell s-2"><div class="bubble">R12</div></div>
+          <div class="hm-cell s-3"></div>
+          <div class="hm-cell s-4"></div>
+          <div class="hm-cell s-5"></div>
+        </div>
+        <div></div>
+        <div class="x-axis">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          <span class="a-label">→ 概率 PROBABILITY</span>
+        </div>
+      </div>
+      <div class="lg-color">
+        <span><span class="chip" style="background:rgba(79,191,155,0.3);"></span>低 (1-5)</span>
+        <span><span class="chip" style="background:rgba(240,199,90,0.3);"></span>中 (6-10)</span>
+        <span><span class="chip" style="background:rgba(240,140,79,0.4);"></span>较高 (11-15)</span>
+        <span><span class="chip" style="background:rgba(255,92,92,0.4);"></span>高 (16-25)</span>
+        <span style="margin-left:auto; color:#D4AF37; font-weight:700;">→ R1 / R9 / R10 重点防控</span>
+      </div>
+    </div>
+
+    <!-- ===== Q3: 防御体系 ===== -->
+    <div class="quad">
+      <div class="quad-label">Q3</div>
+      <div class="quad-title">五层风控防御体系 <span class="en">DEFENSE STACK</span></div>
+      <div class="defense-stack">
+        <div class="def-layer">
+          <div class="def-num"><div class="n">1</div><div class="lbl">数据真</div></div>
+          <div class="def-body">
+            <div class="def-name">数据真实性 · 第一道防线（针对 R1 / R4）</div>
+            <div class="def-controls"><b>POS</b> + <b>银行流水</b> + <b>第三方审计</b> 三方交叉验证 · 链上凭证防篡改</div>
+          </div>
+        </div>
+        <div class="def-layer">
+          <div class="def-num"><div class="n">2</div><div class="lbl">资产散</div></div>
+          <div class="def-body">
+            <div class="def-name">资产分散 · 第二道防线（针对 R2 / R3 / R7）</div>
+            <div class="def-controls"><b>5-10 家门店</b> · <b>多行业</b> · 单店敞口上限 <b>20%</b> · 区域分散</div>
+          </div>
+        </div>
+        <div class="def-layer">
+          <div class="def-num"><div class="n">3</div><div class="lbl">法律</div></div>
+          <div class="def-body">
+            <div class="def-name">法律保护 · 第三道防线（针对 R3 / R5）</div>
+            <div class="def-controls"><b>回购条款</b> + <b>个人 / 公司担保</b> + <b>SPV 隔离</b> + 优先劣后</div>
+          </div>
+        </div>
+        <div class="def-layer">
+          <div class="def-num"><div class="n">4</div><div class="lbl">财务</div></div>
+          <div class="def-body">
+            <div class="def-name">财务缓冲 · 第四道防线（针对 R6 / R12）</div>
+            <div class="def-controls"><b>5% 储备金</b> · 收益拨备 · 现金保留 · 流动性窗口</div>
+          </div>
+        </div>
+        <div class="def-layer">
+          <div class="def-num"><div class="n">5</div><div class="lbl">合规</div></div>
+          <div class="def-body">
+            <div class="def-name">监管合规 · 第五道防线（针对 R9 / R10 / R11）</div>
+            <div class="def-controls"><b>HK SFC 持牌</b> + <b>持续披露</b> + <b>PI 限定</b> + 多签托管 + 合约审计</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Q4: 预警 + 压力测试 ===== -->
+    <div class="quad">
+      <div class="quad-label">Q4</div>
+      <div class="quad-title">早期预警 + 压力测试 <span class="en">EARLY WARNING & STRESS TEST</span></div>
+      <div class="q4-grid">
+        <div class="q4-section">
+          <div class="q4-header">⚡ 早期预警指标 · KPI 阈值</div>
+          <div class="ew-list">
+            <div class="ew-item"><span><b>POS 流水</b> 月环比 <span class="th">&lt; -20%</span></span></div>
+            <div class="ew-item"><span><b>银行 / POS</b> 偏离 <span class="th">&gt; 5%</span></span></div>
+            <div class="ew-item"><span><b>单店净现金流</b> <span class="th">&lt; -30%</span></span></div>
+            <div class="ew-item"><span><b>NFT 转让活跃度</b> <span class="th">↓ 50%</span></span></div>
+            <div class="ew-item"><span><b>合作方信用评级</b> 下调</span></div>
+            <div class="ew-item"><span><b>合约异常调用</b> <span class="th">&gt; 3次/日</span></span></div>
+          </div>
+        </div>
+
+        <div class="q4-section">
+          <div class="q4-header">🧪 压力测试场景</div>
+          <div class="st-list">
+            <div class="st-item">
+              <div class="st-scenario"><b>S1 · 单店关停</b><span class="desc"> · 10% 资产权益受影响</span></div>
+              <div class="st-impact green">FT 影响 &lt; 10% · NFT 触发回购</div>
+            </div>
+            <div class="st-item">
+              <div class="st-scenario"><b>S2 · 行业下行 -30%</b><span class="desc"> · 餐饮整体景气下滑</span></div>
+              <div class="st-impact yellow">本金安全 · 分红降至 4-5%</div>
+            </div>
+            <div class="st-item">
+              <div class="st-scenario"><b>S3 · 智能合约漏洞</b><span class="desc"> · 多签紧急冻结</span></div>
+              <div class="st-impact orange">触发熔断 · 链下接管分配</div>
+            </div>
+            <div class="st-item">
+              <div class="st-scenario"><b>S4 · 监管收紧</b><span class="desc"> · 暂停新发行</span></div>
+              <div class="st-impact green">存续基金不受影响 · 续期延后</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      <span>识别 12 项 · 高风险 4 项 · 五层防御 · 6 项预警 · 4 场景压力测试</span>
+      &nbsp;|&nbsp;
+      <span style="color:#9BB0C8; font-weight:400;">数据造假 (R1) / 监管收紧 (R9) / 合约漏洞 (R10) 为重点防控对象</span>
+    </div>
+    <div class="brand">SUNMI · RISK MODEL</div>
+  </div>
+</div>
+</body>
+</html>
