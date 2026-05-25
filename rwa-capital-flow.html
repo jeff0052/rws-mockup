@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商米 RWA · 资金流动详细模型</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 28px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
+  .title .accent { color: #D4AF37; }
+  .subtitle { font-size: 12px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Phase strip */
+  .phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .phase {
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.35);
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+  .phase .t { font-size: 10px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 800; }
+  .phase .lbl { font-size: 12px; color: #FFFFFF; font-weight: 600; margin-top: 1px; }
+
+  /* Main flow stage */
+  .stage {
+    position: relative;
+    height: 580px;
+    margin-bottom: 12px;
+  }
+
+  /* Main horizontal flow row */
+  .row {
+    position: absolute;
+    left: 0; right: 0;
+    display: flex; align-items: stretch;
+    gap: 0;
+  }
+  .row-main {
+    top: 220px; height: 110px;
+  }
+
+  /* Entity boxes (main flow) */
+  .entity {
+    flex: 1;
+    background: linear-gradient(180deg, #1B3A6B 0%, #14294D 100%);
+    border: 1px solid rgba(155,176,200,0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    position: relative;
+    margin: 0 4px;
+  }
+  .entity.hub {
+    background: linear-gradient(180deg, #D4AF37 0%, #8B6914 100%);
+    border-color: #FFE89C;
+    color: #0A1628;
+  }
+  .entity.smart {
+    background: linear-gradient(180deg, #8B5CF6 0%, #5B21B6 100%);
+    border-color: #C084FC;
+  }
+  .entity.holders {
+    background: linear-gradient(180deg, #3A78B0 0%, #13315C 100%);
+    border-color: #6BAEE5;
+  }
+  .entity .ico { font-size: 22px; margin-bottom: 2px; }
+  .entity .name { font-size: 12.5px; font-weight: 700; line-height: 1.3; color: #FFFFFF; }
+  .entity.hub .name { color: #0A1628; }
+  .entity .meta { font-size: 9.5px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .entity.hub .meta { color: rgba(10,22,40,0.7); }
+
+  /* Arrows between entities */
+  .arrow {
+    flex: 0 0 60px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .arrow::before {
+    content: "";
+    position: absolute;
+    left: 4px; right: 12px;
+    top: 50%;
+    height: 2px;
+    background: #4A6FA5;
+  }
+  .arrow::after {
+    content: "";
+    position: absolute;
+    right: 4px; top: 50%; transform: translateY(-50%);
+    border-left: 10px solid #4A6FA5;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+  }
+  .arrow.gold::before { background: #D4AF37; }
+  .arrow.gold::after { border-left-color: #D4AF37; }
+  .arrow.purple::before { background: #C084FC; }
+  .arrow.purple::after { border-left-color: #C084FC; }
+  .arrow .label {
+    position: absolute;
+    top: 14px;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #FFFFFF;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .arrow .freq {
+    position: absolute;
+    bottom: 14px;
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+    color: #D4AF37;
+    font-weight: 600;
+  }
+
+  /* Fee branch (below SPV) */
+  .fee-branch {
+    position: absolute;
+    top: 360px;
+    left: calc(20% - 30px);
+    width: 480px;
+    height: 200px;
+  }
+  .fee-branch-line {
+    position: absolute;
+    left: 30px; top: -30px;
+    width: 2px; height: 30px;
+    background: #FF8C8C;
+  }
+  .fee-branch-line::after {
+    content: "支出";
+    position: absolute;
+    left: 6px; top: 4px;
+    font-size: 9px; color: #FF8C8C; font-weight: 700;
+  }
+  .fees {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding-top: 4px;
+  }
+  .fee {
+    background: rgba(255,140,140,0.08);
+    border: 1px solid rgba(255,140,140,0.35);
+    border-radius: 6px;
+    padding: 8px 6px;
+    text-align: center;
+    position: relative;
+  }
+  .fee::before {
+    content: "";
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    width: 1.5px; height: 10px;
+    background: rgba(255,140,140,0.5);
+  }
+  .fee .who { font-size: 10px; color: #FFFFFF; font-weight: 700; }
+  .fee .amt { font-size: 12px; color: #FF8C8C; font-weight: 800; margin-top: 2px; }
+  .fee .freq { font-size: 8.5px; color: #9BB0C8; margin-top: 1px; letter-spacing: 0.5px; }
+
+  /* Data validation branch (above 门店) */
+  .data-branch {
+    position: absolute;
+    top: 40px;
+    left: 47%;
+    width: 240px;
+  }
+  .data-validation {
+    display: flex; gap: 6px;
+  }
+  .data-chip {
+    flex: 1;
+    background: rgba(70,200,130,0.1);
+    border: 1px solid rgba(70,200,130,0.4);
+    border-radius: 4px;
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 9.5px; color: #4FBF9B;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .data-branch-line {
+    position: absolute;
+    left: 50%; top: 100%;
+    width: 2px; height: 80px;
+    background: #4FBF9B;
+    transform: translateX(-50%);
+  }
+  .data-branch-line::before {
+    content: "数据采集";
+    position: absolute;
+    left: 6px; bottom: 4px;
+    font-size: 9px; color: #4FBF9B; font-weight: 700;
+    white-space: nowrap;
+  }
+  .data-branch-line::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    border-top: 8px solid #4FBF9B;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+  }
+
+  /* Cash flow back arrow (under 现金流) */
+  .recovery-line {
+    position: absolute;
+    top: 460px;
+    left: 47%; width: 32%;
+    height: 80px;
+    border-bottom: 2px dashed #4FBF9B;
+    border-right: 2px dashed #4FBF9B;
+    border-radius: 0 0 12px 0;
+  }
+  .recovery-label {
+    position: absolute;
+    bottom: -22px;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    color: #4FBF9B;
+    font-weight: 700;
+  }
+
+  /* Exit flow strip (bottom of stage) */
+  .exit-strip {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(212,175,55,0.06);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .exit-strip .lbl {
+    font-size: 10px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 800;
+    white-space: nowrap;
+  }
+  .exit-flow {
+    flex: 1;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: #FFFFFF;
+  }
+  .exit-step {
+    background: rgba(212,175,55,0.12);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: 600;
+  }
+  .exit-arrow { color: #D4AF37; font-weight: 700; }
+  .exit-strip .out {
+    font-size: 11px; color: #D4AF37; font-weight: 700;
+  }
+
+  /* Totals strip at bottom of stage */
+  .totals {
+    position: absolute;
+    top: 530px; left: 0; right: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding-top: 8px;
+  }
+  .total {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.25);
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+  .total .k { font-size: 9.5px; color: #9BB0C8; letter-spacing: 1px; text-transform: uppercase; }
+  .total .v { font-size: 13px; color: #FFFFFF; font-weight: 700; margin-top: 1px; }
+  .total .v .gold { color: #D4AF37; }
+  .total .v .green { color: #4FBF9B; }
+  .total .v .red { color: #FF8C8C; }
+
+  /* Footer band */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 56px; right: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text { font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px; }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand { font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title">商米 RWA · <span class="accent">资金流动详细模型</span></div>
+      <div class="subtitle" style="margin-top:6px;">CAPITAL FLOW · HK PHASE 1 · 全周期资金路径 + 费用结构 + 现金流回收</div>
+    </div>
+    <div class="subtitle">财务建模 · 机密</div>
+  </div>
+
+  <!-- Phase timeline -->
+  <div class="phases">
+    <div class="phase"><div class="t">T0</div><div class="lbl">募资设立</div></div>
+    <div class="phase"><div class="t">T0 → T+1M</div><div class="lbl">费用扣除 + 资产部署</div></div>
+    <div class="phase"><div class="t">T+1M → T+36M</div><div class="lbl">经营 · 分账 · 月度循环</div></div>
+    <div class="phase"><div class="t">T+36M</div><div class="lbl">到期清算 / 回购退出</div></div>
+  </div>
+
+  <div class="stage">
+    <!-- Data validation branch (top, above 现金流) -->
+    <div class="data-branch">
+      <div class="data-validation">
+        <div class="data-chip">POS<br>流水</div>
+        <div class="data-chip">银行<br>流水</div>
+        <div class="data-chip">IoT<br>经营数据</div>
+        <div class="data-chip">第三方<br>审计</div>
+      </div>
+      <div class="data-branch-line"></div>
+    </div>
+
+    <!-- Cash flow recovery loop -->
+    <div class="recovery-line">
+      <div class="recovery-label">▲ 月度净现金流回流 SPV · 智能合约自动分账</div>
+    </div>
+
+    <!-- Main horizontal flow row -->
+    <div class="row row-main">
+      <div class="entity">
+        <div class="ico">👥</div>
+        <div class="name">投资人 PI</div>
+        <div class="meta">HK 合格投资人</div>
+      </div>
+      <div class="arrow gold">
+        <div class="label">认购</div>
+        <div class="freq">T0 · 一次性</div>
+      </div>
+      <div class="entity hub">
+        <div class="ico">🏛️</div>
+        <div class="name">基金 SPV<br>HKD 20M</div>
+        <div class="meta">HK 持牌基金账户</div>
+      </div>
+      <div class="arrow gold">
+        <div class="label">收益权预付</div>
+        <div class="freq">T+1M</div>
+      </div>
+      <div class="entity">
+        <div class="ico">🏪</div>
+        <div class="name">5-10 家门店</div>
+        <div class="meta">连锁餐饮 / 标准化零售</div>
+      </div>
+      <div class="arrow gold">
+        <div class="label">净现金流</div>
+        <div class="freq">月度</div>
+      </div>
+      <div class="entity smart">
+        <div class="ico">⚙️</div>
+        <div class="name">智能合约</div>
+        <div class="meta">链上分账</div>
+      </div>
+      <div class="arrow purple">
+        <div class="label">FT 比例分红</div>
+        <div class="freq">月度</div>
+      </div>
+      <div class="entity holders">
+        <div class="ico">🪙🎫</div>
+        <div class="name">FT + NFT<br>持有人</div>
+        <div class="meta">链上钱包接收</div>
+      </div>
+    </div>
+
+    <!-- Fee branch below SPV -->
+    <div class="fee-branch">
+      <div class="fee-branch-line"></div>
+      <div class="fees">
+        <div class="fee">
+          <div class="who">律所</div>
+          <div class="amt">~50 万</div>
+          <div class="freq">一次性 / 设立</div>
+        </div>
+        <div class="fee">
+          <div class="who">基金管理人</div>
+          <div class="amt">1.5% p.a.</div>
+          <div class="freq">~30 万/年</div>
+        </div>
+        <div class="fee">
+          <div class="who">托管行</div>
+          <div class="amt">0.2% p.a.</div>
+          <div class="freq">~4 万/年</div>
+        </div>
+        <div class="fee">
+          <div class="who">审计师</div>
+          <div class="amt">0.3% p.a.</div>
+          <div class="freq">~6 万/年</div>
+        </div>
+        <div class="fee">
+          <div class="who">商米 数据服务</div>
+          <div class="amt">0.5% p.a.</div>
+          <div class="freq">~10 万/年</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Totals summary strip -->
+    <div class="totals">
+      <div class="total">
+        <div class="k">基金总规模</div>
+        <div class="v"><span class="gold">HKD 2,000 万</span></div>
+      </div>
+      <div class="total">
+        <div class="k">设立费 + 三年运营费</div>
+        <div class="v"><span class="red">~ HKD 200 万</span> (10%)</div>
+      </div>
+      <div class="total">
+        <div class="k">可投资本</div>
+        <div class="v"><span class="green">~ HKD 1,800 万</span> (90%)</div>
+      </div>
+      <div class="total">
+        <div class="k">投资人预期净 IRR</div>
+        <div class="v"><span class="gold">7-9% p.a.</span> (扣费后)</div>
+      </div>
+    </div>
+
+    <!-- Exit strip -->
+    <div class="exit-strip">
+      <div class="lbl">T+36M · 退出</div>
+      <div class="exit-flow">
+        <div class="exit-step">基金到期 / 投票回购</div>
+        <span class="exit-arrow">→</span>
+        <div class="exit-step">处置门店收益权资产</div>
+        <span class="exit-arrow">→</span>
+        <div class="exit-step">SPV 收回本金 + 剩余分配</div>
+        <span class="exit-arrow">→</span>
+        <div class="exit-step">智能合约燃烧 FT / NFT</div>
+        <span class="exit-arrow">→</span>
+        <div class="exit-step">投资人收到清算款</div>
+      </div>
+      <div class="out">CLOSE LOOP</div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      入金 <span>HKD 20M</span> · 扣费 <span>~10%</span> · 部署 <span>~90%</span> · 月度净现金流 <span>~10-12% gross</span> · 投资人净 IRR <span>7-9%</span>
+    </div>
+    <div class="brand">SUNMI · CAPITAL FLOW MODEL</div>
+  </div>
+</div>
+</body>
+</html>
