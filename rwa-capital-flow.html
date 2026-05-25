@@ -32,7 +32,7 @@
     display: flex; justify-content: space-between; align-items: flex-end;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(212,175,55,0.3);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     position: relative;
   }
   .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
@@ -57,25 +57,60 @@
   .phase .t { font-size: 10px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 800; }
   .phase .lbl { font-size: 12px; color: #FFFFFF; font-weight: 600; margin-top: 1px; }
 
-  /* Main flow stage */
-  .stage {
+  /* ===== Sequential body sections (no absolute positioning) ===== */
+  .body {
+    display: flex; flex-direction: column;
+    gap: 10px;
+    height: calc(100% - 170px);
+  }
+  .section {
     position: relative;
-    height: 580px;
-    margin-bottom: 12px;
+  }
+  .section-label {
+    position: absolute; top: -8px; left: 14px;
+    background: #0A1628; padding: 0 10px;
+    font-size: 10px; color: #D4AF37; letter-spacing: 2px; font-weight: 800;
+    z-index: 1;
   }
 
-  /* Main horizontal flow row */
-  .row {
-    position: absolute;
-    left: 0; right: 0;
+  /* Data sources */
+  .data-row {
+    background: rgba(79,191,155,0.06);
+    border: 1px solid rgba(79,191,155,0.3);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 14px;
+    min-height: 56px;
+  }
+  .data-row .lbl-block {
+    color: #4FBF9B;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    line-height: 1.4;
+  }
+  .data-row .lbl-block .small { font-size: 9.5px; color: #9BB0C8; font-weight: 400; }
+  .data-validation {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .data-chip {
+    background: rgba(79,191,155,0.1);
+    border: 1px solid rgba(79,191,155,0.4);
+    border-radius: 4px;
+    padding: 6px 10px;
+    text-align: center;
+    font-size: 11px; color: #4FBF9B;
+    font-weight: 600;
+  }
+
+  /* Main horizontal flow */
+  .main-flow {
     display: flex; align-items: stretch;
-    gap: 0;
+    height: 110px;
   }
-  .row-main {
-    top: 220px; height: 110px;
-  }
-
-  /* Entity boxes (main flow) */
   .entity {
     flex: 1;
     background: linear-gradient(180deg, #1B3A6B 0%, #14294D 100%);
@@ -85,8 +120,6 @@
     display: flex; flex-direction: column; justify-content: center;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    position: relative;
-    margin: 0 4px;
   }
   .entity.hub {
     background: linear-gradient(180deg, #D4AF37 0%, #8B6914 100%);
@@ -107,16 +140,15 @@
   .entity .meta { font-size: 9.5px; color: rgba(255,255,255,0.65); margin-top: 2px; }
   .entity.hub .meta { color: rgba(10,22,40,0.7); }
 
-  /* Arrows between entities */
   .arrow {
-    flex: 0 0 60px;
+    flex: 0 0 70px;
     display: flex; align-items: center; justify-content: center;
     position: relative;
   }
   .arrow::before {
     content: "";
     position: absolute;
-    left: 4px; right: 12px;
+    left: 4px; right: 14px;
     top: 50%;
     height: 2px;
     background: #4A6FA5;
@@ -135,7 +167,7 @@
   .arrow.purple::after { border-left-color: #C084FC; }
   .arrow .label {
     position: absolute;
-    top: 14px;
+    top: 12px;
     width: 100%;
     text-align: center;
     font-size: 10px;
@@ -145,7 +177,7 @@
   }
   .arrow .freq {
     position: absolute;
-    bottom: 14px;
+    bottom: 12px;
     width: 100%;
     text-align: center;
     font-size: 9px;
@@ -153,124 +185,72 @@
     font-weight: 600;
   }
 
-  /* Fee branch (below SPV) */
-  .fee-branch {
-    position: absolute;
-    top: 360px;
-    left: calc(20% - 30px);
-    width: 480px;
-    height: 200px;
+  /* Recovery callout */
+  .recovery {
+    background: linear-gradient(90deg, rgba(79,191,155,0.08), rgba(79,191,155,0.02));
+    border: 1px dashed rgba(79,191,155,0.5);
+    border-radius: 6px;
+    padding: 7px 14px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11.5px; color: #FFFFFF;
   }
-  .fee-branch-line {
-    position: absolute;
-    left: 30px; top: -30px;
-    width: 2px; height: 30px;
-    background: #FF8C8C;
+  .recovery .pill {
+    background: rgba(79,191,155,0.2);
+    color: #4FBF9B;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 8px; border-radius: 3px;
+    letter-spacing: 1px;
   }
-  .fee-branch-line::after {
-    content: "支出";
-    position: absolute;
-    left: 6px; top: 4px;
-    font-size: 9px; color: #FF8C8C; font-weight: 700;
+  .recovery b { color: #4FBF9B; }
+
+  /* Fee section */
+  .fee-section {
+    background: rgba(255,140,140,0.04);
+    border: 1px solid rgba(255,140,140,0.3);
+    border-radius: 8px;
+    padding: 14px 14px 12px;
   }
   .fees {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
-    padding-top: 4px;
   }
   .fee {
     background: rgba(255,140,140,0.08);
     border: 1px solid rgba(255,140,140,0.35);
     border-radius: 6px;
-    padding: 8px 6px;
+    padding: 8px 8px;
     text-align: center;
-    position: relative;
   }
-  .fee::before {
-    content: "";
-    position: absolute;
-    top: -10px; left: 50%; transform: translateX(-50%);
-    width: 1.5px; height: 10px;
-    background: rgba(255,140,140,0.5);
-  }
-  .fee .who { font-size: 10px; color: #FFFFFF; font-weight: 700; }
-  .fee .amt { font-size: 12px; color: #FF8C8C; font-weight: 800; margin-top: 2px; }
-  .fee .freq { font-size: 8.5px; color: #9BB0C8; margin-top: 1px; letter-spacing: 0.5px; }
+  .fee .who { font-size: 11px; color: #FFFFFF; font-weight: 700; }
+  .fee .amt { font-size: 14px; color: #FF8C8C; font-weight: 800; margin-top: 3px; }
+  .fee .freq { font-size: 9.5px; color: #9BB0C8; margin-top: 2px; letter-spacing: 0.5px; }
 
-  /* Data validation branch (above 门店) */
-  .data-branch {
-    position: absolute;
-    top: 40px;
-    left: 47%;
-    width: 240px;
+  /* Totals strip */
+  .totals {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
   }
-  .data-validation {
-    display: flex; gap: 6px;
+  .total {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(155,176,200,0.25);
+    border-radius: 6px;
+    padding: 8px 12px;
   }
-  .data-chip {
-    flex: 1;
-    background: rgba(70,200,130,0.1);
-    border: 1px solid rgba(70,200,130,0.4);
-    border-radius: 4px;
-    padding: 6px 4px;
-    text-align: center;
-    font-size: 9.5px; color: #4FBF9B;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-  .data-branch-line {
-    position: absolute;
-    left: 50%; top: 100%;
-    width: 2px; height: 80px;
-    background: #4FBF9B;
-    transform: translateX(-50%);
-  }
-  .data-branch-line::before {
-    content: "数据采集";
-    position: absolute;
-    left: 6px; bottom: 4px;
-    font-size: 9px; color: #4FBF9B; font-weight: 700;
-    white-space: nowrap;
-  }
-  .data-branch-line::after {
-    content: "";
-    position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    border-top: 8px solid #4FBF9B;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-  }
+  .total .k { font-size: 9.5px; color: #9BB0C8; letter-spacing: 1px; text-transform: uppercase; }
+  .total .v { font-size: 14px; color: #FFFFFF; font-weight: 700; margin-top: 1px; }
+  .total .v .gold { color: #D4AF37; }
+  .total .v .green { color: #4FBF9B; }
+  .total .v .red { color: #FF8C8C; }
 
-  /* Cash flow back arrow (under 现金流) */
-  .recovery-line {
-    position: absolute;
-    top: 460px;
-    left: 47%; width: 32%;
-    height: 80px;
-    border-bottom: 2px dashed #4FBF9B;
-    border-right: 2px dashed #4FBF9B;
-    border-radius: 0 0 12px 0;
-  }
-  .recovery-label {
-    position: absolute;
-    bottom: -22px;
-    width: 100%;
-    text-align: center;
-    font-size: 11px;
-    color: #4FBF9B;
-    font-weight: 700;
-  }
-
-  /* Exit flow strip (bottom of stage) */
+  /* Exit strip */
   .exit-strip {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
     background: rgba(212,175,55,0.06);
     border: 1px solid rgba(212,175,55,0.3);
     border-radius: 8px;
-    padding: 8px 14px;
-    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
   }
   .exit-strip .lbl {
     font-size: 10px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 800;
@@ -278,41 +258,18 @@
   }
   .exit-flow {
     flex: 1;
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;
     font-size: 11px; color: #FFFFFF;
   }
   .exit-step {
     background: rgba(212,175,55,0.12);
     border: 1px solid rgba(212,175,55,0.3);
     border-radius: 4px;
-    padding: 4px 10px;
+    padding: 5px 10px;
     font-weight: 600;
+    white-space: nowrap;
   }
   .exit-arrow { color: #D4AF37; font-weight: 700; }
-  .exit-strip .out {
-    font-size: 11px; color: #D4AF37; font-weight: 700;
-  }
-
-  /* Totals strip at bottom of stage */
-  .totals {
-    position: absolute;
-    top: 530px; left: 0; right: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    padding-top: 8px;
-  }
-  .total {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(155,176,200,0.25);
-    border-radius: 6px;
-    padding: 6px 10px;
-  }
-  .total .k { font-size: 9.5px; color: #9BB0C8; letter-spacing: 1px; text-transform: uppercase; }
-  .total .v { font-size: 13px; color: #FFFFFF; font-weight: 700; margin-top: 1px; }
-  .total .v .gold { color: #D4AF37; }
-  .total .v .green { color: #4FBF9B; }
-  .total .v .red { color: #FF8C8C; }
 
   /* Footer band */
   .footer-band {
@@ -347,136 +304,150 @@
     <div class="phase"><div class="t">T+36M</div><div class="lbl">到期清算 / 回购退出</div></div>
   </div>
 
-  <div class="stage">
-    <!-- Data validation branch (top, above 现金流) -->
-    <div class="data-branch">
-      <div class="data-validation">
-        <div class="data-chip">POS<br>流水</div>
-        <div class="data-chip">银行<br>流水</div>
-        <div class="data-chip">IoT<br>经营数据</div>
-        <div class="data-chip">第三方<br>审计</div>
-      </div>
-      <div class="data-branch-line"></div>
-    </div>
+  <div class="body">
 
-    <!-- Cash flow recovery loop -->
-    <div class="recovery-line">
-      <div class="recovery-label">▲ 月度净现金流回流 SPV · 智能合约自动分账</div>
-    </div>
-
-    <!-- Main horizontal flow row -->
-    <div class="row row-main">
-      <div class="entity">
-        <div class="ico">👥</div>
-        <div class="name">投资人 PI</div>
-        <div class="meta">HK 合格投资人</div>
-      </div>
-      <div class="arrow gold">
-        <div class="label">认购</div>
-        <div class="freq">T0 · 一次性</div>
-      </div>
-      <div class="entity hub">
-        <div class="ico">🏛️</div>
-        <div class="name">基金 SPV<br>HKD 20M</div>
-        <div class="meta">HK 持牌基金账户</div>
-      </div>
-      <div class="arrow gold">
-        <div class="label">收益权预付</div>
-        <div class="freq">T+1M</div>
-      </div>
-      <div class="entity">
-        <div class="ico">🏪</div>
-        <div class="name">5-10 家门店</div>
-        <div class="meta">连锁餐饮 / 标准化零售</div>
-      </div>
-      <div class="arrow gold">
-        <div class="label">净现金流</div>
-        <div class="freq">月度</div>
-      </div>
-      <div class="entity smart">
-        <div class="ico">⚙️</div>
-        <div class="name">智能合约</div>
-        <div class="meta">链上分账</div>
-      </div>
-      <div class="arrow purple">
-        <div class="label">FT 比例分红</div>
-        <div class="freq">月度</div>
-      </div>
-      <div class="entity holders">
-        <div class="ico">🪙🎫</div>
-        <div class="name">FT + NFT<br>持有人</div>
-        <div class="meta">链上钱包接收</div>
-      </div>
-    </div>
-
-    <!-- Fee branch below SPV -->
-    <div class="fee-branch">
-      <div class="fee-branch-line"></div>
-      <div class="fees">
-        <div class="fee">
-          <div class="who">律所</div>
-          <div class="amt">~50 万</div>
-          <div class="freq">一次性 / 设立</div>
-        </div>
-        <div class="fee">
-          <div class="who">基金管理人</div>
-          <div class="amt">1.5% p.a.</div>
-          <div class="freq">~30 万/年</div>
-        </div>
-        <div class="fee">
-          <div class="who">托管行</div>
-          <div class="amt">0.2% p.a.</div>
-          <div class="freq">~4 万/年</div>
-        </div>
-        <div class="fee">
-          <div class="who">审计师</div>
-          <div class="amt">0.3% p.a.</div>
-          <div class="freq">~6 万/年</div>
-        </div>
-        <div class="fee">
-          <div class="who">商米 数据服务</div>
-          <div class="amt">0.5% p.a.</div>
-          <div class="freq">~10 万/年</div>
+    <!-- Data sources row -->
+    <div class="section">
+      <div class="data-row">
+        <div class="lbl-block">数据采集与验证<br><span class="small">从门店持续上送 → 链上凭证</span></div>
+        <div class="data-validation">
+          <div class="data-chip">POS / 支付流水</div>
+          <div class="data-chip">银行流水交叉验证</div>
+          <div class="data-chip">IoT · 经营数据</div>
+          <div class="data-chip">第三方独立审计</div>
         </div>
       </div>
     </div>
 
-    <!-- Totals summary strip -->
-    <div class="totals">
-      <div class="total">
-        <div class="k">基金总规模</div>
-        <div class="v"><span class="gold">HKD 2,000 万</span></div>
+    <!-- Main horizontal flow -->
+    <div class="section">
+      <div class="main-flow">
+        <div class="entity">
+          <div class="ico">👥</div>
+          <div class="name">投资人 PI</div>
+          <div class="meta">HK 合格投资人</div>
+        </div>
+        <div class="arrow gold">
+          <div class="label">认购</div>
+          <div class="freq">T0 · 一次性</div>
+        </div>
+        <div class="entity hub">
+          <div class="ico">🏛️</div>
+          <div class="name">基金 SPV<br>HKD 20M</div>
+          <div class="meta">HK 持牌基金账户</div>
+        </div>
+        <div class="arrow gold">
+          <div class="label">收益权预付</div>
+          <div class="freq">T+1M</div>
+        </div>
+        <div class="entity">
+          <div class="ico">🏪</div>
+          <div class="name">5-10 家门店</div>
+          <div class="meta">连锁餐饮 / 零售</div>
+        </div>
+        <div class="arrow gold">
+          <div class="label">净现金流</div>
+          <div class="freq">月度</div>
+        </div>
+        <div class="entity smart">
+          <div class="ico">⚙️</div>
+          <div class="name">智能合约</div>
+          <div class="meta">链上分账</div>
+        </div>
+        <div class="arrow purple">
+          <div class="label">按份额 / 单店分账</div>
+          <div class="freq">月度自动</div>
+        </div>
+        <div class="entity holders">
+          <div class="ico">🪙 🎫</div>
+          <div class="name">FT + NFT<br>持有人</div>
+          <div class="meta">链上钱包接收</div>
+        </div>
       </div>
-      <div class="total">
-        <div class="k">设立费 + 三年运营费</div>
-        <div class="v"><span class="red">~ HKD 200 万</span> (10%)</div>
+    </div>
+
+    <!-- Recovery callout -->
+    <div class="section">
+      <div class="recovery">
+        <div class="pill">回流</div>
+        <div>门店经营 <b>净现金流</b> 通过 SPV 自动归集 · 智能合约按 <b>FT 比例分红 + NFT 单店独立分红</b> 完成月度分账</div>
       </div>
-      <div class="total">
-        <div class="k">可投资本</div>
-        <div class="v"><span class="green">~ HKD 1,800 万</span> (90%)</div>
+    </div>
+
+    <!-- Fee section -->
+    <div class="section">
+      <div class="section-label">SPV 支出 · 设立 + 周期</div>
+      <div class="fee-section">
+        <div class="fees">
+          <div class="fee">
+            <div class="who">律所</div>
+            <div class="amt">~50 万</div>
+            <div class="freq">一次性 / 设立</div>
+          </div>
+          <div class="fee">
+            <div class="who">基金管理人</div>
+            <div class="amt">1.5% p.a.</div>
+            <div class="freq">~30 万 / 年</div>
+          </div>
+          <div class="fee">
+            <div class="who">托管行</div>
+            <div class="amt">0.2% p.a.</div>
+            <div class="freq">~4 万 / 年</div>
+          </div>
+          <div class="fee">
+            <div class="who">审计师</div>
+            <div class="amt">0.3% p.a.</div>
+            <div class="freq">~6 万 / 年</div>
+          </div>
+          <div class="fee">
+            <div class="who">商米 · 数据服务</div>
+            <div class="amt">0.5% p.a.</div>
+            <div class="freq">~10 万 / 年</div>
+          </div>
+        </div>
       </div>
-      <div class="total">
-        <div class="k">投资人预期净 IRR</div>
-        <div class="v"><span class="gold">7-9% p.a.</span> (扣费后)</div>
+    </div>
+
+    <!-- Totals -->
+    <div class="section">
+      <div class="totals">
+        <div class="total">
+          <div class="k">基金总规模</div>
+          <div class="v"><span class="gold">HKD 2,000 万</span></div>
+        </div>
+        <div class="total">
+          <div class="k">设立 + 三年运营费</div>
+          <div class="v"><span class="red">~ HKD 200 万</span> (10%)</div>
+        </div>
+        <div class="total">
+          <div class="k">可投资本</div>
+          <div class="v"><span class="green">~ HKD 1,800 万</span> (90%)</div>
+        </div>
+        <div class="total">
+          <div class="k">投资人预期净 IRR</div>
+          <div class="v"><span class="gold">7-9% p.a.</span> 扣费后</div>
+        </div>
       </div>
     </div>
 
     <!-- Exit strip -->
-    <div class="exit-strip">
-      <div class="lbl">T+36M · 退出</div>
-      <div class="exit-flow">
-        <div class="exit-step">基金到期 / 投票回购</div>
-        <span class="exit-arrow">→</span>
-        <div class="exit-step">处置门店收益权资产</div>
-        <span class="exit-arrow">→</span>
-        <div class="exit-step">SPV 收回本金 + 剩余分配</div>
-        <span class="exit-arrow">→</span>
-        <div class="exit-step">智能合约燃烧 FT / NFT</div>
-        <span class="exit-arrow">→</span>
-        <div class="exit-step">投资人收到清算款</div>
+    <div class="section">
+      <div class="exit-strip">
+        <div class="lbl">T+36M · 退出</div>
+        <div class="exit-flow">
+          <div class="exit-step">基金到期 / 投票回购</div>
+          <span class="exit-arrow">→</span>
+          <div class="exit-step">处置门店收益权资产</div>
+          <span class="exit-arrow">→</span>
+          <div class="exit-step">SPV 收回本金 + 剩余分配</div>
+          <span class="exit-arrow">→</span>
+          <div class="exit-step">智能合约燃烧 FT / NFT</div>
+          <span class="exit-arrow">→</span>
+          <div class="exit-step">投资人收到清算款</div>
+        </div>
       </div>
-      <div class="out">CLOSE LOOP</div>
     </div>
+
   </div>
 
   <div class="footer-band">
