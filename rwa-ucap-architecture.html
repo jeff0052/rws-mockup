@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>U-CAP · 可信数据资产架构 · Uniweb × 商米</title>
+<title>U-CAP · 可信数据资产架构 · Uniweb</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -313,8 +313,8 @@
 <div class="slide">
   <div class="header">
     <div>
-      <div class="title"><span class="ucap-badge">U-CAP</span>可信数据资产架构 · <span class="accent">Uniweb × 商米</span></div>
-      <div class="subtitle" style="margin-top:6px;">UNIWEB CERTIFIED ASSET PACK · 4 层信任栈 · 三流合一 · 链上锚定 · ZK 隐私 · MAS Project Guardian Ready</div>
+      <div class="title"><span class="ucap-badge">U-CAP</span>可信数据资产架构 · <span class="accent">Uniweb Phase 1 闭环</span></div>
+      <div class="subtitle" style="margin-top:6px;">UNIWEB CERTIFIED ASSET PACK · 4 层信任栈 · 多源交叉 · 链上锚定 · ZK 隐私 · MAS Project Guardian Ready</div>
     </div>
     <div class="subtitle">技术架构 · 核心 IP</div>
   </div>
@@ -331,29 +331,29 @@
       </div>
       <div class="components l1-grid">
         <div class="comp">
-          <div class="c-name"><span class="c-ico">💳</span>POS 销售流</div>
-          <div class="c-desc">硬件 TPM 签名 · 每笔交易设备私钥不可篡改</div>
+          <div class="c-name"><span class="c-ico">💳</span>支付结算流</div>
+          <div class="c-desc">Uniweb 聚合支付直连 · gateway 签名 · 核心数据源</div>
         </div>
         <div class="comp">
-          <div class="c-name"><span class="c-ico">🔌</span>支付结算流</div>
-          <div class="c-desc">Uniweb 聚合支付直连 · 绕开商户软件层</div>
-        </div>
-        <div class="comp">
-          <div class="c-name"><span class="c-ico">📡</span>IoT 经营流</div>
-          <div class="c-desc">摄像头客流 + 厨房传感 + 能耗 · 物理证据</div>
-        </div>
-        <div class="comp">
-          <div class="c-name"><span class="c-ico">📋</span>SaaS 数据</div>
-          <div class="c-desc">库存 / 排班 / 预订 · 运营动作留痕</div>
+          <div class="c-name"><span class="c-ico">🧾</span>POS 销售流</div>
+          <div class="c-desc">API 接入商户现有 POS · 时间戳 + 签名 · 不挑硬件</div>
         </div>
         <div class="comp">
           <div class="c-name"><span class="c-ico">🏦</span>银行流水</div>
-          <div class="c-desc">商户账户 API 直连 · 第三方源 监管最认</div>
+          <div class="c-desc">商户银行账户 API 直连 · 第三方源 · 监管最认</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📋</span>Uniweb SaaS</div>
+          <div class="c-desc">库存 / 排班 / 预订 · 运营动作留痕</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📊</span>外部校验</div>
+          <div class="c-desc">税务申报 + 季度审计 + 信用报告 · 政府 / 第三方</div>
         </div>
       </div>
       <div class="output">
-        <div class="o-lbl">三流合一</div>
-        <div class="o-val">POS ↔ 支付<br>↔ IoT 校验</div>
+        <div class="o-lbl">多源交叉</div>
+        <div class="o-val">支付 ↔ POS<br>↔ 银行 校验</div>
         <div class="o-sub">任一造假 → 其他暴露</div>
       </div>
     </div>
@@ -498,41 +498,33 @@
     </div>
 
     <div class="panel">
-      <div class="panel-head">联盟分工 · 谁拿什么</div>
-      <div class="build-split">
-        <div class="party party-sunmi">
-          <div class="p-name">🏢 商米 · SUNMI</div>
+      <div class="panel-head">Uniweb Phase 1 闭环能力清单 · 现在就能跑</div>
+      <div class="build-split" style="grid-template-columns: 1fr;">
+        <div class="party party-uniweb" style="background: linear-gradient(135deg, rgba(58,120,176,0.18), rgba(212,175,55,0.06));">
+          <div class="p-name" style="color:#D4AF37;">✅ Uniweb 已具备 · 无需外部依赖</div>
           <div class="p-items">
-            <span class="p-chip">硬件 TPM</span>
-            <span class="p-chip">POS</span>
-            <span class="p-chip">IoT 感知</span>
-            <span class="p-chip">SaaS 数据</span>
-            <span class="p-chip">商户存量</span>
-          </div>
-        </div>
-        <div class="plus">×</div>
-        <div class="party party-uniweb">
-          <div class="p-name">💳 Uniweb · UNIWEB</div>
-          <div class="p-items">
-            <span class="p-chip">聚合支付</span>
-            <span class="p-chip">分账牌照</span>
-            <span class="p-chip">虚拟开户</span>
-            <span class="p-chip">基金合规</span>
-            <span class="p-chip">RWA 发行</span>
+            <span class="p-chip">聚合支付牌照</span>
+            <span class="p-chip">分账 / 转账</span>
+            <span class="p-chip">虚拟 / 远程开户</span>
+            <span class="p-chip">商户银行直连</span>
+            <span class="p-chip">SaaS 经营数据</span>
+            <span class="p-chip">7 家锚定商户</span>
+            <span class="p-chip">RWA 基金发起</span>
+            <span class="p-chip">借壳 RFMC 通道</span>
           </div>
         </div>
       </div>
-      <div class="joint-note">没有一家公司同时具备 5 大要素 · 联盟构成行业唯一闭环</div>
+      <div class="joint-note">Phase 2 才考虑：硬件级签名 / IoT 物理证据 / 第三方 SaaS 整合 (留作战略合作筹码)</div>
     </div>
   </div>
 
   <div class="footer-band">
     <div class="text">
-      <span>三流合一</span> · <span>Merkle 上链</span> · <span>ZK 隐私</span> · <span>智能分账</span>
+      <span>多源交叉</span> · <span>Merkle 上链</span> · <span>ZK 隐私</span> · <span>智能分账</span>
       &nbsp;|&nbsp;
-      <span style="color:#9BB0C8; font-weight:400;">U-CAP = Asia SME Cash Flow Asset Standard · 进入 MAS Project Guardian 的核心创新点</span>
+      <span style="color:#9BB0C8; font-weight:400;">Uniweb Phase 1 自闭环 · MAS Project Guardian Ready · Asia SME Cash Flow Asset Standard</span>
     </div>
-    <div class="brand">U-CAP · UNIWEB × SUNMI</div>
+    <div class="brand">U-CAP · UNIWEB</div>
   </div>
 </div>
 </body>
