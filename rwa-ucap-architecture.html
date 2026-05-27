@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>U-CAP · 可信数据资产架构 · Uniweb × 商米</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0A1628;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: #E8ECF1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1600px;
+    height: 900px;
+    margin: 24px auto;
+    background: linear-gradient(135deg, #0A1628 0%, #0F2347 100%);
+    position: relative;
+    padding: 26px 50px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .slide::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(212,175,55,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(70,130,180,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .title { font-size: 23px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; }
+  .title .accent { color: #D4AF37; }
+  .subtitle { font-size: 11.5px; color: #9BB0C8; letter-spacing: 2px; text-transform: uppercase; }
+  .ucap-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #D4AF37, #8B6914);
+    color: #0A1628;
+    font-size: 12px; font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    margin-right: 8px;
+  }
+
+  /* ===== 4-Layer Architecture ===== */
+  .arch {
+    display: flex; flex-direction: column;
+    gap: 8px;
+    height: calc(100% - 230px);
+  }
+  .layer {
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: 130px 1fr 130px;
+    gap: 14px;
+    align-items: center;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+  .layer-l1 {
+    background: linear-gradient(90deg, rgba(45,143,112,0.18), rgba(21,85,56,0.15));
+    border: 1px solid rgba(79,191,155,0.45);
+  }
+  .layer-l2 {
+    background: linear-gradient(90deg, rgba(58,120,176,0.18), rgba(19,49,92,0.15));
+    border: 1px solid rgba(107,174,229,0.45);
+  }
+  .layer-l3 {
+    background: linear-gradient(90deg, rgba(139,92,246,0.18), rgba(91,33,182,0.15));
+    border: 1px solid rgba(192,132,252,0.45);
+  }
+  .layer-l4 {
+    background: linear-gradient(90deg, rgba(212,175,55,0.2), rgba(139,105,20,0.15));
+    border: 1px solid rgba(255,232,156,0.55);
+  }
+
+  /* Layer header (left) */
+  .layer-head {
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .layer-num {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .layer-num .n {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800;
+    color: #0A1628;
+  }
+  .layer-l1 .n { background: linear-gradient(135deg, #4FBF9B, #1B6B4D); color: #FFFFFF; }
+  .layer-l2 .n { background: linear-gradient(135deg, #6BAEE5, #1E5F8E); color: #FFFFFF; }
+  .layer-l3 .n { background: linear-gradient(135deg, #C084FC, #6B2BCC); color: #FFFFFF; }
+  .layer-l4 .n { background: linear-gradient(135deg, #FFD96B, #8B6914); }
+  .layer-num .lbl {
+    font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  }
+  .layer-l1 .lbl { color: #4FBF9B; }
+  .layer-l2 .lbl { color: #6BAEE5; }
+  .layer-l3 .lbl { color: #C084FC; }
+  .layer-l4 .lbl { color: #D4AF37; }
+  .layer-name {
+    font-size: 13px; font-weight: 800; color: #FFFFFF; line-height: 1.3;
+  }
+  .layer-en {
+    font-size: 9px; color: #9BB0C8; letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .layer-tag {
+    font-size: 10px; color: #E8ECF1;
+    margin-top: 2px;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+
+  /* Components (middle) */
+  .components {
+    display: grid;
+    gap: 6px;
+  }
+  .l1-grid { grid-template-columns: repeat(5, 1fr); }
+  .l2-grid { grid-template-columns: repeat(4, 1fr); }
+  .l3-grid { grid-template-columns: repeat(4, 1fr); }
+  .l4-grid { grid-template-columns: repeat(5, 1fr); }
+  .comp {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
+    padding: 6px 8px;
+    display: flex; flex-direction: column;
+    gap: 1px;
+  }
+  .comp .c-name {
+    font-size: 11px; font-weight: 700; color: #FFFFFF;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .comp .c-ico { font-size: 12px; }
+  .comp .c-desc {
+    font-size: 9px; color: #9BB0C8; line-height: 1.35;
+  }
+  .layer-l1 .comp { border-color: rgba(79,191,155,0.35); }
+  .layer-l2 .comp { border-color: rgba(107,174,229,0.35); }
+  .layer-l3 .comp { border-color: rgba(192,132,252,0.35); }
+  .layer-l4 .comp { border-color: rgba(255,232,156,0.4); }
+
+  /* Output (right) */
+  .output {
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed;
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .layer-l1 .output { border-color: rgba(79,191,155,0.6); }
+  .layer-l2 .output { border-color: rgba(107,174,229,0.6); }
+  .layer-l3 .output { border-color: rgba(192,132,252,0.6); }
+  .layer-l4 .output { border-color: rgba(255,232,156,0.6); }
+  .output .o-lbl {
+    font-size: 9px; color: #D4AF37; letter-spacing: 1.5px; font-weight: 800;
+    text-transform: uppercase;
+  }
+  .output .o-val {
+    font-size: 12px; color: #FFFFFF; font-weight: 700;
+    line-height: 1.25;
+  }
+  .output .o-sub {
+    font-size: 8.5px; color: #9BB0C8;
+    margin-top: 2px;
+  }
+
+  /* Between-layer arrow */
+  .flow-arrow {
+    text-align: center;
+    color: #D4AF37;
+    font-size: 14px;
+    line-height: 0.5;
+    margin: -2px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-arrow .lbl {
+    background: #0A1628;
+    color: #D4AF37;
+    font-size: 9px;
+    padding: 0 8px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  /* ===== Bottom strip: Verifiers + Build Split ===== */
+  .bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    height: 158px;
+    margin-top: 10px;
+  }
+  .panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155,176,200,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .panel-head {
+    font-size: 11px; color: #D4AF37; letter-spacing: 2px;
+    font-weight: 800; text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed rgba(212,175,55,0.3);
+  }
+
+  /* Verifiers */
+  .verifiers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    flex: 1;
+  }
+  .verifier {
+    background: rgba(212,175,55,0.06);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 6px;
+    padding: 8px 6px;
+    text-align: center;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .verifier .v-ico { font-size: 22px; }
+  .verifier .v-name { font-size: 11px; color: #FFFFFF; font-weight: 700; }
+  .verifier .v-act { font-size: 9px; color: #9BB0C8; line-height: 1.35; }
+
+  /* Build split */
+  .build-split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    flex: 1;
+    align-items: stretch;
+  }
+  .party {
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .party-sunmi {
+    background: linear-gradient(135deg, rgba(255,106,19,0.18), rgba(232,93,15,0.08));
+    border: 1px solid rgba(255,106,19,0.5);
+  }
+  .party-uniweb {
+    background: linear-gradient(135deg, rgba(58,120,176,0.18), rgba(19,49,92,0.08));
+    border: 1px solid rgba(107,174,229,0.5);
+  }
+  .party .p-name {
+    font-size: 12px; font-weight: 800; color: #FFFFFF;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .party-sunmi .p-name { color: #FF9B5C; }
+  .party-uniweb .p-name { color: #6BAEE5; }
+  .party .p-items {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-top: 2px;
+  }
+  .p-chip {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 9.5px;
+    color: #E8ECF1;
+  }
+  .plus {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    color: #D4AF37;
+  }
+  .joint-note {
+    font-size: 9px; color: #9BB0C8;
+    margin-top: 4px;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* Footer band */
+  .footer-band {
+    position: absolute;
+    bottom: 16px; left: 50px; right: 50px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+    border-left: 3px solid #D4AF37;
+    border-radius: 4px;
+  }
+  .footer-band .text { font-size: 12px; color: #FFFFFF; letter-spacing: 0.5px; }
+  .footer-band .text span { color: #D4AF37; font-weight: 700; }
+  .footer-band .brand { font-size: 11px; color: #D4AF37; letter-spacing: 2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <div class="title"><span class="ucap-badge">U-CAP</span>可信数据资产架构 · <span class="accent">Uniweb × 商米</span></div>
+      <div class="subtitle" style="margin-top:6px;">UNIWEB CERTIFIED ASSET PACK · 4 层信任栈 · 三流合一 · 链上锚定 · ZK 隐私 · MAS Project Guardian Ready</div>
+    </div>
+    <div class="subtitle">技术架构 · 核心 IP</div>
+  </div>
+
+  <div class="arch">
+
+    <!-- ===== L1 Data Origin ===== -->
+    <div class="layer layer-l1">
+      <div class="layer-head">
+        <div class="layer-num"><div class="n">1</div><div class="lbl">L1</div></div>
+        <div class="layer-name">数据源头层</div>
+        <div class="layer-en">DATA ORIGIN</div>
+        <div class="layer-tag">在数据出生那一刻 · 不可造假</div>
+      </div>
+      <div class="components l1-grid">
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">💳</span>POS 销售流</div>
+          <div class="c-desc">硬件 TPM 签名 · 每笔交易设备私钥不可篡改</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🔌</span>支付结算流</div>
+          <div class="c-desc">Uniweb 聚合支付直连 · 绕开商户软件层</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📡</span>IoT 经营流</div>
+          <div class="c-desc">摄像头客流 + 厨房传感 + 能耗 · 物理证据</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📋</span>SaaS 数据</div>
+          <div class="c-desc">库存 / 排班 / 预订 · 运营动作留痕</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🏦</span>银行流水</div>
+          <div class="c-desc">商户账户 API 直连 · 第三方源 监管最认</div>
+        </div>
+      </div>
+      <div class="output">
+        <div class="o-lbl">三流合一</div>
+        <div class="o-val">POS ↔ 支付<br>↔ IoT 校验</div>
+        <div class="o-sub">任一造假 → 其他暴露</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="lbl">RAW DATA + 设备签名 ▼</span></div>
+
+    <!-- ===== L2 Verification ===== -->
+    <div class="layer layer-l2">
+      <div class="layer-head">
+        <div class="layer-num"><div class="n">2</div><div class="lbl">L2</div></div>
+        <div class="layer-name">验证层</div>
+        <div class="layer-en">VERIFICATION</div>
+        <div class="layer-tag">多源交叉 · 异常检测 · 多签确认</div>
+      </div>
+      <div class="components l2-grid">
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">⚖️</span>一致性引擎</div>
+          <div class="c-desc">POS ↔ 支付 ↔ 银行流水 偏离 &gt; 5% → 告警</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🤖</span>异常检测 ML</div>
+          <div class="c-desc">历史模式比对 · 识别"没人但收入正常"等异常</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">✍️</span>操作员签字</div>
+          <div class="c-desc">商户每日盘点签字 · 对账确认</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📊</span>审计师月签</div>
+          <div class="c-desc">第三方审计每月签字背书</div>
+        </div>
+      </div>
+      <div class="output">
+        <div class="o-lbl">输出 · DVC</div>
+        <div class="o-val">Daily Verified<br>Certificate</div>
+        <div class="o-sub">~ 3,000 份 / 年 / 8 店</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="lbl">DVC × 8 STORES × DAILY ▼</span></div>
+
+    <!-- ===== L3 On-chain Anchoring ===== -->
+    <div class="layer layer-l3">
+      <div class="layer-head">
+        <div class="layer-num"><div class="n">3</div><div class="lbl">L3</div></div>
+        <div class="layer-name">链上锚定层</div>
+        <div class="layer-en">ON-CHAIN ANCHORING</div>
+        <div class="layer-tag">任何人独立验证 · 监管节点直读</div>
+      </div>
+      <div class="components l3-grid">
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🌳</span>Merkle Tree</div>
+          <div class="c-desc">每日 8 店 DVC 计算 Merkle 根</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">⛓️</span>主网 Root</div>
+          <div class="c-desc">每日根哈希写到 Ethereum / Polygon 主网</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">📦</span>IPFS / Arweave</div>
+          <div class="c-desc">原始 DVC + 审计报告永久存储</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🔐</span>ZK 隐私证明</div>
+          <div class="c-desc">可验证"每天 &gt; X" · 不暴露具体交易</div>
+        </div>
+      </div>
+      <div class="output">
+        <div class="o-lbl">公开可验证</div>
+        <div class="o-val">VERIFIABLE<br>CASH FLOW</div>
+        <div class="o-sub">改一笔 → 整月根哈希不匹配</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="lbl">VERIFIABLE CASH FLOW ▼</span></div>
+
+    <!-- ===== L4 Asset Wrapping ===== -->
+    <div class="layer layer-l4">
+      <div class="layer-head">
+        <div class="layer-num"><div class="n">4</div><div class="lbl">L4</div></div>
+        <div class="layer-name">资产封装层</div>
+        <div class="layer-en">ASSET WRAPPING</div>
+        <div class="layer-tag">可信数据 → 可投资产品</div>
+      </div>
+      <div class="components l4-grid">
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">⚙️</span>智能合约</div>
+          <div class="c-desc">只认 DVC · 链下私分账无效</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">⚖️</span>法律协议</div>
+          <div class="c-desc">收益权 / 担保 / lockbox / 财务契约</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🪙</span>FT · ERC-20</div>
+          <div class="c-desc">基金整体份额 · 按 DVC 月度分红</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🎫</span>NFT · ERC-721</div>
+          <div class="c-desc">单店权益 · metadata 挂全部 DVC 历史</div>
+        </div>
+        <div class="comp">
+          <div class="c-name"><span class="c-ico">🔑</span>数据 API Token</div>
+          <div class="c-desc">付费查询历史 DVC · 二级市场尽调用</div>
+        </div>
+      </div>
+      <div class="output">
+        <div class="o-lbl">投资人收到</div>
+        <div class="o-val">Token<br>+ DVC 凭证</div>
+        <div class="o-sub">数据 = 资产本身</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Bottom: Verifiers + Build Split ===== -->
+  <div class="bottom">
+    <div class="panel">
+      <div class="panel-head">谁能独立验证 · 4 路独立监督</div>
+      <div class="verifiers">
+        <div class="verifier">
+          <div class="v-ico">👤</div>
+          <div class="v-name">投资人</div>
+          <div class="v-act">钱包持 token 即可查 DVC · 历史现金流公开</div>
+        </div>
+        <div class="verifier">
+          <div class="v-ico">📋</div>
+          <div class="v-name">审计师</div>
+          <div class="v-act">月末核 31 个根哈希 · 数据从未被改</div>
+        </div>
+        <div class="verifier">
+          <div class="v-ico">🏛️</div>
+          <div class="v-name">MAS · 监管</div>
+          <div class="v-act">部署监管节点直读 · 不必问 Uniweb 要数据</div>
+        </div>
+        <div class="verifier">
+          <div class="v-ico">🔄</div>
+          <div class="v-name">二级市场</div>
+          <div class="v-act">买家拿 token 同时拿完整历史可证</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">联盟分工 · 谁拿什么</div>
+      <div class="build-split">
+        <div class="party party-sunmi">
+          <div class="p-name">🏢 商米 · SUNMI</div>
+          <div class="p-items">
+            <span class="p-chip">硬件 TPM</span>
+            <span class="p-chip">POS</span>
+            <span class="p-chip">IoT 感知</span>
+            <span class="p-chip">SaaS 数据</span>
+            <span class="p-chip">商户存量</span>
+          </div>
+        </div>
+        <div class="plus">×</div>
+        <div class="party party-uniweb">
+          <div class="p-name">💳 Uniweb · UNIWEB</div>
+          <div class="p-items">
+            <span class="p-chip">聚合支付</span>
+            <span class="p-chip">分账牌照</span>
+            <span class="p-chip">虚拟开户</span>
+            <span class="p-chip">基金合规</span>
+            <span class="p-chip">RWA 发行</span>
+          </div>
+        </div>
+      </div>
+      <div class="joint-note">没有一家公司同时具备 5 大要素 · 联盟构成行业唯一闭环</div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <div class="text">
+      <span>三流合一</span> · <span>Merkle 上链</span> · <span>ZK 隐私</span> · <span>智能分账</span>
+      &nbsp;|&nbsp;
+      <span style="color:#9BB0C8; font-weight:400;">U-CAP = Asia SME Cash Flow Asset Standard · 进入 MAS Project Guardian 的核心创新点</span>
+    </div>
+    <div class="brand">U-CAP · UNIWEB × SUNMI</div>
+  </div>
+</div>
+</body>
+</html>
