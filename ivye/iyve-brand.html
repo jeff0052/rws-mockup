@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F3EDDF">
+<title>品牌与视觉语言 · 金黑·拥有 vs 天青·关系</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Manrope:wght@300;400;500;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --paper:#F3EDDF; --paper-2:#E9E2D0; --moon:#E6E8E2;
+  --ink:#1C1C1A; --ink-2:#46433B; --ink-3:#8A8474; --dai:#2E3A3A;
+  --ru:#9DB3AC; --ru-d:#7E9B8E; --cinnabar:#B23A2E; --gold-leaf:#A8884C; --line:#D6CEBB;
+  --serif:'Noto Serif SC','Songti SC','STSong',serif;
+  --sans:'Manrope','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html,body{ background:var(--paper); }
+body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.7;
+  background:radial-gradient(ellipse at 8% 6%, rgba(157,179,172,.10), transparent 42%), var(--paper); min-height:100vh; }
+.wrap{ max-width:1040px; margin:0 auto; padding:48px 40px 96px; }
+
+.nav{ display:flex; align-items:center; gap:14px; margin-bottom:52px; font-size:13px; }
+.nav a{ color:var(--ink-3); text-decoration:none; } .nav a:hover{ color:var(--ru-d); }
+.nav .seal{ display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:1.5px solid var(--cinnabar); border-radius:4px; color:var(--cinnabar); font-family:var(--serif); font-weight:700; font-size:14px; }
+.nav .sep{ color:var(--line); } .nav .here{ color:var(--ink); font-weight:600; }
+
+.eyebrow{ font-size:12px; letter-spacing:.4em; color:var(--ru-d); text-transform:uppercase; margin-bottom:22px; font-weight:600; }
+.h1{ font-family:var(--serif); font-weight:300; font-size:clamp(30px,4.6vw,50px); line-height:1.3; margin-bottom:20px; }
+.h1 b{ font-weight:700; } .h1 .ru{ color:var(--ru-d); }
+.lead{ font-family:var(--serif); font-weight:300; font-size:18px; color:var(--ink-2); max-width:720px; line-height:2; }
+.lead b{ color:var(--ink); }
+.hr{ height:1px; background:var(--line); margin:56px 0; border:0; }
+.slabel{ font-size:12px; letter-spacing:.32em; color:var(--ink-3); text-transform:uppercase; font-weight:600; margin-bottom:24px; }
+
+/* reposition */
+.repos{ display:flex; align-items:stretch; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+.repos .half{ flex:1; padding:30px 32px; }
+.repos .old{ background:var(--paper-2); }
+.repos .new{ background:var(--dai); color:var(--moon); }
+.repos .rk{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:14px; color:var(--ink-3); }
+.repos .new .rk{ color:var(--ru); }
+.repos .rv{ font-family:var(--serif); font-size:24px; font-weight:600; line-height:1.4; }
+.repos .old .rv{ color:var(--ink-3); }
+.repos .new .rv{ color:#fff; }
+.repos .rn{ font-size:13px; margin-top:12px; line-height:1.7; }
+.repos .old .rn{ color:var(--ink-3); } .repos .new .rn{ color:rgba(230,232,226,.7); }
+
+/* compare table */
+.cmp{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+.cmp .crow{ display:grid; grid-template-columns:140px 1fr 1fr; }
+.cmp .crow + .crow{ border-top:1px solid var(--line); }
+.cmp .ch{ background:rgba(46,58,58,.04); font-weight:600; }
+.cmp .cell{ padding:16px 20px; font-size:13.5px; line-height:1.6; }
+.cmp .dim{ color:var(--ink-3); font-size:12px; letter-spacing:.12em; text-transform:uppercase; display:flex; align-items:center; border-right:1px solid var(--line); }
+.cmp .west{ color:var(--ink-2); border-right:1px solid var(--line); background:rgba(46,58,58,.02); }
+.cmp .east{ color:var(--ink); }
+.cmp .east b{ color:var(--ru-d); }
+.cmp .ch .west,.cmp .ch .east{ font-family:var(--serif); font-size:16px; }
+.cmp .ch .west{ color:var(--ink-2); } .cmp .ch .east{ color:var(--ink); }
+.cmp .ch .west small,.cmp .ch .east small{ display:block; font-family:var(--sans); font-size:10px; letter-spacing:.16em; color:var(--ink-3); text-transform:uppercase; margin-top:3px; font-weight:400; }
+
+/* palette */
+.pal{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+.sw{ border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+.sw .chip{ height:78px; }
+.sw .lab{ padding:10px 12px; }
+.sw .ln{ font-family:var(--serif); font-size:13px; font-weight:600; }
+.sw .lh{ font-family:var(--sans); font-size:10px; color:var(--ink-3); letter-spacing:.05em; }
+.sw .note{ font-size:10px; color:var(--ink-3); margin-top:2px; }
+
+/* type spec */
+.type{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.tbox{ border:1px solid var(--line); border-radius:12px; padding:28px; background:rgba(255,255,255,.45); }
+.tbox .tk{ font-size:11px; letter-spacing:.18em; color:var(--ru-d); text-transform:uppercase; margin-bottom:14px; }
+.tbox .serif-sample{ font-family:var(--serif); font-weight:300; font-size:34px; line-height:1.4; }
+.tbox .sans-sample{ font-family:var(--sans); font-weight:400; font-size:16px; line-height:1.7; color:var(--ink-2); }
+.tbox .tn{ font-size:12px; color:var(--ink-3); margin-top:14px; line-height:1.6; }
+
+/* naming */
+.names{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.nm{ border:1px solid var(--line); border-radius:12px; padding:26px 28px; background:rgba(255,255,255,.5); position:relative; }
+.nm.primary{ border-color:var(--ru-d); background:linear-gradient(160deg, rgba(157,179,172,.14), rgba(255,255,255,.4)); }
+.nm.primary::after{ content:'暂定主名'; position:absolute; top:16px; right:16px; font-size:10px; letter-spacing:.16em; color:var(--cinnabar); border:1px solid var(--cinnabar); border-radius:3px; padding:3px 7px; }
+.nm .nc{ font-family:var(--serif); font-size:30px; font-weight:700; margin-bottom:6px; }
+.nm .ns{ font-size:13px; color:var(--ink-2); line-height:1.7; }
+.nm .ns b{ color:var(--ru-d); }
+
+/* slogans */
+.slo{ display:grid; gap:18px; }
+.s1{ font-family:var(--serif); font-weight:300; font-size:clamp(20px,2.8vw,28px); line-height:1.6; padding-left:24px; border-left:2px solid var(--cinnabar); }
+.s1 .en{ display:block; font-family:var(--sans); font-size:13px; color:var(--ink-3); letter-spacing:.05em; margin-top:8px; }
+
+.footer{ margin-top:72px; padding-top:28px; border-top:1px solid var(--line); display:flex; align-items:center; gap:14px; font-size:12px; color:var(--ink-3); }
+.footer .seal{ width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border:1.5px solid var(--cinnabar); border-radius:4px; color:var(--cinnabar); font-family:var(--serif); font-weight:700; font-size:13px; }
+.next{ margin-left:auto; } .next a{ color:var(--ru-d); text-decoration:none; font-weight:600; }
+
+@media (max-width:860px){
+  .wrap{ padding:36px 20px 64px; }
+  .repos{ flex-direction:column; }
+  .pal{ grid-template-columns:repeat(3,1fr); }
+  .type,.names{ grid-template-columns:1fr; }
+  .cmp .crow{ grid-template-columns:96px 1fr 1fr; }
+  .cmp .cell{ padding:12px 12px; font-size:12.5px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a class="seal" href="iyve-vision.html">逸</a>
+    <a href="iyve-vision.html">愿景</a><span class="sep">/</span>
+    <a href="iyve-club.html">伍 · 俱乐部</a><span class="sep">/</span>
+    <span class="here">肆 · 品牌</span>
+    <span style="margin-left:auto"></span>
+    <a href="iyve-thesis.html">壹 · 论点 →</a>
+  </div>
+
+  <div class="eyebrow">Brand & Visual Language · 品牌与视觉</div>
+  <h1 class="h1">视觉本身，<br>就是<b>那句论点的证据</b>。</h1>
+  <p class="lead">
+    西方顶奢的视觉是<b>金与黑</b>——高对比、强反光、满铺 logo，全为彰显"我拥有"。
+    我们反其道：以<span class="ru">宋代美学</span>为标准，用天青、宣纸与留白，
+    说一句安静却笃定的话——<b>我不必证明，因为我属于</b>。
+  </p>
+
+  <hr class="hr">
+
+  <div class="slabel">第一步 · 重新定义 iYVE 是什么</div>
+  <div class="repos">
+    <div class="half old">
+      <div class="rk">不要再说</div>
+      <div class="rv">一家私人飞机公司</div>
+      <div class="rn">飞机只是运输工具。停在这个定义里，就只能在价格上和所有人厮杀。</div>
+    </div>
+    <div class="half new">
+      <div class="rk">从此说</div>
+      <div class="rv">东方顶级生活方式<br>策展机构</div>
+      <div class="rn">飞机是入口，旅行是媒介，策展是核心。我们策的，是一整套由中国人定义的"高级"。</div>
+    </div>
+  </div>
+
+  <hr class="hr">
+
+  <div class="slabel">视觉系统对照 · 金黑·拥有 ⇄ 天青·关系</div>
+  <div class="cmp">
+    <div class="crow ch">
+      <div class="cell dim">维度</div>
+      <div class="cell west">西方顶奢<small>Ownership · 炫示</small></div>
+      <div class="cell east">iYVE · 宋<small>Relationship · 含蓄</small></div>
+    </div>
+    <div class="crow">
+      <div class="cell dim">色彩</div>
+      <div class="cell west">金 + 黑，高对比、强反光，象征占有与权势</div>
+      <div class="cell east"><b>汝窑天青 + 松烟墨 + 宣纸</b>，单色釉的素雅，金仅作钤印般的点睛</div>
+    </div>
+    <div class="crow">
+      <div class="cell dim">字体</div>
+      <div class="cell west">粗体无衬线 / 现代衬线，强调气势与品牌存在感</div>
+      <div class="cell east"><b>宋体一脉的衬线</b>取文气，字少、留白多，重分寸而非力量</div>
+    </div>
+    <div class="crow">
+      <div class="cell dim">构图</div>
+      <div class="cell west">满版、居中、对称，信息密集，处处是焦点</div>
+      <div class="cell east"><b>马远夏圭"一角半边"</b>，大面积留白，画面只说一件事</div>
+    </div>
+    <div class="crow">
+      <div class="cell dim">材质</div>
+      <div class="cell west">大理石、镀金、皮革、镜面，强调贵重与坚硬</div>
+      <div class="cell east"><b>绢、宣纸、青瓷开片、素木</b>，强调温润与时间感</div>
+    </div>
+    <div class="crow">
+      <div class="cell dim">落款</div>
+      <div class="cell west">硕大 logo，反复出现，唯恐人不知</div>
+      <div class="cell east"><b>一枚朱砂方印</b>，藏于一角，懂的人自然懂</div>
+    </div>
+  </div>
+
+  <hr class="hr">
+
+  <div class="slabel">色板 · 汝窑天青体系</div>
+  <div class="pal">
+    <div class="sw"><div class="chip" style="background:#F3EDDF"></div><div class="lab"><div class="ln">宣纸</div><div class="lh">#F3EDDF</div><div class="note">主背景</div></div></div>
+    <div class="sw"><div class="chip" style="background:#9DB3AC"></div><div class="lab"><div class="ln">汝窑天青</div><div class="lh">#9DB3AC</div><div class="note">主点缀</div></div></div>
+    <div class="sw"><div class="chip" style="background:#7E9B8E"></div><div class="lab"><div class="ln">粉青</div><div class="lh">#7E9B8E</div><div class="note">强调</div></div></div>
+    <div class="sw"><div class="chip" style="background:#2E3A3A"></div><div class="lab"><div class="ln">黛</div><div class="lh">#2E3A3A</div><div class="note">深色块</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1C1C1A"></div><div class="lab"><div class="ln">松烟墨</div><div class="lh">#1C1C1A</div><div class="note">文字</div></div></div>
+    <div class="sw"><div class="chip" style="background:#B23A2E"></div><div class="lab"><div class="ln">朱砂</div><div class="lh">#B23A2E</div><div class="note">钤印 ≤5%</div></div></div>
+  </div>
+
+  <hr class="hr">
+
+  <div class="slabel">字体 · 衬线取文气，无衬线为正文</div>
+  <div class="type">
+    <div class="tbox">
+      <div class="tk">标题 · Noto Serif SC（宋体一脉）</div>
+      <div class="serif-sample">雨过天青云破处</div>
+      <div class="tn">用于品牌名、路线名、主张。承"瘦金 / 宋椠"的清瘦文气，字距疏朗。</div>
+    </div>
+    <div class="tbox">
+      <div class="tk">正文 · Manrope + 思源黑</div>
+      <div class="sans-sample">当财富不再稀缺，真正稀缺的，是文明体验。我们不带你看世界，而是带你走进世界。</div>
+      <div class="tn">用于说明与数据，克制、清晰，不与衬线标题争夺注意力。</div>
+    </div>
+  </div>
+
+  <hr class="hr">
+
+  <div class="slabel">产品线命名候选 · 宋意优先</div>
+  <div class="names">
+    <div class="nm primary">
+      <div class="nc">卧游</div>
+      <div class="ns">出宗炳《画山水序》"老疾俱至，名山恐难遍睹，唯当澄怀观道，<b>卧以游之</b>"。不出户而神游天下，正合顶奢旅行的精神内核——也最宋。</div>
+    </div>
+    <div class="nm">
+      <div class="nc">澄怀</div>
+      <div class="ns">同出宗炳"<b>澄怀</b>观道"。先清空胸中杂念，方能照见文明本相。适合做俱乐部 / 高端线名。</div>
+    </div>
+    <div class="nm">
+      <div class="nc">观止</div>
+      <div class="ns">"叹为<b>观止</b>"，见此而足，不必他求。气象更大，适合做对外主张性命名。</div>
+    </div>
+    <div class="nm">
+      <div class="nc">平淡</div>
+      <div class="ns">取苏轼"绚烂之极，归于<b>平淡</b>"。最反炫示，也最考验客户的段位。备选。</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--ink-3);margin-top:14px;line-height:1.7">说明：全站当前以「卧游」占位，最终命名由你定夺，可一键替换。</p>
+
+  <hr class="hr">
+
+  <div class="slabel">广告语 · The Lines</div>
+  <div class="slo">
+    <div class="s1">当财富不再稀缺，真正稀缺的是文明体验。<span class="en">When wealth is no longer scarce, civilization is.</span></div>
+    <div class="s1">我们不带你看世界，我们带你进入世界。<span class="en">We don't show you the world — we let you in.</span></div>
+    <div class="s1">顶级富豪缺的从来不是飞机，缺的是新的身份认同。<span class="en">They were never short of jets — only of a new identity.</span></div>
+  </div>
+
+  <div class="footer">
+    <span class="seal">逸</span>
+    <span>iYVE · 概念演示 Mockup · 2026</span>
+    <span class="next"><a href="iyve-vision.html">回到愿景首页 →</a></span>
+  </div>
+
+</div>
+</body>
+</html>
