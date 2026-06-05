@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#15140F">
+<title>缘起 · 儒释道 · 重新定义奢侈</title>
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("iyve-theme")||"danya")}catch(e){}</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Manrope:wght@300;400;500;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --paper:#F3EDDF; --paper-2:#E9E2D0; --moon:#E6E8E2;
+  --ink:#1C1C1A; --ink-2:#46433B; --ink-3:#8A8474; --dai:#2E3A3A;
+  --ru:#9DB3AC; --ru-d:#7E9B8E; --cinnabar:#B23A2E; --gold-leaf:#A8884C; --line:#D6CEBB;
+  --kujin:#C77E2E; --zhu:#C8362B; --chunchen:#8C9C7E; --xizi:#84A7A4; --tianqing:#88ADA6;
+  --serif:'Noto Serif SC','Songti SC','STSong',serif;
+  --sans:'Manrope','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html,body{ background:var(--paper); }
+body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden; }
+
+.band{ width:100%; position:relative; }
+.inner{ max-width:1080px; margin:0 auto; padding:92px 40px; }
+.slabel{ font-size:12px; letter-spacing:.34em; color:var(--ink-3); text-transform:uppercase; font-weight:700; margin-bottom:28px; }
+.band.dark .slabel{ color:rgba(230,232,226,.5); }
+
+/* 警示双例 */
+.tales{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:40px; }
+.tale{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:32px 30px; position:relative; overflow:hidden; }
+.tale::before{ content:''; position:absolute; left:0; top:0; width:5px; height:100%; background:var(--zhu); }
+.tale .tg{ font-family:var(--serif); font-size:13px; color:var(--zhu); letter-spacing:.1em; margin-bottom:12px; }
+.tale .th{ font-family:var(--serif); font-size:22px; font-weight:700; margin-bottom:12px; line-height:1.4; }
+.tale .tb{ font-size:14px; color:var(--ink-2); line-height:1.85; }
+.tale .tb b{ color:var(--ink); }
+.pull{ font-family:var(--serif); font-weight:300; font-size:clamp(24px,3.6vw,40px); line-height:1.5; text-align:center; padding:0 4%; }
+.pull b{ font-weight:800; } .pull .zhu{ color:var(--zhu); }
+.pull .src{ display:block; font-family:var(--sans); font-size:13px; color:var(--ink-3); letter-spacing:.1em; margin-top:18px; }
+
+/* 三柱 */
+.band.three{ background:#161413; color:var(--moon); }
+.three .lead3{ font-family:var(--serif); font-weight:300; font-size:clamp(20px,2.6vw,28px); line-height:1.6; color:#fff; max-width:780px; margin-bottom:48px; }
+.three .lead3 b{ font-weight:700; }
+.pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.pillar{ border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:34px 30px; position:relative; overflow:hidden;
+  background:rgba(255,255,255,.03); display:flex; flex-direction:column; }
+.pillar::before{ content:''; position:absolute; left:0; top:0; width:100%; height:6px; }
+.pillar.ru-p::before{ background:var(--kujin); }
+.pillar.shi::before{ background:var(--tianqing); }
+.pillar.dao::before{ background:var(--chunchen); }
+.pillar .glyph{ font-family:var(--serif); font-size:64px; font-weight:900; line-height:1; margin-bottom:6px; }
+.pillar.ru-p .glyph{ color:var(--kujin); }
+.pillar.shi .glyph{ color:var(--tianqing); }
+.pillar.dao .glyph{ color:var(--chunchen); }
+.pillar .word{ font-family:var(--serif); font-size:22px; font-weight:700; color:#fff; margin-bottom:4px; }
+.pillar .en{ font-size:11px; letter-spacing:.2em; color:rgba(230,232,226,.5); text-transform:uppercase; margin-bottom:20px; }
+.pillar .lab{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:rgba(230,232,226,.5); margin:16px 0 6px; }
+.pillar .txt{ font-size:13.5px; color:rgba(230,232,226,.82); line-height:1.8; }
+.pillar .txt b{ color:#fff; }
+.pillar .peak{ font-family:var(--serif); font-size:16px; color:#fff; line-height:1.6; padding:14px 0; border-top:1px dashed rgba(255,255,255,.18); border-bottom:1px dashed rgba(255,255,255,.18); margin:16px 0; }
+.pillar .offer{ margin-top:auto; padding-top:16px; font-size:12.5px; color:rgba(230,232,226,.7); line-height:1.7; }
+.pillar .offer b{ color:#FFE6A6; }
+
+/* 艺术家 · 满幅引言 */
+.band.artist{ background:linear-gradient(160deg,#20140F,#15110E 60%,#0E0C0A); color:#fff; }
+.band.artist .inner{ padding:118px 40px; text-align:center; }
+.artist .q{ font-family:var(--serif); font-weight:300; font-size:clamp(26px,4.4vw,52px); line-height:1.42; }
+.artist .q b{ font-weight:800; color:#FFE6A6; }
+.artist .q .zhu{ color:#E06A52; }
+.artist .note{ margin-top:30px; font-family:var(--serif); font-size:clamp(16px,2vw,20px); color:rgba(255,255,255,.82); line-height:1.9; max-width:720px; margin-left:auto; margin-right:auto; }
+.artist .note b{ color:#fff; }
+
+/* 结论 */
+.concl{ display:flex; align-items:stretch; border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+.concl .c-old{ flex:1; padding:40px 38px; background:var(--paper-2); }
+.concl .c-new{ flex:1.2; padding:40px 38px; background:linear-gradient(150deg, var(--dai), #1C1C1A); color:var(--moon); }
+.concl .ck{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:14px; color:var(--ink-3); }
+.concl .c-new .ck{ color:var(--ru); }
+.concl .cv{ font-family:var(--serif); font-size:clamp(22px,2.8vw,30px); font-weight:700; line-height:1.4; }
+.concl .c-old .cv{ color:var(--ink-3); }
+.concl .c-new .cv{ color:#fff; }
+.concl .c-new .cv em{ font-style:normal; color:#FFE6A6; }
+.concl .cn{ font-size:13.5px; line-height:1.8; margin-top:16px; }
+.concl .c-old .cn{ color:var(--ink-3); } .concl .c-new .cn{ color:rgba(230,232,226,.8); }
+
+.footer{ background:#161413; color:rgba(230,232,226,.5); }
+.footer .inner{ padding:40px; display:flex; align-items:center; gap:14px; font-size:12px; }
+.footer .seal{ width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:1.5px solid var(--zhu); border-radius:4px; color:var(--zhu); font-family:var(--serif); font-weight:700; font-size:14px; }
+.footer .next{ margin-left:auto; } .footer .next a{ color:var(--ru); text-decoration:none; font-weight:600; }
+
+@media (max-width:880px){
+  .inner{ padding:60px 22px; }
+  .tales,.pillars{ grid-template-columns:1fr; }
+  .concl{ flex-direction:column; }
+}
+</style>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="hero.css">
+</head>
+<body>
+
+<!-- ===================== HERO · 水墨玄素 ===================== -->
+<section class="phero dark">
+  <div class="pscene" style="background:radial-gradient(circle at 26% 30%, rgba(200,54,43,.30), transparent 46%), linear-gradient(160deg,#20140F 0%,#1A1714 50%,#100E0C 100%)"></div>
+  <div class="pveil"></div>
+  <svg class="pridge" viewBox="0 0 1440 300" preserveAspectRatio="none"><path d="M0,300 L0,168 C 220,122 360,150 560,128 C 780,104 980,150 1180,118 C 1300,104 1380,128 1440,114 L1440,300 Z" fill="#0C0A09" opacity="0.6"/></svg>
+  <div class="pwrap">
+    <div class="nav">
+      <a class="seal" href="iyve-vision.html">逸</a>
+      <a href="iyve-vision.html">愿景</a><span class="sep">/</span>
+      <span class="here">序 · 儒释道</span>
+      <span style="margin-left:auto"></span>
+      <a href="iyve-thesis.html">壹 · 论点 →</a>
+    </div>
+    <div class="pmain">
+      <div class="eyebrow">Redefining Luxury · 缘起 · 儒释道</div>
+      <h1 class="h1">在中国，真正的高级，<br>从来不是<b>奢侈</b>。</h1>
+      <p class="lead">
+        体验经济时代，"奢侈"正被重新定义。而在中国文化里，奢侈从不是褒义——
+        它常是衰败的前兆。有智慧的中国人，追求的是另一种东西：<span style="color:#FFE6A6">关系、觉知、天人合一</span>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 奢侈是贬义的 ===================== -->
+<section class="band">
+  <div class="inner">
+    <div class="slabel">其一 · 奢侈，伴随衰退</div>
+    <div class="tales">
+      <div class="tale">
+        <div class="tg">象箸之忧 · 三千年前</div>
+        <div class="th">纣王换上一双象牙筷</div>
+        <div class="tb">箕子见之而惧。<b>由一双筷子，他预见了整个王朝的崩塌</b>——象箸必配玉杯，玉杯必求珍馐，珍馐必居广厦。欲望一旦起头，再无止境。后来，商亡。</div>
+      </div>
+      <div class="tale">
+        <div class="tg">民间传说 · 银球"无奈何"</div>
+        <div class="th">以白银铸球，炫奇斗富</div>
+        <div class="tb">相传富户以纯银铸成大球把玩炫耀，名曰"无奈何"。极尽奢僭之能事，终致招祸，<b>满门抄斩</b>。代代相传的，从来不是它的华贵，而是它的下场。</div>
+      </div>
+    </div>
+    <div class="pull">
+      在中国人的智慧里，<br>越是<span class="zhu">堆砌与占有</span>，越近<b>败亡</b>。
+      <span class="src">—— 这是刻进一个民族骨子里的警惕</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 儒释道三柱 ===================== -->
+<section class="band three">
+  <div class="inner">
+    <div class="slabel">其二 · 那么，智者求什么</div>
+    <div class="lead3">
+      若奢侈不是答案，中国人真正追求的极致享受，藏在<b>儒、释、道</b>三条路里。
+      它们都不向外占有，而向内、向人、向天地。
+    </div>
+    <div class="pillars">
+
+      <div class="pillar ru-p">
+        <div class="glyph">儒</div>
+        <div class="word">礼 · 关系的融洽</div>
+        <div class="en">Confucian · Harmony</div>
+        <div class="txt">儒家讲<b>礼</b>。人最高级的享受，是人与人关系的和谐——家庭的温度、朋友的相知、宾主的得体。</div>
+        <div class="peak">极致：一场尽兴的雅集，宾主尽欢，情意入心。</div>
+        <div class="offer">我们提供 · <b>家族传承 / 圈层雅集</b><br>引路者：礼乐 · 茶事 · 雅集之宗师。</div>
+      </div>
+
+      <div class="pillar shi">
+        <div class="glyph">释</div>
+        <div class="word">悟 · 见性见知</div>
+        <div class="en">Buddhist · Awakening</div>
+        <div class="txt">佛家讲<b>悟</b>。屏蔽外界的干扰，向内观己、抵达觉知，从而到达彼岸——让自己与自己的能量打通。</div>
+        <div class="peak">极致：在静默中与自己相通，见性见知。</div>
+        <div class="offer">我们提供 · <b>东方隐世 / 寺院闭关</b><br>引路者：禅修宗师 · 高僧 · 学者。</div>
+      </div>
+
+      <div class="pillar dao">
+        <div class="glyph">道</div>
+        <div class="word">天人合一 · 和光同尘</div>
+        <div class="en">Taoist · Oneness</div>
+        <div class="txt">道家讲<b>天人合一</b>。把自己交还自然，和光同尘——与山川草木、与天地万物，融为一体。</div>
+        <div class="peak">极致：身心彻底融入山水，物我两忘。</div>
+        <div class="offer">我们提供 · <b>山水隐居 / 自然秘境</b><br>引路者：山水 · 园林 · 自然之艺术家。</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 艺术家引路 ===================== -->
+<section class="band artist">
+  <div class="inner">
+    <div class="q">
+      若你<span class="zhu">下地狱</span>，需要一名战士同行；<br>
+      若你<b>上天堂</b>，需要一位<b>艺术家</b>引路。
+    </div>
+    <div class="note">
+      因为极致的享受，<b>只有艺术家能教会你</b>。<br>
+      所以 iYVE 的每一条路线，都不是导游带队，而是由一位宗师、一位艺术家，
+      引领一场属于你的修行——儒的礼、释的悟、道的合一。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 结论 · 高度 ===================== -->
+<section class="band">
+  <div class="inner">
+    <div class="slabel">其三 · 我们的高度</div>
+    <div class="concl">
+      <div class="c-old">
+        <div class="ck">我们不做</div>
+        <div class="cv">奢侈品</div>
+        <div class="cn">堆砌、占有、炫示——那是被西方定义、且为中国智慧所警惕的旧物。</div>
+      </div>
+      <div class="c-new">
+        <div class="ck">我们是</div>
+        <div class="cv">体验经济里的 <em>高级货</em></div>
+        <div class="cn">抓住本质：<b style="color:#fff">关系的融洽、向内的觉知、天人的合一</b>。由艺术家引路，把一次旅行，变成一场修行。这，才是中国人定义的高级。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="band footer">
+  <div class="inner">
+    <div class="seal">逸</div>
+    <span>iYVE · 缘起 · 儒释道 · 概念演示 Mockup · 2026</span>
+    <span class="next"><a href="iyve-thesis.html">下一篇 · 论点 →</a></span>
+  </div>
+</footer>
+
+<script src="theme.js"></script>
+</body>
+</html>
