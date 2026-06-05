@@ -1,0 +1,81 @@
+/* journey.css — 修行体验样板页共享组件（与 theme.css / hero.css 配合） */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Manrope:wght@300;400;500;600;700&display=swap');
+*{ margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --paper:#F3EDDF; --paper-2:#E9E2D0; --moon:#E6E8E2;
+  --ink:#1C1C1A; --ink-2:#46433B; --ink-3:#8A8474; --dai:#2E3A3A; --dai-2:#26302F;
+  --ru:#9DB3AC; --ru-d:#7E9B8E; --cinnabar:#B23A2E; --gold-leaf:#A8884C; --gold-d:#8A6E3C; --line:#D6CEBB;
+  --kujin:#C77E2E; --liuli:#E3A53A; --pipa:#DE9233; --zhu:#C8362B;
+  --chunchen:#8C9C7E; --xizi:#84A7A4; --bicheng:#235C90; --tianqing:#88ADA6;
+  --serif:'Noto Serif SC','Songti SC','STSong',serif;
+  --sans:'Manrope','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html,body{ background:var(--paper); }
+body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden; }
+
+.band{ width:100%; position:relative; }
+.inner{ max-width:1040px; margin:0 auto; padding:84px 40px; }
+.partno{ font-family:var(--serif); font-size:13px; letter-spacing:.3em; color:var(--ru-d); margin-bottom:14px; }
+.jslabel{ font-family:var(--serif); font-size:clamp(22px,2.8vw,32px); font-weight:700; line-height:1.4; margin-bottom:28px; }
+.jlead{ font-family:var(--serif); font-weight:300; font-size:clamp(17px,2vw,21px); line-height:1.9; max-width:790px; color:var(--ink-2); }
+.jlead b{ color:var(--ink); font-weight:600; }
+.slabel{ font-size:12px; letter-spacing:.32em; color:var(--ink-3); text-transform:uppercase; font-weight:700; margin-bottom:26px; }
+
+.jfacts{ display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:rgba(255,255,255,.4); margin-top:34px; }
+.jfact{ padding:20px 22px; border-right:1px solid var(--line); }
+.jfact:last-child{ border-right:0; }
+.jfact .fl{ font-size:11px; letter-spacing:.14em; color:var(--ink-3); text-transform:uppercase; margin-bottom:8px; }
+.jfact .fv{ font-family:var(--serif); font-size:18px; font-weight:600; }
+.jfact .fv small{ font-size:12px; color:var(--ink-3); font-weight:400; }
+
+.jledger{ display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+.jledger .col{ padding:28px 30px; }
+.jledger .common{ background:var(--paper-2); }
+.jledger .yours{ background:linear-gradient(150deg,var(--dai),#1C1C1A); color:var(--moon); }
+.jledger .ck{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; margin-bottom:16px; }
+.jledger .common .ck{ color:var(--ink-3); } .jledger .yours .ck{ color:var(--ru); }
+.jledger ul{ list-style:none; }
+.jledger li{ font-size:14px; line-height:1.6; padding:11px 0; border-bottom:1px dashed var(--line); }
+.jledger li:last-child{ border-bottom:0; }
+.jledger .common li{ color:var(--ink-3); }
+.jledger .yours li{ color:var(--moon); border-bottom-color:rgba(255,255,255,.12); }
+.jledger .yours li b{ color:#fff; }
+
+.jday{ display:grid; grid-template-columns:110px 1fr; gap:26px; padding:34px 0; border-top:1px solid var(--line); }
+.jday:first-of-type{ border-top:0; }
+.jday .dn{ font-family:var(--serif); font-size:13px; letter-spacing:.14em; color:var(--ru-d); margin-bottom:6px; }
+.jday .dnum{ font-family:var(--serif); font-size:44px; font-weight:300; line-height:1; }
+.jday .dplace{ font-size:12px; color:var(--ink-3); margin-top:10px; letter-spacing:.08em; }
+.jday .dtitle{ font-family:var(--serif); font-size:22px; font-weight:600; margin-bottom:8px; }
+.jday .dlede{ font-size:14.5px; color:var(--ink-2); line-height:1.85; }
+.jday .dlede b{ color:var(--ink); }
+.photo-slot{ width:100%; aspect-ratio:16/7; border:1px dashed var(--ru); border-radius:10px; background:repeating-linear-gradient(45deg, rgba(157,179,172,.06) 0 12px, transparent 12px 24px), rgba(157,179,172,.05); display:flex; align-items:center; justify-content:center; color:var(--ru-d); font-size:12px; letter-spacing:.14em; margin:16px 0; }
+.jday .ritual{ margin-top:14px; font-family:var(--serif); font-size:13.5px; color:var(--ru-d); padding-left:16px; border-left:2px solid var(--ru); }
+.jday .ritual b{ color:var(--ink); }
+
+.curtrio{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.cur{ border:1px solid var(--line); border-radius:14px; padding:28px 26px; background:#fff; position:relative; overflow:hidden; }
+.cur::before{ content:''; position:absolute; left:0; top:0; width:100%; height:5px; }
+.cur.s::before{ background:var(--bicheng); } .cur.a::before{ background:var(--zhu); } .cur.c::before{ background:var(--chunchen); }
+.cur .cen{ font-family:var(--serif); font-size:20px; font-weight:700; }
+.cur.s .cen{ color:var(--bicheng); } .cur.a .cen{ color:var(--zhu); } .cur.c .cen{ color:var(--chunchen); }
+.cur .ccn{ font-family:var(--serif); font-size:16px; font-weight:600; margin:2px 0; }
+.cur .cjob{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px; }
+.cur .cwho{ font-size:13px; color:var(--ink-2); line-height:1.7; }
+.cur .cwho b{ color:var(--ink); }
+
+.jtake{ background:linear-gradient(150deg,#1C1C1A,#2A2620); color:var(--moon); border-radius:16px; padding:48px 44px; text-align:center; }
+.jtake .q{ font-family:var(--serif); font-weight:300; font-size:clamp(22px,3vw,32px); line-height:1.5; color:#fff; }
+.jtake .q b{ color:#FFE6A6; font-weight:800; }
+.jtake .disc{ margin-top:24px; font-size:12px; color:rgba(230,232,226,.5); }
+
+.jfooter{ background:#161413; color:rgba(230,232,226,.5); }
+.jfooter .inner{ padding:40px; display:flex; align-items:center; gap:14px; font-size:12px; }
+.jfooter .seal{ width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid var(--zhu);border-radius:4px;color:var(--zhu);font-family:var(--serif);font-weight:700;font-size:14px; }
+.jfooter .next{ margin-left:auto; } .jfooter .next a{ color:var(--ru); text-decoration:none; font-weight:600; }
+
+@media(max-width:860px){
+  .inner{ padding:56px 22px; }
+  .jfacts,.jledger,.curtrio{ grid-template-columns:1fr; }
+  .jday{ grid-template-columns:1fr; gap:12px; }
+}
