@@ -29,37 +29,36 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
 .inner{ max-width:1140px; margin:0 auto; padding:96px 40px; }
 .band.tight .inner{ padding:64px 40px; }
 
-/* ============ HERO ============ */
+/* ============ HERO · 西子烟水 ============ */
 .hero{ min-height:96vh; display:flex; flex-direction:column; position:relative; overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 56%, rgba(250,214,134,.95) 0%, rgba(227,165,58,.72) 13%, rgba(199,126,46,.35) 30%, transparent 46%),
-    linear-gradient(180deg, #20140F 0%, #4E2814 24%, #A8541C 43%, #E3A53A 55%, #C77E2E 63%, #3A2414 84%, #1C1C1A 100%);
-}
-.hero .silo{ position:absolute; left:0; right:0; bottom:0; width:100%; height:46%; z-index:1; }
+  background:linear-gradient(180deg,#ECF2F0 0%,#CBD9D6 52%,#9CB7B4 100%); }
+.hero .scene{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.hero .veil{ position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(236,242,240,.55) 0%, rgba(236,242,240,0) 28%, rgba(255,255,255,0) 58%, rgba(140,170,166,.20) 100%); }
 .hero .masthead{ position:relative; z-index:3; display:flex; align-items:center; gap:14px;
   max-width:1140px; width:100%; margin:0 auto; padding:34px 40px 0; }
 .hero .seal{ display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px;
-  border:1.5px solid rgba(255,255,255,.85); border-radius:6px; color:#fff;
-  font-family:var(--serif); font-weight:700; font-size:19px; backdrop-filter:blur(2px); }
-.hero .wordmark{ font-family:var(--serif); font-size:22px; font-weight:600; letter-spacing:.2em; color:#fff; }
-.hero .wordmark .en{ display:block; font-family:var(--sans); font-weight:300; letter-spacing:.42em; font-size:12px; color:rgba(255,255,255,.7); margin-top:2px; }
-.hero .role{ margin-left:auto; font-size:12px; color:rgba(255,255,255,.82); letter-spacing:.22em;
-  border:1px solid rgba(255,255,255,.4); border-radius:4px; padding:8px 16px; white-space:nowrap; }
+  border:1.5px solid var(--cinnabar); border-radius:6px; color:var(--cinnabar);
+  font-family:var(--serif); font-weight:700; font-size:19px; background:rgba(255,255,255,.4); }
+.hero .wordmark{ font-family:var(--serif); font-size:22px; font-weight:600; letter-spacing:.2em; color:var(--ink); }
+.hero .wordmark .en{ display:block; font-family:var(--sans); font-weight:300; letter-spacing:.42em; font-size:12px; color:var(--ink-3); margin-top:2px; }
+.hero .role{ margin-left:auto; font-size:12px; color:var(--ink-2); letter-spacing:.22em;
+  border:1px solid rgba(28,28,26,.22); border-radius:4px; padding:8px 16px; white-space:nowrap; background:rgba(255,255,255,.3); }
 
 .hero .heromain{ position:relative; z-index:3; flex:1; display:flex; flex-direction:column; justify-content:center;
   max-width:1140px; width:100%; margin:0 auto; padding:0 40px 60px; }
-.hero .eyebrow{ font-size:12px; letter-spacing:.5em; color:var(--liuli); text-transform:uppercase; font-weight:700; margin-bottom:26px; text-shadow:0 2px 14px rgba(0,0,0,.5); }
-.hero h1{ font-family:var(--serif); font-weight:300; color:#fff;
-  font-size:clamp(40px,7.4vw,92px); line-height:1.12; letter-spacing:.01em;
-  text-shadow:0 4px 40px rgba(0,0,0,.55); }
-.hero h1 b{ font-weight:900; }
-.hero h1 .glow{ color:#FFE6A6; }
-.hero .sub{ margin-top:30px; max-width:680px; font-family:var(--serif); font-weight:300;
-  font-size:clamp(15px,1.9vw,20px); line-height:2; color:rgba(255,255,255,.9); text-shadow:0 2px 18px rgba(0,0,0,.6); }
-.hero .sub b{ color:#fff; font-weight:600; }
+.hero .eyebrow{ font-size:12px; letter-spacing:.5em; color:#3E6E74; text-transform:uppercase; font-weight:700; margin-bottom:26px; }
+.hero h1{ font-family:var(--serif); font-weight:300; color:var(--ink);
+  font-size:clamp(38px,6.8vw,84px); line-height:1.16; letter-spacing:.01em;
+  text-shadow:0 2px 30px rgba(255,255,255,.75); }
+.hero h1 b{ font-weight:800; }
+.hero h1 .glow{ color:#1B4A74; font-weight:800; }
+.hero .sub{ margin-top:30px; max-width:660px; font-family:var(--serif); font-weight:300;
+  font-size:clamp(15px,1.9vw,20px); line-height:2; color:var(--ink-2); text-shadow:0 1px 16px rgba(255,255,255,.7); }
+.hero .sub b{ color:var(--ink); font-weight:600; }
 .hero .scroll{ position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:3;
-  color:rgba(255,255,255,.8); font-size:11px; letter-spacing:.3em; text-transform:uppercase; text-align:center; }
-.hero .scroll i{ display:block; width:1px; height:34px; background:linear-gradient(rgba(255,255,255,.9),transparent); margin:10px auto 0; }
+  color:var(--ink-2); font-size:11px; letter-spacing:.3em; text-transform:uppercase; text-align:center; }
+.hero .scroll i{ display:block; width:1px; height:34px; background:linear-gradient(rgba(28,28,26,.55),transparent); margin:10px auto 0; }
 
 /* ============ generic section bits ============ */
 .slabel{ font-size:12px; letter-spacing:.36em; color:var(--ink-3); text-transform:uppercase; font-weight:700; margin-bottom:30px; }
@@ -162,8 +161,68 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
 </head>
 <body>
 
-  <!-- ===================== HERO ===================== -->
+  <!-- ===================== HERO · 西子烟水 ===================== -->
   <section class="band hero">
+    <svg class="scene" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#EDF3F1"/><stop offset="0.32" stop-color="#D6E2DF"/>
+          <stop offset="0.6" stop-color="#A9C1BE"/><stop offset="1" stop-color="#86A3A0"/>
+        </linearGradient>
+        <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#F4F8F6" stop-opacity="0"/>
+          <stop offset="0.5" stop-color="#F4F8F6" stop-opacity="0.92"/>
+          <stop offset="1" stop-color="#F4F8F6" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="halo" cx="0.5" cy="0.3" r="0.55">
+          <stop offset="0" stop-color="#F8FBFA" stop-opacity="0.85"/>
+          <stop offset="1" stop-color="#F8FBFA" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1440" height="900" fill="url(#sky)"/>
+      <rect width="1440" height="900" fill="url(#halo)"/>
+      <!-- 飞鸟 -->
+      <g fill="none" stroke="#5C7875" stroke-width="2.4" stroke-linecap="round" opacity="0.8">
+        <path d="M980 168 q9 -7 18 0 q9 -7 18 0"/><path d="M1024 150 q7 -6 14 0 q7 -6 14 0"/>
+        <path d="M1060 180 q6 -5 12 0 q6 -5 12 0"/>
+      </g>
+      <!-- 远山林 -->
+      <path d="M0 470 C 200 432, 380 452, 560 442 C 760 430, 960 452, 1180 436 C 1300 428, 1380 440, 1440 434 L1440 560 L0 560 Z" fill="#A9C1BE" opacity="0.55"/>
+      <!-- 远亭 -->
+      <g fill="#93AFAC" opacity="0.6">
+        <path d="M648 438 l72 0 l-10 -16 l-52 0 z"/><path d="M662 422 q34 -26 68 0 z"/>
+        <rect x="676" y="438" width="5" height="24"/><rect x="700" y="438" width="5" height="24"/>
+      </g>
+      <!-- 雾带 -->
+      <rect x="0" y="392" width="1440" height="186" fill="url(#mist)"/>
+      <!-- 中景树（左右） -->
+      <path d="M0 560 L0 470 C 60 480, 110 452, 150 470 C 190 452, 230 486, 270 500 L 270 560 Z" fill="#6E8A87" opacity="0.85"/>
+      <path d="M1440 560 L1440 462 C 1380 474, 1330 448, 1290 470 C 1250 450, 1205 488, 1175 502 L 1175 560 Z" fill="#6E8A87" opacity="0.85"/>
+      <!-- 前景垂柳（左上） -->
+      <g stroke="#516D6A" stroke-width="2" fill="none" opacity="0.9" stroke-linecap="round">
+        <path d="M40 28 C 120 90, 150 160, 150 250"/>
+        <path d="M150 250 C 110 270, 96 320, 100 372"/>
+        <path d="M150 250 C 170 290, 168 330, 158 374"/>
+        <path d="M150 250 C 200 286, 214 330, 210 372"/>
+        <path d="M112 200 C 86 230, 80 268, 84 300"/>
+        <path d="M196 214 C 230 250, 238 292, 232 330"/>
+      </g>
+      <!-- 水面倒影 -->
+      <g fill="#FFFFFF" opacity="0.12">
+        <rect x="300" y="612" width="840" height="3" rx="1.5"/>
+        <rect x="380" y="662" width="680" height="3" rx="1.5"/>
+        <rect x="470" y="714" width="500" height="3" rx="1.5"/>
+      </g>
+      <!-- 孤舟（暖船篷呼应） -->
+      <g>
+        <path d="M676 656 q44 22 88 0 l-12 14 q-32 12 -64 0 z" fill="#3B4B49"/>
+        <path d="M690 640 q30 -20 60 0 z" fill="#C99A5E"/>
+        <rect x="718" y="626" width="4" height="16" fill="#7A5A34"/>
+        <path d="M700 672 q20 8 40 0" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="3" fill="none"/>
+      </g>
+    </svg>
+    <div class="veil"></div>
+
     <div class="masthead">
       <div class="seal">逸</div>
       <div class="wordmark">iYVE<span class="en">DONGFANG CURATION</span></div>
@@ -177,11 +236,6 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
         未来二十年中国顶奢最大的机会——由中国人，以<b>宋代美学</b>为标准，重新定义高级。
       </p>
     </div>
-    <svg class="silo" viewBox="0 0 1440 360" preserveAspectRatio="none">
-      <path fill="#1C1C1A" d="M0,360 L0,250 L120,235 L240,255 L360,230 L460,245 L560,220 L640,236 L760,206 L880,232 L1000,214 L1120,238 L1240,222 L1340,244 L1440,228 L1440,360 Z"/>
-      <path fill="#15110E" opacity="0.85" d="M0,360 L0,300 L160,288 L300,306 L440,290 L600,308 L740,294 L900,310 L1060,296 L1220,312 L1380,300 L1440,308 L1440,360 Z"/>
-      <g fill="#1C1C1A"><path d="M690,210 l14,-26 l14,26 l-6,0 l0,40 l-16,0 l0,-40 z"/></g>
-    </svg>
     <div class="scroll">下滑 · 展卷<i></i></div>
   </section>
 
