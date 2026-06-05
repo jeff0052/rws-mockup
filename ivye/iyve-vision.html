@@ -33,8 +33,9 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
 .hero{ min-height:96vh; display:flex; flex-direction:column; position:relative; overflow:hidden;
   background:linear-gradient(180deg,#ECF2F0 0%,#CBD9D6 52%,#9CB7B4 100%); }
 .hero .scene{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.hero .photo{ position:absolute; inset:0; z-index:0; background-image:url('images/xizi.jpg'); background-size:cover; background-position:center 38%; background-repeat:no-repeat; }
 .hero .veil{ position:absolute; inset:0; z-index:1; pointer-events:none;
-  background:linear-gradient(180deg, rgba(236,242,240,.55) 0%, rgba(236,242,240,0) 28%, rgba(255,255,255,0) 58%, rgba(140,170,166,.20) 100%); }
+  background:linear-gradient(180deg, rgba(236,242,240,.40) 0%, rgba(236,242,240,0) 26%, rgba(255,255,255,0) 50%, rgba(243,237,223,.50) 88%, rgba(243,237,223,.94) 100%); }
 .hero .masthead{ position:relative; z-index:3; display:flex; align-items:center; gap:14px;
   max-width:1140px; width:100%; margin:0 auto; padding:34px 40px 0; }
 .hero .seal{ display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px;
@@ -221,6 +222,7 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
         <path d="M700 672 q20 8 40 0" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="3" fill="none"/>
       </g>
     </svg>
+    <div class="photo"></div>
     <div class="veil"></div>
 
     <div class="masthead">
