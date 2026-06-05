@@ -28,8 +28,10 @@
 .phero.dark .nav a:hover{ color:#FFE6A6; }
 .phero.dark .eyebrow{ color:#FFE6A6; }
 .phero.dark .h1,.phero.dark .h1 b{ color:#fff; }
+.phero.dark .h1{ text-shadow:0 2px 28px rgba(0,0,0,.6); }
 .phero.dark .h1 .ru{ color:#BFE0D6; }
-.phero.dark .lead,.phero.dark .intro{ color:rgba(255,255,255,.86); }
+.phero.dark .lead,.phero.dark .intro{ color:rgba(255,255,255,.88); text-shadow:0 1px 16px rgba(0,0,0,.55); }
+.phero.dark .eyebrow{ text-shadow:0 1px 14px rgba(0,0,0,.5); }
 .phero.dark .lead b,.phero.dark .intro b{ color:#fff !important; }
 .phero.dark .intro span{ color:#FFE6A6 !important; }
 .phero.dark .h1en{ color:rgba(255,255,255,.6); }
