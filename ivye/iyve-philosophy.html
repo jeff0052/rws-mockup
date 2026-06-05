@@ -57,7 +57,10 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
 
 /* 三 · 三柱 */
 .pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.pillar{ border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:34px 30px; position:relative; overflow:hidden; background:rgba(255,255,255,.03); display:flex; flex-direction:column; }
+.pillar{ border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:34px 30px; position:relative; overflow:hidden; background:rgba(255,255,255,.03); display:flex; flex-direction:column; text-decoration:none; color:inherit; cursor:pointer; transition:transform .2s, border-color .2s, box-shadow .2s; }
+.pillar:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,.36); box-shadow:0 20px 44px rgba(0,0,0,.34); }
+.pillar .pgo{ margin-top:18px; padding-top:14px; border-top:1px dashed rgba(255,255,255,.16); font-size:12.5px; letter-spacing:.04em; font-weight:700; }
+.pillar.ru-p .pgo{ color:var(--kujin); } .pillar.shi .pgo{ color:var(--tianqing); } .pillar.dao .pgo{ color:var(--chunchen); }
 .pillar::before{ content:''; position:absolute; left:0; top:0; width:100%; height:6px; }
 .pillar.ru-p::before{ background:var(--kujin); } .pillar.shi::before{ background:var(--tianqing); } .pillar.dao::before{ background:var(--chunchen); }
 .pillar .glyph{ font-family:var(--serif); font-size:60px; font-weight:900; line-height:1; }
@@ -201,30 +204,33 @@ body{ font-family:var(--sans); color:var(--ink); -webkit-font-smoothing:antialia
       中国文化三千年，最终浓缩成三条路径——<b>儒、释、道</b>。它们都不向外占有，而向人、向内、向天地。
     </div>
     <div class="pillars">
-      <div class="pillar ru-p">
+      <a class="pillar ru-p" href="iyve-journey-ru.html">
         <div class="glyph">儒</div>
         <div class="way">乐 · 关系的和谐</div>
         <div class="word">和谁一起，比享受什么更重要</div>
         <div class="txt">儒家最高级的享受不是财富，而是<b>人与人之间的和谐</b>——家庭和睦、知己相交、君子同行。</div>
         <div class="quote">"有朋自远方来，不亦乐乎。"</div>
         <div class="peak">最顶级的晚宴，不是最贵的酒，而是<b style="color:#fff">最值得共饮的人</b>。</div>
-      </div>
-      <div class="pillar shi">
+        <div class="pgo">体验样板 · 一席雅集 →</div>
+      </a>
+      <a class="pillar shi" href="iyve-journey-shi.html">
         <div class="glyph">释</div>
         <div class="way">悟 · 向内的觉知</div>
         <div class="word">不是得到，而是看见</div>
         <div class="txt">佛家认为，外部世界永远填不满内心。财富越多、刺激越强，快乐却越短暂。最终必须回到——<b>观察自己</b>：看见欲望、看见执着、看见恐惧。</div>
         <div class="quote">真正的奢侈，是拥有一段完全属于自己的时间。</div>
         <div class="peak">最高的享受，<b style="color:#fff">不是得到，而是看见</b>。</div>
-      </div>
-      <div class="pillar dao">
+        <div class="pgo">体验样板 · 闭关见性 →</div>
+      </a>
+      <a class="pillar dao" href="iyve-journey-dao.html">
         <div class="glyph">道</div>
         <div class="way">游 · 天人合一</div>
         <div class="word">重新成为自然的一部分</div>
         <div class="txt">道家的最高境界，不是征服自然，而是<b>融入自然</b>。现代人的问题：离天地太远，离屏幕太近。</div>
         <div class="quote">在沙漠看星空，在雪山看日出，在海洋听潮汐。</div>
         <div class="peak">庄子曰逍遥<b style="color:#fff">游</b>——让自己，重新成为自然的一部分。</div>
-      </div>
+        <div class="pgo">体验样板 · 天地独行 →</div>
+      </a>
     </div>
   </div>
 </section>
